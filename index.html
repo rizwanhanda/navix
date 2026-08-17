@@ -240,7 +240,7 @@
       </div>
     </section>
 
-    <!-- Embedded Presentation Viewer (Direct from Backblaze B2) -->
+    <!-- Embedded Presentation Viewer (Direct from assets/docs/Indoor_Pulse_PDF.pdf) -->
     <section id="presentation">
       <div class="section-header">
         <h2 class="section-title">Planning Presentation Deliverable</h2>
@@ -252,24 +252,24 @@
             <span id="docViewerTitle">Planning Presentation v1</span>
             <span class="version-badge" id="docViewerVersion">v1.0.0</span>
           </div>
-          <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Storage: Backblaze B2 S3</span>
+          <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Planning Presentation v1</span>
         </div>
 
         <div class="iframe-container">
-          <iframe id="docViewer" src="https://s3.eu-central-003.backblazeb2.com/indoorpulse-storage-2026/deliverables/v1.0.0_Indoor_Pulse_PDF.pdf"></iframe>
+          <iframe id="docViewer" src="assets/docs/Indoor_Pulse_PDF.pdf"></iframe>
         </div>
 
         <div class="viewer-actions">
           <span style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.74rem;">
-            Source: <code id="docSourceText" style="color: #a5b4fc;">https://s3.eu-central-003.backblazeb2.com/indoorpulse-storage-2026/...</code>
+            Source: <code id="docSourceText" style="color: #a5b4fc;">assets/docs/Indoor_Pulse_PDF.pdf</code>
           </span>
           <div class="action-group">
             <button onclick="toggleBrowserFullscreen()" class="btn-action btn-action-primary" id="fullscreenToggleBtn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
               <span>Maximize Viewer</span>
             </button>
-            <a id="pdfOpenLink" href="https://s3.eu-central-003.backblazeb2.com/indoorpulse-storage-2026/deliverables/v1.0.0_Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action"><span>Open in New Tab ↗</span></a>
-            <a id="pdfDownloadLink" href="https://s3.eu-central-003.backblazeb2.com/indoorpulse-storage-2026/deliverables/v1.0.0_Indoor_Pulse_PDF.pdf" download class="btn-action"><span>Download PDF ↓</span></a>
+            <a id="pdfOpenLink" href="assets/docs/Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action"><span>Open in New Tab ↗</span></a>
+            <a id="pdfDownloadLink" href="assets/docs/Indoor_Pulse_PDF.pdf" download="Indoor_Pulse_PDF.pdf" class="btn-action"><span>Download PDF ↓</span></a>
           </div>
         </div>
       </div>
@@ -288,7 +288,7 @@
               <th>Deliverable Title</th>
               <th>Date</th>
               <th>Change Summary</th>
-              <th>Storage Location</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody id="version-archive-body">
@@ -297,7 +297,7 @@
               <td>Planning Presentation v1</td>
               <td>August 17, 2026</td>
               <td>Initial baseline planning architecture, PDR models, and Gantt roadmap.</td>
-              <td><a href="https://s3.eu-central-003.backblazeb2.com/indoorpulse-storage-2026/deliverables/v1.0.0_Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action">Backblaze S3 ↗</a></td>
+              <td><a href="assets/docs/Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action">View Asset ↗</a></td>
             </tr>
           </tbody>
         </table>
@@ -336,7 +336,7 @@
   <div class="modal-backdrop" id="adminModal">
     <div class="modal-card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="font-size: 1.1rem; color: #fff;">Publish Deliverable to Backblaze B2</h3>
+        <h3 style="font-size: 1.1rem; color: #fff;">Publish Deliverable to Storage</h3>
         <button onclick="toggleAdminModal(false)" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;">&times;</button>
       </div>
       <form id="adminUploadForm">
@@ -362,7 +362,7 @@
         </div>
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
           <button type="button" onclick="toggleAdminModal(false)" class="btn-action">Cancel</button>
-          <button type="submit" class="btn-action btn-action-primary" id="uploadSubmitBtn">Publish to Backblaze S3</button>
+          <button type="submit" class="btn-action btn-action-primary" id="uploadSubmitBtn">Publish Version</button>
         </div>
       </form>
     </div>
@@ -495,18 +495,19 @@
           tbody.innerHTML = '';
           
           json.data.forEach((item, index) => {
+            const targetUrl = (item.file_url && item.file_url !== '#') ? item.file_url : 'assets/docs/Indoor_Pulse_PDF.pdf';
             const tr = document.createElement('tr');
             tr.innerHTML = `
               <td><span class="version-badge">${item.version}</span></td>
               <td>${item.title}</td>
               <td>${item.date}</td>
               <td>${item.summary}</td>
-              <td><a href="${item.file_url}" target="_blank" class="btn-action">Backblaze S3 ↗</a></td>
+              <td><a href="${targetUrl}" target="_blank" class="btn-action">View Asset ↗</a></td>
             `;
             tbody.appendChild(tr);
 
-            // Automatically set the viewer to the latest active deliverable
-            if (index === 0) {
+            // Only override if the backend provides a valid non-empty URL
+            if (index === 0 && item.file_url && item.file_url.startsWith('http')) {
               document.getElementById('docViewer').src = item.file_url;
               document.getElementById('docViewerTitle').innerText = item.title;
               document.getElementById('docViewerVersion').innerText = item.version;
@@ -517,7 +518,7 @@
           });
         }
       } catch (e) {
-        console.log("Operating in fallback mode or backend offline.");
+        console.log("Operating in local asset mode.");
       }
     }
 
@@ -525,7 +526,7 @@
     document.getElementById('adminUploadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('uploadSubmitBtn');
-      btn.innerText = "Streaming to Backblaze B2...";
+      btn.innerText = "Publishing Version...";
       btn.disabled = true;
 
       const formData = new FormData();
@@ -539,16 +540,16 @@
         const res = await fetch(`${API_BASE_URL}/api/admin/publish`, { method: 'POST', body: formData });
         const result = await res.json();
         if (res.ok && result.status === 'success') {
-          alert('Asset successfully published to Backblaze B2 S3 storage!');
+          alert('Asset successfully published!');
           toggleAdminModal(false);
           fetchServerRecords();
         } else {
           alert('Upload failed: ' + (result.message || 'Check password or version uniqueness'));
         }
       } catch (err) {
-        alert('Server unreachable: Ensure PythonAnywhere backend is reloaded.');
+        alert('Server unreachable: Ensure PythonAnywhere backend is active.');
       } finally {
-        btn.innerText = "Publish to Backblaze S3";
+        btn.innerText = "Publish Version";
         btn.disabled = false;
       }
     });
