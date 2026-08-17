@@ -240,7 +240,7 @@
       </div>
     </section>
 
-    <!-- Embedded Presentation Viewer (Direct from assets/docs/Indoor_Pulse_PDF.pdf) -->
+    <!-- Embedded Presentation Viewer -->
     <section id="presentation">
       <div class="section-header">
         <h2 class="section-title">Planning Presentation Deliverable</h2>
@@ -252,7 +252,7 @@
             <span id="docViewerTitle">Planning Presentation v1</span>
             <span class="version-badge" id="docViewerVersion">v1.0.0</span>
           </div>
-          <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Planning Presentation v1</span>
+          <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Deliverable: Planning Presentation</span>
         </div>
 
         <div class="iframe-container">
@@ -494,8 +494,8 @@
           const tbody = document.getElementById('version-archive-body');
           tbody.innerHTML = '';
           
-          json.data.forEach((item, index) => {
-            const targetUrl = (item.file_url && item.file_url !== '#') ? item.file_url : 'assets/docs/Indoor_Pulse_PDF.pdf';
+          json.data.forEach((item) => {
+            const targetUrl = (item.file_url && item.file_url.startsWith('http')) ? item.file_url : 'assets/docs/Indoor_Pulse_PDF.pdf';
             const tr = document.createElement('tr');
             tr.innerHTML = `
               <td><span class="version-badge">${item.version}</span></td>
@@ -505,16 +505,6 @@
               <td><a href="${targetUrl}" target="_blank" class="btn-action">View Asset ↗</a></td>
             `;
             tbody.appendChild(tr);
-
-            // Only override if the backend provides a valid non-empty URL
-            if (index === 0 && item.file_url && item.file_url.startsWith('http')) {
-              document.getElementById('docViewer').src = item.file_url;
-              document.getElementById('docViewerTitle').innerText = item.title;
-              document.getElementById('docViewerVersion').innerText = item.version;
-              document.getElementById('pdfOpenLink').href = item.file_url;
-              document.getElementById('pdfDownloadLink').href = item.file_url;
-              document.getElementById('docSourceText').innerText = item.file_url;
-            }
           });
         }
       } catch (e) {
