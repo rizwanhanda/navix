@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Navix — Infrastructure-Free Indoor Positioning</title>
+  <title>IndoorPulse — Infrastructure-Free Indoor Positioning</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -27,7 +27,6 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
@@ -44,40 +43,19 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    #bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      pointer-events: none;
-    }
-
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
     .container { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
 
     header {
       background: rgba(7, 9, 14, 0.85);
       backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 50;
     }
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-    .brand {
-      font-size: 0.95rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 12px; }
     .brand span.title-gradient {
       background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
       -webkit-background-clip: text;
@@ -86,75 +64,29 @@
       letter-spacing: -0.02em;
     }
     .status-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      background: rgba(255, 255, 255, 0.03);
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
+      display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem;
+      color: var(--text-muted); font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.03); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border);
     }
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 10px var(--success);
-    }
-    .nav-links { display: flex; gap: 20px; }
-    .nav-links a {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px var(--success); }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { font-size: 0.85rem; color: var(--text-muted); text-decoration: none; font-weight: 500; transition: all 0.2s ease; }
     .nav-links a:hover { color: var(--text); }
 
-    .summary-block {
-      padding: 56px 0 32px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 40px;
-    }
+    .summary-block { padding: 56px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
     .summary-title {
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-bottom: 10px;
+      font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 10px;
       background: linear-gradient(135deg, #ffffff 20%, #a5b4fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .summary-subtitle {
-      font-size: 0.98rem;
-      color: var(--text-muted);
-      max-width: 780px;
-    }
+    .summary-subtitle { font-size: 0.98rem; color: var(--text-muted); max-width: 780px; }
 
     section { margin-bottom: 52px; }
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .section-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .section-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
     .section-title::before {
-      content: '';
-      display: inline-block;
-      width: 4px;
-      height: 18px;
-      background: linear-gradient(180deg, var(--accent), var(--cyan-accent));
-      border-radius: 2px;
+      content: ''; display: inline-block; width: 4px; height: 18px;
+      background: linear-gradient(180deg, var(--accent), var(--cyan-accent)); border-radius: 2px;
     }
 
     .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
@@ -166,172 +98,62 @@
     }
 
     .card {
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      background: var(--bg-card); backdrop-filter: blur(16px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 22px; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .card:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px -10px var(--accent-glow);
-    }
+    .card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: 0 12px 30px -10px var(--accent-glow); }
 
     .team-name { font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
     .team-role { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px; font-family: var(--font-mono); }
-    .member-gh {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.8rem;
-      color: var(--cyan-accent);
-      text-decoration: none;
-      font-weight: 500;
-    }
+    .member-gh { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--cyan-accent); text-decoration: none; font-weight: 500; }
     .member-gh:hover { text-decoration: underline; }
 
     .tag {
-      font-size: 0.72rem;
-      font-family: var(--font-mono);
-      background: rgba(99, 102, 241, 0.12);
-      color: #a5b4fc;
-      border: 1px solid rgba(99, 102, 241, 0.25);
-      padding: 2px 8px;
-      border-radius: 6px;
+      font-size: 0.72rem; font-family: var(--font-mono); background: rgba(99, 102, 241, 0.12);
+      color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.25); padding: 2px 8px; border-radius: 6px;
     }
 
-    /* Single Presentation PDF Viewer */
+    /* Presentation Viewer */
     .viewer-container {
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
+      background: var(--bg-card); backdrop-filter: blur(16px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      display: flex; flex-direction: column;
     }
-
-    .viewer-container:fullscreen {
-      width: 100vw;
-      height: 100vh;
-      border-radius: 0;
-      border: none;
-      background: #07090e;
-    }
-    .viewer-container:fullscreen .iframe-container {
-      flex: 1;
-      height: auto;
-    }
-
-    .viewer-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 20px;
-      background: rgba(13, 18, 30, 0.85);
-      border-bottom: 1px solid var(--border);
-    }
-    .viewer-meta {
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      color: #cbd5e1;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .version-badge {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: #6ee7b7;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.72rem;
-    }
-
+    .viewer-container:fullscreen { width: 100vw; height: 100vh; border-radius: 0; border: none; background: #07090e; }
+    .viewer-container:fullscreen .iframe-container { flex: 1; height: auto; }
+    .viewer-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: rgba(13, 18, 30, 0.85); border-bottom: 1px solid var(--border); }
+    .viewer-meta { font-family: var(--font-mono); font-size: 0.82rem; color: #cbd5e1; display: flex; align-items: center; gap: 12px; }
+    .version-badge { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #6ee7b7; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; }
     .iframe-container { height: 620px; width: 100%; background: #07090e; }
     .iframe-container iframe { width: 100%; height: 100%; border: none; }
-
-    .viewer-actions {
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(13, 18, 30, 0.85);
-      border-top: 1px solid var(--border);
-      font-size: 0.82rem;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
+    .viewer-actions { padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(13, 18, 30, 0.85); border-top: 1px solid var(--border); font-size: 0.82rem; flex-wrap: wrap; gap: 12px; }
     .action-group { display: flex; gap: 8px; align-items: center; }
 
     .btn-action {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--font-mono);
-      font-size: 0.76rem;
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      color: var(--text);
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s ease;
+      display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.76rem;
+      padding: 6px 12px; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border); color: var(--text); cursor: pointer; text-decoration: none; transition: all 0.2s ease;
     }
-    .btn-action:hover {
-      background: rgba(99, 102, 241, 0.15);
-      border-color: rgba(99, 102, 241, 0.4);
-      color: #fff;
-      box-shadow: 0 0 12px var(--accent-glow);
-    }
-    .btn-action-primary {
-      background: rgba(99, 102, 241, 0.18);
-      border-color: rgba(99, 102, 241, 0.35);
-      color: #a5b4fc;
-    }
+    .btn-action:hover { background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.4); color: #fff; box-shadow: 0 0 12px var(--accent-glow); }
+    .btn-action-primary { background: rgba(99, 102, 241, 0.18); border-color: rgba(99, 102, 241, 0.35); color: #a5b4fc; }
 
-    .table-wrapper {
-      background: var(--bg-card);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow-x: auto;
-    }
+    .table-wrapper { background: var(--bg-card); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
-    th {
-      background: rgba(13, 18, 30, 0.85);
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      font-weight: 600;
-      font-family: var(--font-mono);
-      color: var(--text-muted);
-      text-transform: uppercase;
-      font-size: 0.72rem;
-      letter-spacing: 0.05em;
-    }
+    th { background: rgba(13, 18, 30, 0.85); padding: 12px 16px; border-bottom: 1px solid var(--border); font-weight: 600; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; }
     td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: #cbd5e1; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(255, 255, 255, 0.02); }
-    
-    .commit-hash {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      background: rgba(99, 102, 241, 0.15);
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: #a5b4fc;
-      text-decoration: none;
-    }
+    .commit-hash { font-family: var(--font-mono); font-size: 0.78rem; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); padding: 2px 6px; border-radius: 4px; color: #a5b4fc; text-decoration: none; }
     .commit-hash:hover { text-decoration: underline; color: #fff; }
+
+    /* Admin Modal */
+    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center; }
+    .modal-card { background: #0d121e; border: 1px solid var(--border-hover); border-radius: var(--radius); width: 100%; max-width: 520px; padding: 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px; }
+    .form-control { width: 100%; padding: 8px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; color: #fff; font-size: 0.85rem; }
   </style>
 </head>
 <body>
@@ -341,14 +163,16 @@
   <header>
     <div class="container header-inner">
       <div class="brand">
-        <span class="title-gradient">Navix</span>
+        <span class="title-gradient">IndoorPulse</span>
         <span class="status-indicator"><span class="status-dot"></span>Planning v1.0.0</span>
       </div>
       <nav class="nav-links">
         <a href="#team">Team</a>
         <a href="#overview">Architecture</a>
-        <a href="#presentation">Planning Presentation</a>
+        <a href="#presentation">Presentation v1</a>
+        <a href="#version-archive">Version Archive</a>
         <a href="#changelog">Commit History</a>
+        <button onclick="toggleAdminModal(true)" class="btn-action btn-action-primary">Admin Upload ↗</button>
       </nav>
     </div>
   </header>
@@ -356,7 +180,7 @@
   <main class="container">
 
     <div class="summary-block">
-      <h1 class="summary-title">Navix: Infrastructure-Free Indoor Positioning</h1>
+      <h1 class="summary-title">IndoorPulse: Infrastructure-Free Indoor Positioning</h1>
       <p class="summary-subtitle">Client-side indoor navigation leveraging native smartphone sensor fusion (PDR, Particle Filtering) with short-range AR wayfinding overlays.</p>
     </div>
 
@@ -416,7 +240,7 @@
       </div>
     </section>
 
-    <!-- Embedded Presentation Viewer -->
+    <!-- Embedded Presentation Viewer (Direct from Backblaze B2) -->
     <section id="presentation">
       <div class="section-header">
         <h2 class="section-title">Planning Presentation Deliverable</h2>
@@ -425,33 +249,58 @@
       <div class="viewer-container" id="presentationViewer">
         <div class="viewer-header">
           <div class="viewer-meta">
-            <span>Indoor_Pulse_PDF.pdf</span>
-            <span class="version-badge">Version 1.0.0</span>
+            <span id="docViewerTitle">Planning Presentation v1</span>
+            <span class="version-badge" id="docViewerVersion">v1.0.0</span>
           </div>
-          <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Deliverable: Planning Presentation</span>
+          <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Storage: Backblaze B2 S3</span>
         </div>
 
         <div class="iframe-container">
-          <iframe id="docViewer" src="assets/docs/Indoor_Pulse_PDF.pdf"></iframe>
+          <iframe id="docViewer" src="https://s3.eu-central-003.backblazeb2.com/indoorpulse-storage-2026/deliverables/v1.0.0_Indoor_Pulse_PDF.pdf"></iframe>
         </div>
 
         <div class="viewer-actions">
-          <span style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.78rem;">
-            Document Location: <code style="color: #a5b4fc;">assets/docs/Indoor_Pulse_PDF.pdf</code>
+          <span style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.74rem;">
+            Source: <code id="docSourceText" style="color: #a5b4fc;">https://s3.eu-central-003.backblazeb2.com/indoorpulse-storage-2026/...</code>
           </span>
           <div class="action-group">
             <button onclick="toggleBrowserFullscreen()" class="btn-action btn-action-primary" id="fullscreenToggleBtn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
               <span>Maximize Viewer</span>
             </button>
-            <a href="assets/docs/Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action">
-              <span>Open in New Tab ↗</span>
-            </a>
-            <a href="assets/docs/Indoor_Pulse_PDF.pdf" download="Indoor_Pulse_PDF.pdf" class="btn-action">
-              <span>Download PDF ↓</span>
-            </a>
+            <a id="pdfOpenLink" href="https://s3.eu-central-003.backblazeb2.com/indoorpulse-storage-2026/deliverables/v1.0.0_Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action"><span>Open in New Tab ↗</span></a>
+            <a id="pdfDownloadLink" href="https://s3.eu-central-003.backblazeb2.com/indoorpulse-storage-2026/deliverables/v1.0.0_Indoor_Pulse_PDF.pdf" download class="btn-action"><span>Download PDF ↓</span></a>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Immutable Version Archive Table -->
+    <section id="version-archive">
+      <div class="section-header">
+        <h2 class="section-title">Immutable Deliverable & Version Archive</h2>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Version</th>
+              <th>Deliverable Title</th>
+              <th>Date</th>
+              <th>Change Summary</th>
+              <th>Storage Location</th>
+            </tr>
+          </thead>
+          <tbody id="version-archive-body">
+            <tr>
+              <td><span class="version-badge">v1.0.0</span></td>
+              <td>Planning Presentation v1</td>
+              <td>August 17, 2026</td>
+              <td>Initial baseline planning architecture, PDR models, and Gantt roadmap.</td>
+              <td><a href="https://s3.eu-central-003.backblazeb2.com/indoorpulse-storage-2026/deliverables/v1.0.0_Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action">Backblaze S3 ↗</a></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
@@ -483,13 +332,48 @@
 
   </main>
 
+  <!-- Admin Upload Modal (For Live Evaluation Demo) -->
+  <div class="modal-backdrop" id="adminModal">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="font-size: 1.1rem; color: #fff;">Publish Deliverable to Backblaze B2</h3>
+        <button onclick="toggleAdminModal(false)" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;">&times;</button>
+      </div>
+      <form id="adminUploadForm">
+        <div class="form-group">
+          <label>Admin Password</label>
+          <input type="password" id="adminPassword" class="form-control" required placeholder="indoorpulse2026">
+        </div>
+        <div class="form-group">
+          <label>Deliverable Title</label>
+          <input type="text" id="docTitle" class="form-control" required placeholder="e.g., Planning Presentation v2">
+        </div>
+        <div class="form-group">
+          <label>Version Tag</label>
+          <input type="text" id="docVersion" class="form-control" required placeholder="e.g., v1.1.0">
+        </div>
+        <div class="form-group">
+          <label>Change Summary</label>
+          <textarea id="docSummary" class="form-control" rows="2" required placeholder="Describe revisions or additions"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Attach Artifact (PDF)</label>
+          <input type="file" id="docFile" class="form-control" accept="application/pdf" required>
+        </div>
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+          <button type="button" onclick="toggleAdminModal(false)" class="btn-action">Cancel</button>
+          <button type="submit" class="btn-action btn-action-primary" id="uploadSubmitBtn">Publish to Backblaze S3</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     /* Background Canvas Animation */
     (function initBackground() {
       const canvas = document.getElementById('bg-canvas');
       const ctx = canvas.getContext('2d');
-      let width, height;
-      let particles = [];
+      let width, height, particles = [];
 
       function resize() {
         width = canvas.width = window.innerWidth;
@@ -508,18 +392,13 @@
           this.alpha = Math.random() * 0.5 + 0.1;
         }
         update() {
-          this.x += this.vx;
-          this.y += this.vy;
-          if (this.x < 0) this.x = width;
-          if (this.x > width) this.x = 0;
-          if (this.y < 0) this.y = height;
-          if (this.y > height) this.y = 0;
+          this.x += this.vx; this.y += this.vy;
+          if (this.x < 0) this.x = width; if (this.x > width) this.x = 0;
+          if (this.y < 0) this.y = height; if (this.y > height) this.y = 0;
         }
         draw() {
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(165, 180, 252, ${this.alpha})`;
-          ctx.fill();
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(165, 180, 252, ${this.alpha})`; ctx.fill();
         }
       }
 
@@ -535,19 +414,13 @@
         ctx.fillRect(0, 0, width, height);
 
         for (let i = 0; i < particles.length; i++) {
-          particles[i].update();
-          particles[i].draw();
+          particles[i].update(); particles[i].draw();
           for (let j = i + 1; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
+            const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist < 130) {
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(99, 102, 241, ${0.12 * (1 - dist / 130)})`;
-              ctx.lineWidth = 0.8;
-              ctx.stroke();
+              ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(99, 102, 241, ${0.12 * (1 - dist / 130)})`; ctx.lineWidth = 0.8; ctx.stroke();
             }
           }
         }
@@ -560,7 +433,6 @@
     function toggleBrowserFullscreen() {
       const viewer = document.getElementById('presentationViewer');
       const btnSpan = document.querySelector('#fullscreenToggleBtn span');
-
       if (!document.fullscreenElement) {
         if (viewer.requestFullscreen) viewer.requestFullscreen();
         else if (viewer.webkitRequestFullscreen) viewer.webkitRequestFullscreen();
@@ -571,58 +443,120 @@
         if (btnSpan) btnSpan.innerText = 'Maximize Viewer';
       }
     }
-
     document.addEventListener('fullscreenchange', () => {
       const btnSpan = document.querySelector('#fullscreenToggleBtn span');
-      if (!document.fullscreenElement && btnSpan) {
-        btnSpan.innerText = 'Maximize Viewer';
-      }
+      if (!document.fullscreenElement && btnSpan) btnSpan.innerText = 'Maximize Viewer';
     });
 
-    /* Live GitHub Commit Fetcher for rizwanhanda/navix */
+    /* Admin Modal Visibility */
+    function toggleAdminModal(show) {
+      document.getElementById('adminModal').style.display = show ? 'flex' : 'none';
+    }
+
+    /* Live GitHub Commit Fetcher */
     const GITHUB_USERNAME = "rizwanhanda";
     const GITHUB_REPO = "navix";
 
     async function fetchLiveCommits() {
       const tableBody = document.getElementById('changelog-body');
-      const apiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/commits?per_page=6`;
-
       try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error(`GitHub API Error: ${response.statusText}`);
-
+        const response = await fetch(`https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/commits?per_page=6`);
+        if (!response.ok) throw new Error('GitHub API Error');
         const commits = await response.json();
         tableBody.innerHTML = '';
-
         commits.forEach(item => {
           const hash = item.sha.substring(0, 7);
           const message = item.commit.message.split('\n')[0];
-          const author = item.commit.author.name || (item.author ? item.author.login : 'Contributor');
+          const author = item.commit.author.name || 'Contributor';
           const commitDate = new Date(item.commit.author.date).toISOString().split('T')[0];
-          const commitUrl = item.html_url;
-
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${commitDate}</td>
-            <td><a href="${commitUrl}" target="_blank" class="commit-hash">${hash}</a></td>
+            <td><a href="${item.html_url}" target="_blank" class="commit-hash">${hash}</a></td>
             <td>${message}</td>
             <td>${author}</td>
           `;
           tableBody.appendChild(row);
         });
       } catch (error) {
-        console.error(error);
-        tableBody.innerHTML = `
-          <tr>
-            <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 18px;">
-              Unable to load live commits. Verify repository visibility on GitHub.
-            </td>
-          </tr>
-        `;
+        tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted); padding:18px;">Unable to load live commits.</td></tr>`;
       }
     }
 
-    document.addEventListener('DOMContentLoaded', fetchLiveCommits);
+    /* Backend Synchronization (PythonAnywhere API Integration) */
+    const API_BASE_URL = "https://rizwanhanda.pythonanywhere.com";
+
+    async function fetchServerRecords() {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/records`);
+        const json = await res.json();
+        if (json.status === 'success' && json.data.length > 0) {
+          const tbody = document.getElementById('version-archive-body');
+          tbody.innerHTML = '';
+          
+          json.data.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td><span class="version-badge">${item.version}</span></td>
+              <td>${item.title}</td>
+              <td>${item.date}</td>
+              <td>${item.summary}</td>
+              <td><a href="${item.file_url}" target="_blank" class="btn-action">Backblaze S3 ↗</a></td>
+            `;
+            tbody.appendChild(tr);
+
+            // Automatically set the viewer to the latest active deliverable
+            if (index === 0) {
+              document.getElementById('docViewer').src = item.file_url;
+              document.getElementById('docViewerTitle').innerText = item.title;
+              document.getElementById('docViewerVersion').innerText = item.version;
+              document.getElementById('pdfOpenLink').href = item.file_url;
+              document.getElementById('pdfDownloadLink').href = item.file_url;
+              document.getElementById('docSourceText').innerText = item.file_url;
+            }
+          });
+        }
+      } catch (e) {
+        console.log("Operating in fallback mode or backend offline.");
+      }
+    }
+
+    /* Live Upload Handler */
+    document.getElementById('adminUploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('uploadSubmitBtn');
+      btn.innerText = "Streaming to Backblaze B2...";
+      btn.disabled = true;
+
+      const formData = new FormData();
+      formData.append('password', document.getElementById('adminPassword').value);
+      formData.append('title', document.getElementById('docTitle').value);
+      formData.append('version', document.getElementById('docVersion').value);
+      formData.append('change_summary', document.getElementById('docSummary').value);
+      formData.append('file', document.getElementById('docFile').files[0]);
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/admin/publish`, { method: 'POST', body: formData });
+        const result = await res.json();
+        if (res.ok && result.status === 'success') {
+          alert('Asset successfully published to Backblaze B2 S3 storage!');
+          toggleAdminModal(false);
+          fetchServerRecords();
+        } else {
+          alert('Upload failed: ' + (result.message || 'Check password or version uniqueness'));
+        }
+      } catch (err) {
+        alert('Server unreachable: Ensure PythonAnywhere backend is reloaded.');
+      } finally {
+        btn.innerText = "Publish to Backblaze S3";
+        btn.disabled = false;
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchLiveCommits();
+      fetchServerRecords();
+    });
   </script>
 </body>
 </html>
