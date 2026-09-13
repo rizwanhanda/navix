@@ -116,6 +116,14 @@
     }
     .author-tag { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.25); margin-left: 12px;}
 
+    /* Typography inside content cards */
+    .content-card h3 { color: #fff; font-size: 1.05rem; margin-bottom: 12px; margin-top: 16px; font-weight: 600; }
+    .content-card h3:first-child { margin-top: 0; }
+    .content-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.7; }
+    .content-card ul { margin-left: 20px; margin-bottom: 16px; color: var(--text-muted); font-size: 0.9rem; }
+    .content-card li { margin-bottom: 8px; }
+    .content-card strong { color: #e2e8f0; font-weight: 600; }
+
     /* Presentation Viewer */
     .viewer-container {
       background: var(--bg-card); backdrop-filter: blur(16px);
@@ -178,10 +186,9 @@
         <span class="status-indicator"><span class="status-dot"></span>System Active</span>
       </div>
       <nav class="nav-links">
-        <a href="#team">Team</a>
-        <a href="#overview">Architecture</a>
+        <a href="#problem">Vision</a>
+        <a href="#solution">Solution</a>
         <a href="#presentation">Deliverables</a>
-        <a href="#version-archive">Archive</a>
         <a href="#changelog">Commits</a>
         <button onclick="toggleAdminModal(true)" class="btn-action btn-action-primary">Admin Upload ↗</button>
       </nav>
@@ -191,66 +198,149 @@
   <main class="container">
 
     <div class="summary-block">
-      <h1 class="summary-title">IndoorPulse: Infrastructure-Free Indoor Positioning</h1>
+      <h1 class="summary-title">IndoorPulse: Offline-First Indoor Positioning</h1>
       <p class="summary-subtitle">Client-side indoor navigation leveraging native smartphone sensor fusion (PDR, Particle Filtering) with short-range AR wayfinding overlays.</p>
     </div>
 
-    <!-- Team Members Section -->
-    <section id="team">
+    <!-- NEW SECTION: The Problem & Vision -->
+    <section id="problem">
       <div class="section-header">
-        <h2 class="section-title">Project Team & Assigned Roles</h2>
+        <h2 class="section-title">The Problem & Vision</h2>
       </div>
-      <div class="grid-4">
-        <div class="card">
-          <div class="team-name">Rizwan Handa</div>
-          <div class="team-role">Project Lead & Cloud Arch.</div>
-          <div class="team-roll">Roll: 1024031189</div>
-          <a href="https://github.com/rizwanhanda" target="_blank" class="member-gh">@rizwanhanda →</a>
-        </div>
-        <div class="card">
-          <div class="team-name">Member Two</div>
-          <div class="team-role">Sensor Fusion (PDR)</div>
-          <div class="team-roll">Roll: Pending</div>
-          <a href="https://github.com/rizwanhanda/navix" target="_blank" class="member-gh">@member2 →</a>
-        </div>
-        <div class="card">
-          <div class="team-name">Member Three</div>
-          <div class="team-role">AR Rendering Engine</div>
-          <div class="team-roll">Roll: Pending</div>
-          <a href="https://github.com/rizwanhanda/navix" target="_blank" class="member-gh">@member3 →</a>
-        </div>
-        <div class="card">
-          <div class="team-name">Member Four</div>
-          <div class="team-role">Frontend / UI Integration</div>
-          <div class="team-roll">Roll: Pending</div>
-          <a href="https://github.com/rizwanhanda/navix" target="_blank" class="member-gh">@member4 →</a>
-        </div>
+      <div class="card content-card">
+        <h3>The Problem</h3>
+        <p>While GPS revolutionized outdoor navigation, it completely fails indoors due to satellite signal attenuation. Navigating large, complex indoor environments—such as university academic blocks, hospitals, expansive bazaars, and religious sites—remains a frustrating experience. Furthermore, during high-stress situations like emergency evacuations, the lack of clear, localized routing can lead to chaos.</p>
+        
+        <h3>Intended Users</h3>
+        <p>Students, faculty, hospital patients, shoppers, and emergency responders who need accurate, offline routing without relying on static physical maps.</p>
+        
+        <h3>Reason for Selection</h3>
+        <p>We selected this problem because it presents a rigorous Computer Science challenge—requiring real-time sensor fusion, probabilistic mathematics, and graph theory—while directly solving a localized issue with massive real-world scalability.</p>
+      </div>
+    </section>
+
+    <!-- NEW SECTION: Our Solution & User Journey -->
+    <section id="solution">
+      <div class="section-header">
+        <h2 class="section-title">Our Solution & User Journey</h2>
+      </div>
+      <div class="card content-card">
+        <h3>Proposed Solution: IndoorPulse</h3>
+        <p>IndoorPulse is an offline-first, peer-to-peer capable Indoor Positioning System (IPS) for Android. It uses Pedestrian Dead Reckoning (PDR) driven by the smartphone's IMU sensors, stabilized by a 2D Monte Carlo Particle Filter. Devices can map environments and share the graph data locally, requiring zero cloud infrastructure or expensive external hardware like BLE beacons.</p>
+        
+        <h3>The Main User Journey</h3>
+        <ul>
+          <li><strong>Surveyor Mode:</strong> An admin walks the physical space, dropping nodes and connecting edges to build a topological map of the floor plan, saved to the local database.</li>
+          <li><strong>Calibration:</strong> A standard user opens the app, stands at a known starting node, and aligns their physical heading.</li>
+          <li><strong>Real-Time Navigation:</strong> The user walks naturally. The app tracks steps and orientation, rendering a live gyro-locked navigation chevron over a blue position puck, while Dijkstra's algorithm calculates the shortest path to their destination.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- NEW SECTION: Live Demonstration Plan -->
+    <section id="demo-plan">
+      <div class="section-header">
+        <h2 class="section-title">Live Demonstration Plan</h2>
+      </div>
+      <div class="card content-card">
+        <p><strong>Scenario:</strong> Navigating a mapped graph from a starting junction to a specific destination node.</p>
+        <ul>
+          <li><strong>Step 1:</strong> Launch IndoorPulse and observe the Room Database instantly fetch the stored topological graph.</li>
+          <li><strong>Step 2:</strong> Request a route. Observe Dijkstra's algorithm successfully calculate and draw the shortest path across the nodes.</li>
+          <li><strong>Step 3:</strong> Engage the PDR engine. The presenter will physically walk forward.</li>
+          <li><strong>Step 4:</strong> Observe the Schmitt Trigger State Machine correctly identifying legitimate steps while ignoring hand-shake jitter.</li>
+          <li><strong>Step 5:</strong> Observe the UI. The blue dot moves along the mapped trajectory, and the gyro-locked chevron instantly mirrors physical left/right turns.</li>
+        </ul>
       </div>
     </section>
 
     <!-- Architecture Overview -->
     <section id="overview">
       <div class="section-header">
-        <h2 class="section-title">System Architecture Overview</h2>
+        <h2 class="section-title">System Integration & Architecture</h2>
       </div>
       <div class="grid-2">
-        <div class="card">
-          <h3 style="font-size: 1rem; color: #fff; margin-bottom: 8px;">Client-Side Motion Engine (PDR & SLAM)</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">50Hz IMU sampling with 4th-order Butterworth gait filtering, dynamic Weinberg stride scaling, and a 400-particle Monte Carlo filter with hard binary wall masking.</p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <span class="tag">Kotlin / Swift</span>
-            <span class="tag">Particle Filter</span>
-            <span class="tag">ARCore / ARKit</span>
-          </div>
+        <div class="card content-card">
+          <h3>Algorithmic Backend (PDR & SLAM)</h3>
+          <ul>
+            <li><strong>Hardware Interface:</strong> Android SensorManager continuously polls TYPE_LINEAR_ACCELERATION and TYPE_ROTATION_VECTOR.</li>
+            <li><strong>KinematicPDR.kt:</strong> Processes raw IMU data using a Dual-Threshold Schmitt Trigger and a Fused Biomechanical Model.</li>
+            <li><strong>ParticleFilter.kt:</strong> A Monte Carlo localization engine translating physical World Space headings into Map Space coordinates.</li>
+            <li><strong>Routing:</strong> Dijkstra's algorithm computes edge weights to find the shortest physical path.</li>
+          </ul>
         </div>
-        <div class="card">
-          <h3 style="font-size: 1rem; color: #fff; margin-bottom: 8px;">3-Tier Cloud & Storage Architecture</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">Decoupled architecture using GitHub Pages static frontend, AWS EC2 Flask compute server, SQLite3 metadata store, and Backblaze B2 Object Storage.</p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <span class="tag">AWS EC2 (Flask)</span>
-            <span class="tag">Backblaze B2 (S3)</span>
-            <span class="tag">SQLite3</span>
-          </div>
+        <div class="card content-card">
+          <h3>UI Layer & Persistence Architecture</h3>
+          <ul>
+            <li><strong>UI Layer:</strong> Jetpack Compose (MapCanvas.kt) reactively renders coordinates and dynamic rotation transforms.</li>
+            <li><strong>Database:</strong> A localized Room Database (SQLite) storing NodeEntity and EdgeEntity topologies.</li>
+            <li><strong>Cloud Integration:</strong> Decoupled architecture using GitHub Pages static frontend, AWS EC2 Flask compute server, and Backblaze B2 Object Storage.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW SECTION: Project Status -->
+    <section id="status">
+      <div class="section-header">
+        <h2 class="section-title">Project Status</h2>
+      </div>
+      <div class="grid-2">
+        <div class="card content-card">
+          <h3>What is Complete (The Prototype)</h3>
+          <ul>
+            <li>Robust Pedestrian Dead Reckoning (PDR) immune to stationary desk-drifting.</li>
+            <li>Advanced Stride Estimation (Fused Bounce/Frequency model).</li>
+            <li>Particle Filter coordinate translation (World Space vs. Map Space chirality).</li>
+            <li>Shortest path routing using Dijkstra's algorithm.</li>
+            <li>Surveyor Mode with SQLite graph persistence.</li>
+          </ul>
+        </div>
+        <div class="card content-card">
+          <h3>What We Will Build Next</h3>
+          <ul>
+            <li><strong>Multi-floor Navigation Logic:</strong> Implementing a manual floor-switch toggle for devices lacking barometric pressure sensors.</li>
+            <li><strong>Advanced Routing:</strong> Upgrading pathfinding to the A* algorithm for optimized heuristic searching.</li>
+            <li><strong>Enhanced Localization:</strong> Adding Wi-Fi fingerprinting anchors to auto-correct PDR drift.</li>
+            <li><strong>Visual Inertial Odometry (VIO):</strong> Exploring Computer Vision integration for absolute positioning.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Members Section -->
+    <section id="team">
+      <div class="section-header">
+        <h2 class="section-title">Project Team Contributions</h2>
+      </div>
+      <div class="grid-4">
+        <div class="card content-card" style="padding: 18px;">
+          <div class="team-name">Rizwan</div>
+          <div class="team-role">Team Lead & Core Android</div>
+          <div class="team-roll">Roll: 1024031189</div>
+          <p style="font-size: 0.8rem; margin-bottom: 8px;">Engineered the PDR engine (Schmitt Trigger & Biomechanical Model) and developed the Compose MapCanvas, implementing trig frame translation.</p>
+          <a href="https://github.com/rizwanhanda" target="_blank" class="member-gh">@rizwanhanda →</a>
+        </div>
+        <div class="card content-card" style="padding: 18px;">
+          <div class="team-name">Harjot</div>
+          <div class="team-role">Spatial Data & Topology</div>
+          <div class="team-roll">Roll: 1024031188</div>
+          <p style="font-size: 0.8rem; margin-bottom: 8px;">Responsible for Surveyor Mode graph creation, managing Room Database schemas (NodeEntity/EdgeEntity), and testing map scaling.</p>
+          <a href="https://github.com/rizwanhanda/navix" target="_blank" class="member-gh">@harjot →</a>
+        </div>
+        <div class="card content-card" style="padding: 18px;">
+          <div class="team-name">Ravinder</div>
+          <div class="team-role">Pathfinding & Integration QA</div>
+          <div class="team-roll">Roll: 1024031133</div>
+          <p style="font-size: 0.8rem; margin-bottom: 8px;">Focused on integrating Dijkstra's algorithm for shortest-path routing, edge-weight validation, and extensive PDR field-testing.</p>
+          <a href="https://github.com/rizwanhanda/navix" target="_blank" class="member-gh">@ravinder →</a>
+        </div>
+        <div class="card content-card" style="padding: 18px;">
+          <div class="team-name">Pooja</div>
+          <div class="team-role">UI/UX & Documentation</div>
+          <div class="team-roll">Roll: 1024031126</div>
+          <p style="font-size: 0.8rem; margin-bottom: 8px;">Handled the application's user journey design and generated comprehensive UML/Sequence diagrams defining system state flows.</p>
+          <a href="https://github.com/rizwanhanda/navix" target="_blank" class="member-gh">@pooja →</a>
         </div>
       </div>
     </section>
@@ -266,13 +356,12 @@
           <div class="viewer-meta">
             <strong id="docViewerTitle" style="color: #fff; font-size: 1.1rem; font-family: 'Inter', sans-serif;">Loading...</strong>
             <span class="version-badge" id="docViewerVersion">v--</span>
-            <span class="tag author-tag">Authors: Rizwan, Member 2, Member 3, Member 4</span>
+            <span class="tag author-tag">Authors: Rizwan, Harjot, Ravinder, Pooja</span>
           </div>
           <span id="docViewerDate" style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Date: --</span>
         </div>
 
         <div class="iframe-container">
-          <!-- Default local fallback in case backend is asleep -->
           <iframe id="docViewer" src="assets/docs/Indoor_Pulse_PDF.pdf"></iframe>
         </div>
 
@@ -358,11 +447,11 @@
         </div>
         <div class="form-group">
           <label>Deliverable Title</label>
-          <input type="text" id="docTitle" class="form-control" required placeholder="e.g., Planning Presentation v2">
+          <input type="text" id="docTitle" class="form-control" required placeholder="e.g., Use Case Diagrams">
         </div>
         <div class="form-group">
           <label>Version Tag</label>
-          <input type="text" id="docVersion" class="form-control" required placeholder="e.g., v1.1.0">
+          <input type="text" id="docVersion" class="form-control" required placeholder="e.g., v1.0.0">
         </div>
         <div class="form-group">
           <label>Change Summary</label>
@@ -465,7 +554,6 @@
       const modal = document.getElementById('adminModal');
       if (show) {
         modal.style.display = 'flex';
-        // Small delay ensures CSS transition triggers
         setTimeout(() => modal.classList.add('show'), 10); 
       } else {
         modal.classList.remove('show');
@@ -520,7 +608,6 @@
       document.getElementById('pdfOpenLink').href = item.file_url;
       document.getElementById('pdfDownloadLink').href = item.file_url;
       
-      // Scroll up to the viewer smoothly
       document.getElementById('presentation').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -533,7 +620,6 @@
           const tbody = document.getElementById('version-archive-body');
           tbody.innerHTML = '';
           
-          // Populate the history table
           globalRecords.forEach((item, index) => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -548,7 +634,6 @@
             tbody.appendChild(tr);
           });
 
-          // Automatically load the newest record into the viewer on page load
           loadIntoViewer(0);
         } else {
           document.getElementById('version-archive-body').innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px;">No presentations uploaded yet.</td></tr>`;
