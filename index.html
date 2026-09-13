@@ -105,7 +105,8 @@
     .card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: 0 12px 30px -10px var(--accent-glow); }
 
     .team-name { font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
-    .team-role { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px; font-family: var(--font-mono); }
+    .team-role { font-size: 0.82rem; color: #a5b4fc; margin-bottom: 4px; font-weight: 500;}
+    .team-roll { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 14px; font-family: var(--font-mono); }
     .member-gh { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--cyan-accent); text-decoration: none; font-weight: 500; }
     .member-gh:hover { text-decoration: underline; }
 
@@ -113,6 +114,7 @@
       font-size: 0.72rem; font-family: var(--font-mono); background: rgba(99, 102, 241, 0.12);
       color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.25); padding: 2px 8px; border-radius: 6px;
     }
+    .author-tag { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.25); margin-left: 12px;}
 
     /* Presentation Viewer */
     .viewer-container {
@@ -120,12 +122,13 @@
       border: 1px solid var(--border); border-radius: var(--radius);
       overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
       display: flex; flex-direction: column;
+      scroll-margin-top: 80px; 
     }
     .viewer-container:fullscreen { width: 100vw; height: 100vh; border-radius: 0; border: none; background: #07090e; }
     .viewer-container:fullscreen .iframe-container { flex: 1; height: auto; }
-    .viewer-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: rgba(13, 18, 30, 0.85); border-bottom: 1px solid var(--border); }
-    .viewer-meta { font-family: var(--font-mono); font-size: 0.82rem; color: #cbd5e1; display: flex; align-items: center; gap: 12px; }
-    .version-badge { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #6ee7b7; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; }
+    .viewer-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: rgba(13, 18, 30, 0.85); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px;}
+    .viewer-meta { font-family: var(--font-mono); font-size: 0.82rem; color: #cbd5e1; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;}
+    .version-badge { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #6ee7b7; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-family: var(--font-mono); }
     .iframe-container { height: 620px; width: 100%; background: #07090e; }
     .iframe-container iframe { width: 100%; height: 100%; border: none; }
     .viewer-actions { padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(13, 18, 30, 0.85); border-top: 1px solid var(--border); font-size: 0.82rem; flex-wrap: wrap; gap: 12px; }
@@ -148,12 +151,20 @@
     .commit-hash { font-family: var(--font-mono); font-size: 0.78rem; background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); padding: 2px 6px; border-radius: 4px; color: #a5b4fc; text-decoration: none; }
     .commit-hash:hover { text-decoration: underline; color: #fff; }
 
-    /* Admin Modal */
-    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center; }
-    .modal-card { background: #0d121e; border: 1px solid var(--border-hover); border-radius: var(--radius); width: 100%; max-width: 520px; padding: 24px; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px; }
-    .form-control { width: 100%; padding: 8px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; color: #fff; font-size: 0.85rem; }
+    /* Polished Admin Modal */
+    .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); z-index: 100; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;}
+    .modal-backdrop.show { display: flex; opacity: 1; }
+    .modal-card { background: #0b0f19; border: 1px solid rgba(99, 102, 241, 0.3); border-radius: var(--radius); width: 100%; max-width: 480px; padding: 28px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8); transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    .modal-backdrop.show .modal-card { transform: translateY(0); }
+    
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+    .modal-header h3 { font-size: 1.15rem; color: #fff; font-weight: 600; }
+    
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-control { width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: #fff; font-size: 0.9rem; transition: border-color 0.2s ease; }
+    .form-control:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.05); }
+    .form-control::placeholder { color: rgba(255, 255, 255, 0.2); }
   </style>
 </head>
 <body>
@@ -164,14 +175,14 @@
     <div class="container header-inner">
       <div class="brand">
         <span class="title-gradient">IndoorPulse</span>
-        <span class="status-indicator"><span class="status-dot"></span>Planning v1.0.0</span>
+        <span class="status-indicator"><span class="status-dot"></span>System Active</span>
       </div>
       <nav class="nav-links">
         <a href="#team">Team</a>
         <a href="#overview">Architecture</a>
-        <a href="#presentation">Presentation v1</a>
-        <a href="#version-archive">Version Archive</a>
-        <a href="#changelog">Commit History</a>
+        <a href="#presentation">Deliverables</a>
+        <a href="#version-archive">Archive</a>
+        <a href="#changelog">Commits</a>
         <button onclick="toggleAdminModal(true)" class="btn-action btn-action-primary">Admin Upload ↗</button>
       </nav>
     </div>
@@ -187,27 +198,31 @@
     <!-- Team Members Section -->
     <section id="team">
       <div class="section-header">
-        <h2 class="section-title">Contributors</h2>
+        <h2 class="section-title">Project Team & Assigned Roles</h2>
       </div>
       <div class="grid-4">
         <div class="card">
-          <div class="team-name">Rizwan</div>
-          <div class="team-role">Roll: 1024031189</div>
+          <div class="team-name">Rizwan Handa</div>
+          <div class="team-role">Project Lead & Cloud Arch.</div>
+          <div class="team-roll">Roll: 1024031189</div>
           <a href="https://github.com/rizwanhanda" target="_blank" class="member-gh">@rizwanhanda →</a>
         </div>
         <div class="card">
           <div class="team-name">Member Two</div>
-          <div class="team-role">Roll No: Pending</div>
+          <div class="team-role">Sensor Fusion (PDR)</div>
+          <div class="team-roll">Roll: Pending</div>
           <a href="https://github.com/rizwanhanda/navix" target="_blank" class="member-gh">@member2 →</a>
         </div>
         <div class="card">
           <div class="team-name">Member Three</div>
-          <div class="team-role">Roll No: Pending</div>
+          <div class="team-role">AR Rendering Engine</div>
+          <div class="team-roll">Roll: Pending</div>
           <a href="https://github.com/rizwanhanda/navix" target="_blank" class="member-gh">@member3 →</a>
         </div>
         <div class="card">
           <div class="team-name">Member Four</div>
-          <div class="team-role">Roll No: Pending</div>
+          <div class="team-role">Frontend / UI Integration</div>
+          <div class="team-roll">Roll: Pending</div>
           <a href="https://github.com/rizwanhanda/navix" target="_blank" class="member-gh">@member4 →</a>
         </div>
       </div>
@@ -230,9 +245,9 @@
         </div>
         <div class="card">
           <h3 style="font-size: 1rem; color: #fff; margin-bottom: 8px;">3-Tier Cloud & Storage Architecture</h3>
-          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">Decoupled architecture using GitHub Pages static frontend, PythonAnywhere Flask WSGI compute, SQLite3 metadata store, and Backblaze B2 S3 bucket storage.</p>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">Decoupled architecture using GitHub Pages static frontend, AWS EC2 Flask compute server, SQLite3 metadata store, and Backblaze B2 Object Storage.</p>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <span class="tag">Flask WSGI</span>
+            <span class="tag">AWS EC2 (Flask)</span>
             <span class="tag">Backblaze B2 (S3)</span>
             <span class="tag">SQLite3</span>
           </div>
@@ -243,19 +258,21 @@
     <!-- Embedded Presentation Viewer -->
     <section id="presentation">
       <div class="section-header">
-        <h2 class="section-title">Planning Presentation Deliverable</h2>
+        <h2 class="section-title">Active Deliverable Viewer</h2>
       </div>
 
       <div class="viewer-container" id="presentationViewer">
         <div class="viewer-header">
           <div class="viewer-meta">
-            <span id="docViewerTitle">Planning Presentation v1</span>
-            <span class="version-badge" id="docViewerVersion">v1.0.0</span>
+            <strong id="docViewerTitle" style="color: #fff; font-size: 1.1rem; font-family: 'Inter', sans-serif;">Loading...</strong>
+            <span class="version-badge" id="docViewerVersion">v--</span>
+            <span class="tag author-tag">Authors: Rizwan, Member 2, Member 3, Member 4</span>
           </div>
-          <span style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Deliverable: Planning Presentation</span>
+          <span id="docViewerDate" style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Date: --</span>
         </div>
 
         <div class="iframe-container">
+          <!-- Default local fallback in case backend is asleep -->
           <iframe id="docViewer" src="assets/docs/Indoor_Pulse_PDF.pdf"></iframe>
         </div>
 
@@ -265,11 +282,10 @@
           </span>
           <div class="action-group">
             <button onclick="toggleBrowserFullscreen()" class="btn-action btn-action-primary" id="fullscreenToggleBtn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
               <span>Maximize Viewer</span>
             </button>
             <a id="pdfOpenLink" href="assets/docs/Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action"><span>Open in New Tab ↗</span></a>
-            <a id="pdfDownloadLink" href="assets/docs/Indoor_Pulse_PDF.pdf" download="Indoor_Pulse_PDF.pdf" class="btn-action"><span>Download PDF ↓</span></a>
+            <a id="pdfDownloadLink" href="assets/docs/Indoor_Pulse_PDF.pdf" download class="btn-action"><span>Download PDF ↓</span></a>
           </div>
         </div>
       </div>
@@ -293,11 +309,7 @@
           </thead>
           <tbody id="version-archive-body">
             <tr>
-              <td><span class="version-badge">v1.0.0</span></td>
-              <td>Planning Presentation v1</td>
-              <td>August 17, 2026</td>
-              <td>Initial baseline planning architecture, PDR models, and Gantt roadmap.</td>
-              <td><a href="assets/docs/Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action">View Asset ↗</a></td>
+              <td colspan="5" style="text-align: center; padding: 20px;">Connecting to AWS EC2 Database...</td>
             </tr>
           </tbody>
         </table>
@@ -332,17 +344,17 @@
 
   </main>
 
-  <!-- Admin Upload Modal (For Live Evaluation Demo) -->
+  <!-- Polished Admin Upload Modal -->
   <div class="modal-backdrop" id="adminModal">
     <div class="modal-card">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="font-size: 1.1rem; color: #fff;">Publish Deliverable to Storage</h3>
-        <button onclick="toggleAdminModal(false)" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;">&times;</button>
+      <div class="modal-header">
+        <h3>Secure Storage Gateway</h3>
+        <button onclick="toggleAdminModal(false)" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.4rem; padding: 0;">&times;</button>
       </div>
       <form id="adminUploadForm">
         <div class="form-group">
-          <label>Admin Password</label>
-          <input type="password" id="adminPassword" class="form-control" required placeholder="indoorpulse2026">
+          <label>Authorization Key</label>
+          <input type="password" id="adminPassword" class="form-control" required placeholder="Enter administrative password">
         </div>
         <div class="form-group">
           <label>Deliverable Title</label>
@@ -358,17 +370,17 @@
         </div>
         <div class="form-group">
           <label>Attach Artifact (PDF)</label>
-          <input type="file" id="docFile" class="form-control" accept="application/pdf" required>
+          <input type="file" id="docFile" class="form-control" accept="application/pdf" required style="padding: 7px 10px;">
         </div>
-        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px;">
+        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
           <button type="button" onclick="toggleAdminModal(false)" class="btn-action">Cancel</button>
-          <button type="submit" class="btn-action btn-action-primary" id="uploadSubmitBtn">Publish Version</button>
+          <button type="submit" class="btn-action btn-action-primary" id="uploadSubmitBtn">Transmit Payload</button>
         </div>
       </form>
     </div>
   </div>
 
- <script>
+  <script>
     /* Background Canvas Animation */
     (function initBackground() {
       const canvas = document.getElementById('bg-canvas');
@@ -448,9 +460,17 @@
       if (!document.fullscreenElement && btnSpan) btnSpan.innerText = 'Maximize Viewer';
     });
 
-    /* Admin Modal Visibility */
+    /* Polished Admin Modal Visibility */
     function toggleAdminModal(show) {
-      document.getElementById('adminModal').style.display = show ? 'flex' : 'none';
+      const modal = document.getElementById('adminModal');
+      if (show) {
+        modal.style.display = 'flex';
+        // Small delay ensures CSS transition triggers
+        setTimeout(() => modal.classList.add('show'), 10); 
+      } else {
+        modal.classList.remove('show');
+        setTimeout(() => modal.style.display = 'none', 300);
+      }
     }
 
     /* Live GitHub Commit Fetcher */
@@ -485,40 +505,57 @@
 
     /* Backend Synchronization (AWS EC2 + Backblaze Integration) */
     const API_BASE_URL = "https://indoorpulse.duckdns.org";
+    let globalRecords = [];
+
+    // Helper function to dynamically update the viewer UI
+    function loadIntoViewer(recordIndex) {
+      const item = globalRecords[recordIndex];
+      if(!item) return;
+      
+      document.getElementById('docViewerTitle').innerText = item.title;
+      document.getElementById('docViewerVersion').innerText = item.version;
+      document.getElementById('docViewerDate').innerText = `Date: ${item.presentation_date}`;
+      document.getElementById('docViewer').src = item.file_url;
+      document.getElementById('docSourceText').innerText = item.filename || "B2 Storage Object";
+      document.getElementById('pdfOpenLink').href = item.file_url;
+      document.getElementById('pdfDownloadLink').href = item.file_url;
+      
+      // Scroll up to the viewer smoothly
+      document.getElementById('presentation').scrollIntoView({ behavior: 'smooth' });
+    }
 
     async function fetchServerRecords() {
       try {
         const res = await fetch(`${API_BASE_URL}/api/presentations`);
-        const data = await res.json();
+        globalRecords = await res.json();
         
-        if (data && data.length > 0) {
+        if (globalRecords && globalRecords.length > 0) {
           const tbody = document.getElementById('version-archive-body');
           tbody.innerHTML = '';
           
           // Populate the history table
-          data.forEach((item) => {
+          globalRecords.forEach((item, index) => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
               <td><span class="version-badge">${item.version}</span></td>
               <td>${item.title}</td>
               <td>${item.presentation_date}</td>
               <td>${item.change_summary}</td>
-              <td><a href="${item.file_url}" target="_blank" class="btn-action">View Asset ↗</a></td>
+              <td>
+                <button onclick="loadIntoViewer(${index})" class="btn-action btn-action-primary">View on Page ↗</button>
+              </td>
             `;
             tbody.appendChild(tr);
           });
 
-          // Dynamically update the main presentation viewer with the latest B2 upload
-          const latest = data[0];
-          document.getElementById('docViewerTitle').innerText = latest.title;
-          document.getElementById('docViewerVersion').innerText = latest.version;
-          document.getElementById('docViewer').src = latest.file_url;
-          document.getElementById('docSourceText').innerText = latest.filename || "B2 Storage Object";
-          document.getElementById('pdfOpenLink').href = latest.file_url;
-          document.getElementById('pdfDownloadLink').href = latest.file_url;
+          // Automatically load the newest record into the viewer on page load
+          loadIntoViewer(0);
+        } else {
+          document.getElementById('version-archive-body').innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px;">No presentations uploaded yet.</td></tr>`;
         }
       } catch (e) {
         console.log("Operating in local asset mode (no backend connection).");
+        document.getElementById('version-archive-body').innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: #ef4444;">Could not connect to AWS EC2 backend. Operating in fallback mode.</td></tr>`;
       }
     }
 
@@ -526,15 +563,15 @@
     document.getElementById('adminUploadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('uploadSubmitBtn');
-      btn.innerText = "Publishing to B2...";
+      btn.innerText = "Transmitting...";
       btn.disabled = true;
 
       const formData = new FormData();
+      formData.append('password', document.getElementById('adminPassword').value);
       formData.append('title', document.getElementById('docTitle').value);
       formData.append('version', document.getElementById('docVersion').value);
       formData.append('change_summary', document.getElementById('docSummary').value);
       
-      // Auto-generate today's date for the SQLite record
       const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
       formData.append('presentation_date', today);
       
@@ -548,14 +585,14 @@
           alert('Asset successfully published to Backblaze B2!');
           toggleAdminModal(false);
           document.getElementById('adminUploadForm').reset();
-          fetchServerRecords(); // Instantly refresh the table and viewer
+          fetchServerRecords(); 
         } else {
-          alert('Upload failed: ' + (result.error || 'Unknown error'));
+          alert('Upload failed: ' + (result.error || 'Unknown error. Check password.'));
         }
       } catch (err) {
         alert('Server unreachable: Ensure AWS EC2 backend is active.');
       } finally {
-        btn.innerText = "Publish Version";
+        btn.innerText = "Transmit Payload";
         btn.disabled = false;
       }
     });
