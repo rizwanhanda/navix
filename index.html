@@ -368,7 +368,7 @@
     </div>
   </div>
 
-  <script>
+ <script>
     /* Background Canvas Animation */
     (function initBackground() {
       const canvas = document.getElementById('bg-canvas');
@@ -483,32 +483,42 @@
       }
     }
 
-    /* Backend Synchronization (PythonAnywhere API Integration) */
-    const API_BASE_URL = "https://rizwanhanda.pythonanywhere.com";
+    /* Backend Synchronization (AWS EC2 + Backblaze Integration) */
+    const API_BASE_URL = "https://indoorpulse.duckdns.org";
 
     async function fetchServerRecords() {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/records`);
-        const json = await res.json();
-        if (json.status === 'success' && json.data.length > 0) {
+        const res = await fetch(`${API_BASE_URL}/api/presentations`);
+        const data = await res.json();
+        
+        if (data && data.length > 0) {
           const tbody = document.getElementById('version-archive-body');
           tbody.innerHTML = '';
           
-          json.data.forEach((item) => {
-            const targetUrl = (item.file_url && item.file_url.startsWith('http')) ? item.file_url : 'assets/docs/Indoor_Pulse_PDF.pdf';
+          // Populate the history table
+          data.forEach((item) => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
               <td><span class="version-badge">${item.version}</span></td>
               <td>${item.title}</td>
-              <td>${item.date}</td>
-              <td>${item.summary}</td>
-              <td><a href="${targetUrl}" target="_blank" class="btn-action">View Asset ↗</a></td>
+              <td>${item.presentation_date}</td>
+              <td>${item.change_summary}</td>
+              <td><a href="${item.file_url}" target="_blank" class="btn-action">View Asset ↗</a></td>
             `;
             tbody.appendChild(tr);
           });
+
+          // Dynamically update the main presentation viewer with the latest B2 upload
+          const latest = data[0];
+          document.getElementById('docViewerTitle').innerText = latest.title;
+          document.getElementById('docViewerVersion').innerText = latest.version;
+          document.getElementById('docViewer').src = latest.file_url;
+          document.getElementById('docSourceText').innerText = latest.filename || "B2 Storage Object";
+          document.getElementById('pdfOpenLink').href = latest.file_url;
+          document.getElementById('pdfDownloadLink').href = latest.file_url;
         }
       } catch (e) {
-        console.log("Operating in local asset mode.");
+        console.log("Operating in local asset mode (no backend connection).");
       }
     }
 
@@ -516,28 +526,34 @@
     document.getElementById('adminUploadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('uploadSubmitBtn');
-      btn.innerText = "Publishing Version...";
+      btn.innerText = "Publishing to B2...";
       btn.disabled = true;
 
       const formData = new FormData();
-      formData.append('password', document.getElementById('adminPassword').value);
       formData.append('title', document.getElementById('docTitle').value);
       formData.append('version', document.getElementById('docVersion').value);
       formData.append('change_summary', document.getElementById('docSummary').value);
+      
+      // Auto-generate today's date for the SQLite record
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      formData.append('presentation_date', today);
+      
       formData.append('file', document.getElementById('docFile').files[0]);
 
       try {
-        const res = await fetch(`${API_BASE_URL}/api/admin/publish`, { method: 'POST', body: formData });
+        const res = await fetch(`${API_BASE_URL}/api/upload`, { method: 'POST', body: formData });
         const result = await res.json();
-        if (res.ok && result.status === 'success') {
-          alert('Asset successfully published!');
+        
+        if (res.ok && result.success) {
+          alert('Asset successfully published to Backblaze B2!');
           toggleAdminModal(false);
-          fetchServerRecords();
+          document.getElementById('adminUploadForm').reset();
+          fetchServerRecords(); // Instantly refresh the table and viewer
         } else {
-          alert('Upload failed: ' + (result.message || 'Check password or version uniqueness'));
+          alert('Upload failed: ' + (result.error || 'Unknown error'));
         }
       } catch (err) {
-        alert('Server unreachable: Ensure PythonAnywhere backend is active.');
+        alert('Server unreachable: Ensure AWS EC2 backend is active.');
       } finally {
         btn.innerText = "Publish Version";
         btn.disabled = false;
