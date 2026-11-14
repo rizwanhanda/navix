@@ -75,13 +75,13 @@
     .nav-links a { font-size: 0.84rem; color: var(--text-muted); text-decoration: none; font-weight: 500; transition: all 0.2s ease; }
     .nav-links a:hover { color: var(--text); }
 
-    .summary-block { padding: 52px 0 28px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
+    .summary-block { padding: 48px 0 28px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
     .summary-title {
       font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 10px;
       background: linear-gradient(135deg, #ffffff 20%, #a5b4fc 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .summary-subtitle { font-size: 0.98rem; color: var(--text-muted); max-width: 860px; }
+    .summary-subtitle { font-size: 0.98rem; color: var(--text-muted); max-width: 880px; }
 
     section { margin-bottom: 52px; scroll-margin-top: 84px; }
     .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
@@ -125,6 +125,24 @@
     .content-card li { margin-bottom: 8px; }
     .content-card strong { color: #e2e8f0; font-weight: 600; }
 
+    /* Presentation Viewer */
+    .viewer-container {
+      background: var(--bg-card); backdrop-filter: blur(16px);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      display: flex; flex-direction: column;
+      scroll-margin-top: 80px; 
+    }
+    .viewer-container:fullscreen { width: 100vw; height: 100vh; border-radius: 0; border: none; background: #07090e; }
+    .viewer-container:fullscreen .iframe-container { flex: 1; height: auto; }
+    .viewer-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: rgba(13, 18, 30, 0.85); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px;}
+    .viewer-meta { font-family: var(--font-mono); font-size: 0.82rem; color: #cbd5e1; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;}
+    .version-badge { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #6ee7b7; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-family: var(--font-mono); }
+    .iframe-container { height: 600px; width: 100%; background: #07090e; }
+    .iframe-container iframe { width: 100%; height: 100%; border: none; }
+    .viewer-actions { padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(13, 18, 30, 0.85); border-top: 1px solid var(--border); font-size: 0.82rem; flex-wrap: wrap; gap: 12px; }
+    .action-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
     /* Interactive Web Console (A* Map Explorer) */
     .console-shell {
       background: var(--bg-card);
@@ -154,7 +172,7 @@
     }
     .console-body {
       display: grid;
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 335px 1fr;
       min-height: 580px;
     }
     @media (max-width: 880px) {
@@ -222,12 +240,12 @@
     .telemetry-row {
       display: flex;
       justify-content: space-between;
-      padding: 4px 0;
+      padding: 4.5px 0;
       border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
     }
     .telemetry-row:last-child { border-bottom: none; }
     .route-steps-list {
-      max-height: 165px;
+      max-height: 175px;
       overflow-y: auto;
       font-size: 0.78rem;
       color: #cbd5e1;
@@ -245,9 +263,7 @@
       transition: all 0.2s ease;
       cursor: pointer;
     }
-    .route-step-item:hover {
-      background: rgba(255, 255, 255, 0.07);
-    }
+    .route-step-item:hover { background: rgba(255, 255, 255, 0.07); }
     .route-step-item.portal {
       border-left-color: var(--warning);
       background: rgba(245, 158, 11, 0.08);
@@ -258,6 +274,8 @@
       border-left-color: var(--cyan-accent);
       color: #fff;
     }
+
+    /* Right Interactive Canvas Stage — Docked Non-Overlapping Header & Footer */
     .canvas-stage {
       position: relative;
       background: radial-gradient(circle at 50% 45%, #111a2e 0%, #07090e 100%);
@@ -267,51 +285,67 @@
       overflow: hidden;
       user-select: none;
     }
+    .canvas-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: rgba(7, 9, 14, 0.92);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+      z-index: 6;
+    }
+    .canvas-statusbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 16px;
+      background: rgba(13, 18, 30, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #cbd5e1;
+      flex-wrap: wrap;
+      gap: 8px;
+      z-index: 6;
+    }
+    .canvas-statusbar.sos-active {
+      background: rgba(239, 68, 68, 0.18);
+      border-bottom-color: rgba(239, 68, 68, 0.45);
+      color: #fecaca;
+    }
+    .canvas-viewport {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      min-height: 460px;
+    }
     #mapExplorerCanvas {
       width: 100%;
-      height: 580px;
+      height: 460px;
       display: block;
       cursor: grab;
     }
-    .canvas-hud {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      right: 14px;
+    .canvas-footer {
       display: flex;
       justify-content: space-between;
-      pointer-events: none;
-      flex-wrap: wrap;
-      gap: 8px;
-      z-index: 5;
-    }
-    .hud-pill {
-      pointer-events: auto;
-      background: rgba(7, 9, 14, 0.9);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: var(--radius-sm);
-      padding: 6px 12px;
+      align-items: center;
+      padding: 9px 16px;
+      background: rgba(7, 9, 14, 0.92);
+      border-top: 1px solid var(--border);
       font-family: var(--font-mono);
-      font-size: 0.73rem;
+      font-size: 0.72rem;
       color: #cbd5e1;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
-    }
-    .canvas-legend {
-      position: absolute;
-      bottom: 14px;
-      left: 14px;
-      right: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      pointer-events: none;
       flex-wrap: wrap;
-      gap: 8px;
-      z-index: 5;
+      gap: 12px;
+      z-index: 6;
+    }
+    .legend-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
     }
     .legend-dot {
       display: inline-block;
@@ -323,10 +357,10 @@
 
     /* Click Mode Pill Toggle */
     .mode-chip {
-      padding: 2px 8px;
+      padding: 3px 9px;
       border-radius: 4px;
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.71rem;
       cursor: pointer;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.04);
@@ -350,7 +384,7 @@
     .transit-modal-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(7, 9, 14, 0.78);
+      background: rgba(7, 9, 14, 0.8);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
@@ -408,42 +442,6 @@
       transition: width 0.06s linear;
     }
 
-    /* SOS Banner Toast */
-    .sos-toast {
-      position: absolute;
-      top: 58px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(239, 68, 68, 0.22);
-      border: 1px solid #ef4444;
-      color: #fecaca;
-      font-family: var(--font-mono);
-      font-size: 0.74rem;
-      padding: 6px 16px;
-      border-radius: 999px;
-      z-index: 15;
-      display: none;
-      box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
-    }
-
-    /* Presentation Viewer */
-    .viewer-container {
-      background: var(--bg-card); backdrop-filter: blur(16px);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-      display: flex; flex-direction: column;
-      scroll-margin-top: 80px; 
-    }
-    .viewer-container:fullscreen { width: 100vw; height: 100vh; border-radius: 0; border: none; background: #07090e; }
-    .viewer-container:fullscreen .iframe-container { flex: 1; height: auto; }
-    .viewer-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: rgba(13, 18, 30, 0.85); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px;}
-    .viewer-meta { font-family: var(--font-mono); font-size: 0.82rem; color: #cbd5e1; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;}
-    .version-badge { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #6ee7b7; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-family: var(--font-mono); }
-    .iframe-container { height: 620px; width: 100%; background: #07090e; }
-    .iframe-container iframe { width: 100%; height: 100%; border: none; }
-    .viewer-actions { padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(13, 18, 30, 0.85); border-top: 1px solid var(--border); font-size: 0.82rem; flex-wrap: wrap; gap: 12px; }
-    .action-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-
     .btn-action {
       display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-mono); font-size: 0.75rem;
       padding: 6px 12px; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.04);
@@ -490,10 +488,11 @@
         <span class="status-indicator"><span class="status-dot"></span>System Active</span>
       </div>
       <nav class="nav-links">
+        <a href="#presentation">Deliverables</a>
         <a href="#web-console" style="color: #38bdf8; font-weight: 600;">Web Map Console</a>
         <a href="#problem">Vision</a>
         <a href="#overview">Architecture</a>
-        <a href="#presentation">Deliverables</a>
+        <a href="#status">Roadmap</a>
         <a href="#changelog">Commits</a>
         <button onclick="toggleAdminModal(true)" class="btn-action btn-action-primary">Admin Upload ↗</button>
       </nav>
@@ -504,10 +503,49 @@
 
     <div class="summary-block">
       <h1 class="summary-title">IndoorPulse: Infrastructure-Free Indoor Positioning</h1>
-      <p class="summary-subtitle">Offline-first Android indoor navigation powered by native IMU Pedestrian Dead Reckoning (PDR), a 400-Particle Monte Carlo Localization Filter, ARCore VIO heading stabilization, multi-floor 3D Euclidean A* pathfinding, and a Cloud-Synced Web Map Console.</p>
+      <p class="summary-subtitle">Offline-first Android indoor navigation powered by native IMU Pedestrian Dead Reckoning (PDR), a 400-Particle Monte Carlo Localization Filter, multi-floor 3D Euclidean A* pathfinding, and a Cloud-Synced Web Map Console.</p>
     </div>
 
-    <!-- INTERACTIVE WEB APPLICATION: MULTI-FLOOR GRAPH & A* ROUTE CONSOLE -->
+    <!-- 1. EMBEDDED PRESENTATION VIEWER (Placed First so Async PDF Loads Never Hijack Scroll) -->
+    <section id="presentation">
+      <div class="section-header">
+        <h2 class="section-title">Active Deliverable & Presentation Viewer</h2>
+        <div class="action-group">
+          <a href="assets/docs/Gantt%20Chart.png" target="_blank" class="btn-action">Gantt Chart ↗</a>
+          <a href="assets/docs/Milestone%20Plan.pdf" target="_blank" class="btn-action">Milestone Plan ↗</a>
+        </div>
+      </div>
+
+      <div class="viewer-container" id="presentationViewer">
+        <div class="viewer-header">
+          <div class="viewer-meta">
+            <strong id="docViewerTitle" style="color: #fff; font-size: 1.05rem; font-family: 'Inter', sans-serif;">IndoorPulse Planning & Architecture Deck</strong>
+            <span class="version-badge" id="docViewerVersion">v1.0</span>
+            <span class="tag author-tag">Authors: Rizwan, Harjot, Ravinder, Pooja</span>
+          </div>
+          <span id="docViewerDate" style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Date: Semester Odd 2026</span>
+        </div>
+
+        <div class="iframe-container">
+          <iframe id="docViewer" src="assets/docs/Indoor_Pulse_PDF.pdf"></iframe>
+        </div>
+
+        <div class="viewer-actions">
+          <span style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.74rem;">
+            Source: <code id="docSourceText" style="color: #a5b4fc;">assets/docs/Indoor_Pulse_PDF.pdf</code>
+          </span>
+          <div class="action-group">
+            <button onclick="toggleBrowserFullscreen()" class="btn-action btn-action-primary" id="fullscreenToggleBtn">
+              <span>Maximize Viewer</span>
+            </button>
+            <a id="pdfOpenLink" href="assets/docs/Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action"><span>Open in New Tab ↗</span></a>
+            <a id="pdfDownloadLink" href="assets/docs/Indoor_Pulse_PDF.pdf" download class="btn-action"><span>Download PDF ↓</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. INTERACTIVE WEB APPLICATION: MULTI-FLOOR GRAPH & A* ROUTE CONSOLE -->
     <section id="web-console">
       <div class="section-header">
         <h2 class="section-title">Interactive Topological Map & 3D A* Route Simulator (Web Interface)</h2>
@@ -559,26 +597,23 @@
               <button onclick="triggerEmergencySos()" class="btn-action btn-action-danger" title="Evacuate from indoor room/current position to nearest Building Entry/Exit">🚨 SOS Nearest Exit</button>
             </div>
 
+            <!-- Pure Topological Graph Telemetry (Zero Unreliable Step/Distance Estimates) -->
             <div class="telemetry-box">
               <div class="telemetry-row">
                 <span style="color: var(--text-muted);">Routing Mode:</span>
-                <span id="metricMode" style="color: #a5b4fc; font-weight: 600;">3D A* Standard</span>
+                <span id="metricMode" style="color: #a5b4fc; font-weight: 600;">3D Euclidean A*</span>
               </div>
               <div class="telemetry-row">
-                <span style="color: var(--text-muted);">Total A* Path Cost:</span>
-                <span id="metricDistance" style="color: #10b981; font-weight: 600;">-- m</span>
+                <span style="color: var(--text-muted);">Topological Path:</span>
+                <span id="metricNodeHops" style="color: #10b981; font-weight: 600;">-- Nodes</span>
               </div>
               <div class="telemetry-row">
-                <span style="color: var(--text-muted);">Physical Walk Dist:</span>
-                <span id="metricWalkDist" style="color: #e2e8f0;">-- m</span>
+                <span style="color: var(--text-muted);">Floor Portals:</span>
+                <span id="metricTransitions" style="color: #fde68a;">0 Stairwell(s)</span>
               </div>
               <div class="telemetry-row">
-                <span style="color: var(--text-muted);">Est. PDR Steps (0.72m):</span>
-                <span id="metricSteps" style="color: #38bdf8;">-- steps</span>
-              </div>
-              <div class="telemetry-row">
-                <span style="color: var(--text-muted);">Floor Transitions:</span>
-                <span id="metricTransitions" style="color: #fde68a;">0 portal(s)</span>
+                <span style="color: var(--text-muted);">PDR State Machine:</span>
+                <span id="metricPdrState" style="color: #38bdf8;">Standby (Ready)</span>
               </div>
             </div>
 
@@ -588,67 +623,63 @@
             </div>
           </div>
 
-          <!-- Right Interactive Canvas Stage -->
+          <!-- Right Interactive Canvas Stage (Non-Overlapping Docked Bars) -->
           <div class="canvas-stage">
-            <div class="canvas-hud">
-              <div class="hud-pill">
+            <!-- Top Control Toolbar -->
+            <div class="canvas-toolbar">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.74rem;">
                 <span id="activeFloorIndicator" style="color: #38bdf8; font-weight: 600;">Floor L0</span>
-                <span>|</span>
-                <span>Click sets:</span>
-                <button id="clickModeStartBtn" class="mode-chip active-start" onclick="setCanvasClickMode('start')">● Start</button>
-                <button id="clickModeEndBtn" class="mode-chip" onclick="setCanvasClickMode('end')">◎ Target</button>
-                <span style="color: var(--text-muted); font-size: 0.68rem;">(or Shift / Right-Click = Target)</span>
+                <span style="color: var(--border);">|</span>
+                <span style="color: var(--text-muted);">Canvas Click Action:</span>
+                <button id="clickModeStartBtn" class="mode-chip active-start" onclick="setCanvasClickMode('start')">● Set Start</button>
+                <button id="clickModeEndBtn" class="mode-chip" onclick="setCanvasClickMode('end')">◎ Set Target</button>
               </div>
-              <div class="hud-pill">
-                <button onclick="adjustCanvasZoom(1.2)" class="btn-action" style="padding: 2px 8px;">+</button>
-                <button onclick="adjustCanvasZoom(0.8)" class="btn-action" style="padding: 2px 8px;">−</button>
-                <button onclick="fitMapToCanvas()" class="btn-action" style="padding: 2px 8px;">Fit Blueprint</button>
-              </div>
-            </div>
-
-            <!-- Hover Readout Banner -->
-            <div style="position: absolute; top: 54px; left: 14px; z-index: 5; pointer-events: none;">
-              <div class="hud-pill" style="padding: 4px 10px; font-size: 0.71rem; background: rgba(7, 9, 14, 0.78);" id="hoverNodeReadout">
-                Hover over any node to inspect coordinates • Click node on canvas to route
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <button onclick="adjustCanvasZoom(1.2)" class="btn-action" style="padding: 3px 9px;">+</button>
+                <button onclick="adjustCanvasZoom(0.8)" class="btn-action" style="padding: 3px 9px;">−</button>
+                <button onclick="fitMapToCanvas()" class="btn-action" style="padding: 3px 10px;">Fit Blueprint</button>
               </div>
             </div>
 
-            <!-- SOS Active Banner -->
-            <div class="sos-toast" id="sosBannerToast">
-              🚨 EMERGENCY SOS EVACUATION ACTIVE — ROUTING TO NEAREST BUILDING EXIT
+            <!-- Dedicated Status & SOS Readout Bar (Never Overlaps Canvas or Nodes!) -->
+            <div class="canvas-statusbar" id="canvasStatusBar">
+              <span id="hoverNodeReadout">Click any node on blueprint to set Origin • Shift+Click or Right-Click sets Destination</span>
+              <span id="sosStatusBadge" style="display: none; color: #fca5a5; font-weight: 600;">🚨 SOS EVACUATION ROUTE LOCKED TO NEAREST EXIT</span>
             </div>
 
-            <!-- Upgraded Modal Transit State Overlay -->
-            <div class="transit-modal-overlay" id="transitModalOverlay">
-              <div class="transit-card">
-                <span class="transit-badge">⚠ PROXIMITY TRANSIT STATE TRIGGERED</span>
-                <div class="transit-title" id="transitModalTitle">Vertical Portal: Floor L0 → Floor L1</div>
-                <div class="transit-desc" id="transitModalDesc">
-                  PDR step integration & 400-particle dispersion paused while traversing stairwell portal to prevent vertical heading drift.
+            <!-- Interactive Blueprint Viewport -->
+            <div class="canvas-viewport">
+              <canvas id="mapExplorerCanvas"></canvas>
+
+              <!-- Modal Transit State Overlay -->
+              <div class="transit-modal-overlay" id="transitModalOverlay">
+                <div class="transit-card">
+                  <span class="transit-badge">⚠ PROXIMITY TRANSIT STATE TRIGGERED</span>
+                  <div class="transit-title" id="transitModalTitle">Vertical Portal: Floor L0 → Floor L1</div>
+                  <div class="transit-desc" id="transitModalDesc">
+                    PDR step integration & 400-particle dispersion paused while traversing stairwell portal to prevent vertical heading drift.
+                  </div>
+                  <div class="transit-progress-track">
+                    <div class="transit-progress-bar" id="transitProgressBar"></div>
+                  </div>
+                  <button onclick="confirmTransitSwitchNow()" class="btn-action btn-action-primary" style="width: 100%;">
+                    Confirm Floor Arrival Now ↗
+                  </button>
                 </div>
-                <div class="transit-progress-track">
-                  <div class="transit-progress-bar" id="transitProgressBar"></div>
-                </div>
-                <button onclick="confirmTransitSwitchNow()" class="btn-action btn-action-primary" style="width: 100%;">
-                  Confirm Floor Arrival Now ↗
-                </button>
               </div>
             </div>
 
-            <canvas id="mapExplorerCanvas"></canvas>
-
-            <div class="canvas-legend">
-              <div class="hud-pill">
+            <!-- Bottom Docked Legend Bar -->
+            <div class="canvas-footer">
+              <div class="legend-group">
                 <span><span class="legend-dot" style="background: #10b981;"></span>Entry / Exit</span>
                 <span><span class="legend-dot" style="background: #38bdf8;"></span>Waypoint</span>
                 <span><span class="legend-dot" style="background: #f59e0b;"></span>Stairs Portal</span>
                 <span><span class="legend-dot" style="background: #a855f7;"></span>Room Door</span>
               </div>
-              <div class="hud-pill">
+              <div class="legend-group">
                 <span style="color: #6366f1;">━━ Active Floor A* Path</span>
-                <span style="color: #94a3b8;">┄┄ Ghost Floor Overlay</span>
-                <span>|</span>
-                <span id="scaleBarReadout" style="color: #38bdf8;">Scale: 1m Grid</span>
+                <span style="color: #94a3b8;">┄┄ Adjacent Floor Ghost</span>
               </div>
             </div>
           </div>
@@ -656,43 +687,68 @@
       </div>
     </section>
 
-    <!-- The Problem & Vision -->
+    <!-- 3. IMMUTABLE VERSION ARCHIVE TABLE -->
+    <section id="version-archive">
+      <div class="section-header">
+        <h2 class="section-title">Immutable Deliverable & Cloud Map Archive (AWS EC2 + Backblaze B2)</h2>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Version</th>
+              <th>Deliverable / Map Artifact Title</th>
+              <th>Date</th>
+              <th>Change Summary</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="version-archive-body">
+            <tr>
+              <td colspan="5" style="text-align: center; padding: 20px;">Connecting to AWS EC2 Database...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. THE PROBLEM & VISION -->
     <section id="problem">
       <div class="section-header">
         <h2 class="section-title">The Problem & Vision</h2>
       </div>
       <div class="card content-card">
         <h3>The Problem</h3>
-        <p>While GPS revolutionized outdoor navigation, satellite signals attenuate heavily inside multi-story concrete buildings. Navigating complex indoor spaces—such as university academic blocks, hospitals, underground transit hubs, and large commercial complexes—remains disorienting. Furthermore, most existing indoor positioning proposals require expensive Wi-Fi access point fingerprinting or Bluetooth Low Energy (BLE) beacon hardware, which fail during power outages and emergency evacuations.</p>
+        <p>While GPS revolutionized outdoor navigation, satellite signals attenuate heavily inside multi-story concrete buildings. Navigating complex indoor spaces—such as university academic blocks, hospitals, transit hubs, and large commercial complexes—remains disorienting. Furthermore, traditional indoor positioning systems rely on dense Wi-Fi access point fingerprinting or external BLE beacons that require costly installation and fail during power outages or emergency evacuations.</p>
         
         <h3>Intended Users</h3>
-        <p>Students, faculty, hospital visitors, campus newcomers, and emergency evacuees who need reliable, zero-infrastructure indoor wayfinding that operates 100% offline on standard Android smartphones.</p>
+        <p>Students, faculty, hospital visitors, campus newcomers, and emergency evacuees who need reliable, offline-first indoor routing that works immediately on standard Android smartphones without external hardware infrastructure.</p>
         
         <h3>Reason for Selection</h3>
-        <p>We selected this problem because achieving sub-2-meter indoor localization without external RF beacons is a classic Computer Science & Systems challenge—requiring real-time inertial signal processing, 400-particle Monte Carlo probabilistic filtering, and multi-floor 3D graph algorithms.</p>
+        <p>We selected this problem because building an offline-first indoor positioning engine from first principles combines real-time IMU signal processing, 400-particle Monte Carlo probabilistic state estimation, and 3D multi-floor graph routing into a practical, high-impact system.</p>
       </div>
     </section>
 
-    <!-- Our Solution & User Journey -->
+    <!-- 5. OUR SOLUTION & USER JOURNEY -->
     <section id="solution">
       <div class="section-header">
         <h2 class="section-title">Our Solution & User Journey</h2>
       </div>
       <div class="card content-card">
         <h3>Proposed Solution: IndoorPulse</h3>
-        <p>IndoorPulse is an infrastructure-free, offline-first Indoor Positioning System (IPS) built natively in Kotlin and Jetpack Compose, paired with a self-hosted AWS EC2 + Backblaze B2 Web Map Console. It requires <strong>zero Wi-Fi or Bluetooth beacons</strong>—relying purely on smartphone IMU sensors (Linear Accelerometer + Rotation Vector), a 400-particle Monte Carlo localization filter, ARCore Visual-Inertial Odometry (VIO) heading stabilization, and a 3D Euclidean A* multi-floor router.</p>
+        <p>IndoorPulse is an offline-first Indoor Positioning System (IPS) built natively in Kotlin and Jetpack Compose, paired with a self-hosted AWS EC2 + Backblaze B2 Web Map Console. The core engine operates with <strong>zero external beacon dependencies</strong>—using hardware IMU sensors (Linear Accelerometer + Rotation Vector), a 400-particle Monte Carlo localization filter constrained by topological corridor geometry, and a 3D Euclidean A* multi-floor router.</p>
         
         <h3>The Main User Journey</h3>
         <ul>
           <li><strong>1. Outdoor-to-Indoor Geofence Handshake:</strong> The Outdoor Dashboard monitors live GPS proximity against mapped building geofences (`centerLat`, `centerLng`, `geofenceRadius`) and automatically prompts indoor handoff upon arrival (with manual indoor/outdoor override support).</li>
-          <li><strong>2. Surveyor Mode & Portable JSON Packaging:</strong> A mapper walks the building, dropping typed topological nodes (`Building Entry`, `Waypoint`, `Stairs`, `Room Door`) and linking corridors or cross-floor `vertical_portal` edges with full undo/redo history and dynamic touch-snapping, then exports a sanitized, versioned `.json` map package.</li>
-          <li><strong>3. Multi-Floor 3D A* & Emergency SOS Routing:</strong> A user selects any destination across floors—or taps the 1-click <strong>SOS Emergency Exit</strong> button—and the 3D Euclidean A* engine calculates the optimal cross-floor trajectory while preventing floor-bleed.</li>
-          <li><strong>4. Live IMU Navigation & Stairwell Transit State UX:</strong> As the user walks, the Dual-Threshold Schmitt Trigger and 400-particle filter advance the gyro-locked navigation chevron along corridors. Entering a stairwell proximity radius automatically triggers the modal <strong>Transit State</strong> overlay, pausing PDR step integration until the floor transition completes.</li>
+          <li><strong>2. Surveyor Mode & Portable JSON Packaging:</strong> An administrator maps the building by placing typed topological nodes (`Building Entry`, `Waypoint`, `Stairs`, `Room Door`) and connecting corridors or cross-floor `vertical_portal` edges with full undo/redo history and dynamic touch-snapping, then exports a versioned `.json` map package.</li>
+          <li><strong>3. Multi-Floor 3D A* & Emergency SOS Routing:</strong> A user selects any destination across floors—or taps the 1-click <strong>SOS Nearest Exit</strong> button—and the 3D Euclidean A* engine calculates the optimal cross-floor trajectory while preventing floor-bleed.</li>
+          <li><strong>4. Live IMU Navigation & Stairwell Transit State UX:</strong> As the user walks, the Dual-Threshold Schmitt Trigger and 400-particle filter advance the gyro-locked navigation chevron along corridors. Entering a stairwell proximity radius automatically triggers the modal <strong>Transit State</strong> overlay, pausing PDR step integration during vertical floor transitions.</li>
         </ul>
       </div>
     </section>
 
-    <!-- Live Demonstration Plan -->
+    <!-- 6. LIVE DEMONSTRATION PLAN -->
     <section id="demo-plan">
       <div class="section-header">
         <h2 class="section-title">Live Demonstration Plan</h2>
@@ -708,7 +764,7 @@
       </div>
     </section>
 
-    <!-- Architecture Overview -->
+    <!-- 7. SYSTEM ARCHITECTURE OVERVIEW -->
     <section id="overview">
       <div class="section-header">
         <h2 class="section-title">System Integration & Architecture</h2>
@@ -717,9 +773,8 @@
         <div class="card content-card">
           <h3>On-Device Algorithmic Stack (Android Kotlin)</h3>
           <ul>
-            <li><strong>IMU Sensor Fusion (`KinematicPDR.kt`):</strong> Polls `TYPE_LINEAR_ACCELERATION` and `TYPE_ROTATION_VECTOR` via a Dual-Threshold Schmitt Trigger state machine and Fused Biomechanical stride estimator, eliminating stationary desk drift.</li>
-            <li><strong>400-Particle Monte Carlo Filter (`ParticleFilter.kt`):</strong> Probabilistic state estimation translating World Space headings into Map Space coordinates with corridor edge clamping and resampling.</li>
-            <li><strong>ARCore VIO Stabilization:</strong> Integrates ARCore camera pose tracking to clamp gyro heading drift over long corridors without external beacons.</li>
+            <li><strong>IMU Sensor Fusion (`KinematicPDR.kt`):</strong> Polls `TYPE_LINEAR_ACCELERATION` and `TYPE_ROTATION_VECTOR` via a Dual-Threshold Schmitt Trigger state machine and Fused Biomechanical stride model, eliminating stationary desk drift.</li>
+            <li><strong>400-Particle Monte Carlo Filter (`ParticleFilter.kt`):</strong> Probabilistic localization engine translating World Space headings into Map Space coordinates with corridor edge clamping and resampling.</li>
             <li><strong>3D Euclidean A* Router & Transit State:</strong> Replaces flat Dijkstra with multi-floor 3D A* heuristics (`dx, dy, dz`), strict Emergency SOS exit targeting, and proximity-based stairwell PDR pausing.</li>
           </ul>
         </div>
@@ -734,34 +789,33 @@
       </div>
     </section>
 
-    <!-- Project Status -->
+    <!-- 8. PROJECT STATUS &PHASE 2 EXTENSION ROADMAP -->
     <section id="status">
       <div class="section-header">
-        <h2 class="section-title">Project Status & Engineering Milestones</h2>
+        <h2 class="section-title">Project Status & Architectural Roadmap</h2>
       </div>
       <div class="grid-2">
         <div class="card content-card">
-          <h3>Completed & Deployed System Modules</h3>
+          <h3>Phase 1 Complete (Deployed Core System)</h3>
           <ul>
-            <li><strong>Infrastructure-Free IMU PDR + 400-Particle Filter:</strong> Complete step detection, stride estimation, and World-to-Map chirality translation with zero Wi-Fi/BLE hardware dependency.</li>
-            <li><strong>Multi-Floor 3D A* Routing & SOS Evacuation:</strong> Full cross-floor pathfinding across `vertical_portal` stairwells, proximity Transit State modal overlay, and 1-tap SOS routing to true building exits.</li>
+            <li><strong>Zero-Infrastructure IMU PDR + 400-Particle Filter:</strong> Full step detection, biomechanical stride model, corridor topology clamping, and World-to-Map chirality translation.</li>
+            <li><strong>Multi-Floor 3D A* Routing & SOS Evacuation:</strong> Cross-floor pathfinding across `vertical_portal` stairwells, proximity Transit State modal overlay, and 1-tap SOS routing to true building exits.</li>
             <li><strong>Surveyor Mode & Portable JSON Engine:</strong> Multi-floor node/edge placement, undo/redo stack, dynamic touch snapping, and versioned `.json` export/import with UUID translation.</li>
-            <li><strong>Outdoor Geofence Handshake & ARCore Mode:</strong> Live GPS distance tracking with automatic indoor entry prompts, manual exit overrides, and ARCore camera stabilization.</li>
             <li><strong>Web Map Console & AWS EC2 / Backblaze B2 Gateway:</strong> Browser-based 3D A* blueprint simulator and password-protected cloud artifact/map storage.</li>
           </ul>
         </div>
         <div class="card content-card">
-          <h3>Key Architectural Decisions & Future Scope</h3>
+          <h3>Phase 2 Planned Extensions (Modular Sensor Clamping)</h3>
           <ul>
-            <li><strong>Why Zero Wi-Fi/BLE Fingerprinting:</strong> RF fingerprinting requires pre-installed beacons, breaks when routers change, and fails during power outages—IndoorPulse guarantees 100% self-contained offline operation.</li>
-            <li><strong>Why 3D Euclidean A* Over Dijkstra:</strong> Standard Dijkstra caused cross-floor bleed; 3D A* with explicit `vertical_portal` penalty weights (`30m`) guarantees realistic stairwell routing.</li>
-            <li><strong>Future Extension — Barometric Auto-Floor Confirmation:</strong> Using smartphone pressure sensor deltas (`TYPE_PRESSURE`) to auto-dismiss the stairwell Transit State modal upon reaching the target floor.</li>
+            <li><strong>ARCore Visual-Inertial Odometry (VIO) Optical Clamping:</strong> Designed as an on-demand optical heading calibration hook for wide, featureless atriums without continuous camera battery drain.</li>
+            <li><strong>Opportunistic Wi-Fi / BLE RSSI Drift Anchors:</strong> Modular observation-update hooks in the Particle Filter to passively clamp cumulative IMU drift in buildings where RF beacons already exist.</li>
+            <li><strong>Barometric Auto-Floor Confirmation:</strong> Fusing smartphone pressure sensor deltas (`TYPE_PRESSURE`) to auto-confirm stairwell floor completion without manual confirmation.</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- Team Members Section -->
+    <!-- 9. TEAM MEMBERS SECTION -->
     <section id="team">
       <div class="section-header">
         <h2 class="section-title">Project Team Contributions</h2>
@@ -798,71 +852,7 @@
       </div>
     </section>
 
-    <!-- Embedded Presentation Viewer -->
-    <section id="presentation">
-      <div class="section-header">
-        <h2 class="section-title">Active Deliverable Viewer</h2>
-        <div class="action-group">
-          <a href="assets/docs/Gantt%20Chart.png" target="_blank" class="btn-action">Gantt Chart ↗</a>
-          <a href="assets/docs/Milestone%20Plan.pdf" target="_blank" class="btn-action">Milestone Plan ↗</a>
-        </div>
-      </div>
-
-      <div class="viewer-container" id="presentationViewer">
-        <div class="viewer-header">
-          <div class="viewer-meta">
-            <strong id="docViewerTitle" style="color: #fff; font-size: 1.1rem; font-family: 'Inter', sans-serif;">IndoorPulse Planning & Architecture Deck</strong>
-            <span class="version-badge" id="docViewerVersion">v1.0</span>
-            <span class="tag author-tag">Authors: Rizwan, Harjot, Ravinder, Pooja</span>
-          </div>
-          <span id="docViewerDate" style="font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);">Date: Semester Odd 2026</span>
-        </div>
-
-        <div class="iframe-container">
-          <iframe id="docViewer" src="assets/docs/Indoor_Pulse_PDF.pdf"></iframe>
-        </div>
-
-        <div class="viewer-actions">
-          <span style="font-family: var(--font-mono); color: var(--text-muted); font-size: 0.74rem;">
-            Source: <code id="docSourceText" style="color: #a5b4fc;">assets/docs/Indoor_Pulse_PDF.pdf</code>
-          </span>
-          <div class="action-group">
-            <button onclick="toggleBrowserFullscreen()" class="btn-action btn-action-primary" id="fullscreenToggleBtn">
-              <span>Maximize Viewer</span>
-            </button>
-            <a id="pdfOpenLink" href="assets/docs/Indoor_Pulse_PDF.pdf" target="_blank" class="btn-action"><span>Open in New Tab ↗</span></a>
-            <a id="pdfDownloadLink" href="assets/docs/Indoor_Pulse_PDF.pdf" download class="btn-action"><span>Download PDF ↓</span></a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Immutable Version Archive Table -->
-    <section id="version-archive">
-      <div class="section-header">
-        <h2 class="section-title">Immutable Deliverable & Cloud Map Archive (AWS EC2 + Backblaze B2)</h2>
-      </div>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Version</th>
-              <th>Deliverable / Map Artifact Title</th>
-              <th>Date</th>
-              <th>Change Summary</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="version-archive-body">
-            <tr>
-              <td colspan="5" style="text-align: center; padding: 20px;">Connecting to AWS EC2 Database...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Commit Changelog Table -->
+    <!-- 10. COMMIT CHANGELOG TABLE -->
     <section id="changelog">
       <div class="section-header">
         <h2 class="section-title">Repository Deployment & Commit History</h2>
@@ -1066,7 +1056,7 @@
     let currentFloor = 0;
     let activeRoute = [];
     let isSosMode = false;
-    let canvasClickMode = 'start'; // 'start' or 'end'
+    let canvasClickMode = 'start';
     let hoveredNode = null;
 
     let simState = {
@@ -1088,7 +1078,6 @@
     const mapCtx = mapCanvas.getContext('2d');
     let viewTransform = { scale: 28, offsetX: 0, offsetY: 0, isDragging: false, lastX: 0, lastY: 0 };
 
-    /* EXACT CSS-TO-CANVAS PIXEL SCALING (Fixes node click offset bug) */
     function getCanvasMouseCoords(e) {
       const rect = mapCanvas.getBoundingClientRect();
       const scaleX = mapCanvas.width / rect.width;
@@ -1102,7 +1091,7 @@
     function resizeMapCanvas() {
       const rect = mapCanvas.getBoundingClientRect();
       mapCanvas.width = Math.max(400, Math.floor(rect.width));
-      mapCanvas.height = Math.max(580, Math.floor(rect.height));
+      mapCanvas.height = Math.max(460, Math.floor(rect.height));
       fitMapToCanvas();
     }
     window.addEventListener('resize', resizeMapCanvas);
@@ -1130,7 +1119,6 @@
       return '#38bdf8';
     }
 
-    /* Find linked vertical_portal partner node if user clicks stacked stairs */
     function getPortalPartnerNode(nodeId) {
       for (const e of activeMap.edges) {
         if (e.edgeType === 'vertical_portal') {
@@ -1212,6 +1200,18 @@
       return [];
     }
 
+    function updateSosStatusBanner() {
+      const statusBar = document.getElementById('canvasStatusBar');
+      const sosBadge = document.getElementById('sosStatusBadge');
+      if (isSosMode) {
+        statusBar.classList.add('sos-active');
+        sosBadge.style.display = 'inline';
+      } else {
+        statusBar.classList.remove('sos-active');
+        sosBadge.style.display = 'none';
+      }
+    }
+
     function initMapConsoleUI() {
       document.getElementById('mapBuildingTitle').innerText = `Building: ${activeMap.building_name || 'Unnamed'}`;
       document.getElementById('mapSchemaVersion').innerText = `Schema v${activeMap.version || '1.0'}`;
@@ -1257,14 +1257,14 @@
 
       document.getElementById('activeFloorIndicator').innerText = `Floor L${currentFloor}`;
       isSosMode = false;
-      document.getElementById('sosBannerToast').style.display = 'none';
+      updateSosStatusBanner();
       computeAndRenderRoute();
       fitMapToCanvas();
     }
 
     function onRouteSelectionChange() {
       isSosMode = false;
-      document.getElementById('sosBannerToast').style.display = 'none';
+      updateSosStatusBanner();
       computeAndRenderRoute();
     }
 
@@ -1283,13 +1283,11 @@
       const endId = document.getElementById('endNodeSelect').value;
       activeRoute = runAStar3D(startId, endId);
 
-      let totalCostMeters = 0;
-      let physicalWalkMeters = 0;
       let portalCount = 0;
       const stepsContainer = document.getElementById('routeStepsList');
       stepsContainer.innerHTML = '';
 
-      document.getElementById('metricMode').innerText = isSosMode ? '🚨 SOS EVACUATION' : '3D A* Standard';
+      document.getElementById('metricMode').innerText = isSosMode ? '🚨 SOS EVACUATION' : '3D Euclidean A*';
       document.getElementById('metricMode').style.color = isSosMode ? '#ef4444' : '#a5b4fc';
 
       if (activeRoute.length > 0) {
@@ -1302,15 +1300,8 @@
               (e.fromNodeId === node.nodeId && e.toNodeId === nextId) ||
               (e.toNodeId === node.nodeId && e.fromNodeId === nextId)
             );
-            if (edgeInfo) {
-              const w = Number(edgeInfo.lengthMeters) || 0;
-              totalCostMeters += w;
-              if (edgeInfo.edgeType === 'vertical_portal') {
-                portalCount++;
-                physicalWalkMeters += 4.5;
-              } else {
-                physicalWalkMeters += w;
-              }
+            if (edgeInfo && edgeInfo.edgeType === 'vertical_portal') {
+              portalCount++;
             }
           }
 
@@ -1323,25 +1314,22 @@
           div.innerHTML = `${i + 1}. <strong>${node.label}</strong> (L${node.floorLevel})` +
             (edgeInfo
               ? (isPortalStep
-                  ? ` → <span>Stairwell Transition to L${nextNode ? nextNode.floorLevel : ''} (Cost: ${Number(edgeInfo.lengthMeters).toFixed(0)}m)</span>`
-                  : ` → <span>${Number(edgeInfo.lengthMeters).toFixed(1)}m [corridor]</span>`)
+                  ? ` → <span>[Stairwell Portal → Switch to L${nextNode ? nextNode.floorLevel : ''}]</span>`
+                  : ` → <span>[Corridor Segment]</span>`)
               : (isSosMode ? ' [SAFE EXIT REACHED]' : ' [Target Reached]'));
 
-          div.onclick = () => {
-            selectFloor(node.floorLevel);
-          };
+          div.onclick = () => selectFloor(node.floorLevel);
           stepsContainer.appendChild(div);
         }
 
-        document.getElementById('metricDistance').innerText = `${totalCostMeters.toFixed(2)} m`;
-        document.getElementById('metricWalkDist').innerText = `${physicalWalkMeters.toFixed(2)} m`;
-        document.getElementById('metricSteps').innerText = `${Math.max(1, Math.round(physicalWalkMeters / 0.72))} steps`;
-        document.getElementById('metricTransitions').innerText = `${portalCount} portal(s)`;
+        const hops = Math.max(0, activeRoute.length - 1);
+        document.getElementById('metricNodeHops').innerText = `${activeRoute.length} Nodes (${hops} Hops)`;
+        document.getElementById('metricTransitions').innerText = `${portalCount} Stairwell(s)`;
+        document.getElementById('metricPdrState').innerText = 'Standby (Ready)';
       } else {
-        document.getElementById('metricDistance').innerText = 'Unreachable';
-        document.getElementById('metricWalkDist').innerText = '0 m';
-        document.getElementById('metricSteps').innerText = '0 steps';
-        document.getElementById('metricTransitions').innerText = '0 portal(s)';
+        document.getElementById('metricNodeHops').innerText = 'Unreachable';
+        document.getElementById('metricTransitions').innerText = '0 Stairwell(s)';
+        document.getElementById('metricPdrState').innerText = 'No Valid Route';
         stepsContainer.innerHTML = `<div class="route-step-item">No connected path between selected nodes.</div>`;
       }
 
@@ -1404,7 +1392,7 @@
       document.getElementById('startNodeSelect').value = originId;
       document.getElementById('endNodeSelect').value = bestExitId;
       isSosMode = true;
-      document.getElementById('sosBannerToast').style.display = 'block';
+      updateSosStatusBanner();
 
       const originNode = getNodeById(originId);
       if (originNode) selectFloor(originNode.floorLevel);
@@ -1432,10 +1420,10 @@
 
       const spanX = Math.max(5, maxX - minX);
       const spanY = Math.max(5, maxY - minY);
-      const pad = 145;
+      const pad = 115;
       const scaleX = (mapCanvas.width - pad * 2) / spanX;
       const scaleY = (mapCanvas.height - pad * 2) / spanY;
-      viewTransform.scale = Math.max(14, Math.min(46, Math.min(scaleX, scaleY)));
+      viewTransform.scale = Math.max(14, Math.min(44, Math.min(scaleX, scaleY)));
 
       const centerX = (minX + maxX) / 2;
       const centerY = (minY + maxY) / 2;
@@ -1453,19 +1441,13 @@
       renderMapCanvas();
     }
 
-    /* UPGRADED ARCHITECTURAL BLUEPRINT RENDERER */
+    /* CLEAN ARCHITECTURAL BLUEPRINT RENDERER (No Cluttered Distance Badges or Overlapping Labels) */
     function renderMapCanvas() {
       const w = mapCanvas.width;
       const h = mapCanvas.height;
       mapCtx.clearRect(0, 0, w, h);
 
-      // Update Scale Readout in Bottom Pill
-      const scaleReadout = document.getElementById('scaleBarReadout');
-      if (scaleReadout) {
-        scaleReadout.innerText = `1m = ${Math.round(viewTransform.scale)}px`;
-      }
-
-      // 1. Subtle CAD Blueprint Grid (1m minor + 5m major lines)
+      // 1. Subtle CAD Blueprint Grid
       const gridStep = viewTransform.scale;
       if (gridStep >= 10) {
         const startX = ((viewTransform.offsetX % gridStep) + gridStep) % gridStep;
@@ -1584,7 +1566,7 @@
         mapCtx.restore();
       });
 
-      // 5. Draw Topological Graph Centerlines & Distance Callout Pills
+      // 5. Draw Topological Graph Centerlines (Clean — No Distance Badges)
       activeMap.edges.forEach(e => {
         const n1 = getNodeById(e.fromNodeId);
         const n2 = getNodeById(e.toNodeId);
@@ -1602,7 +1584,7 @@
           mapCtx.strokeStyle = 'rgba(245, 158, 11, 0.75)';
           mapCtx.lineWidth = 2;
         } else if (onCurrentFloor) {
-          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.42)';
+          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
           mapCtx.lineWidth = 2;
         } else {
           mapCtx.setLineDash([5, 5]);
@@ -1610,29 +1592,10 @@
           mapCtx.lineWidth = 1.5;
         }
         mapCtx.stroke();
-
-        if (onCurrentFloor && e.edgeType !== 'vertical_portal') {
-          const mx = (p1.x + p2.x) / 2;
-          const my = (p1.y + p2.y) / 2;
-          const distText = `${Number(e.lengthMeters).toFixed(1)}m`;
-          mapCtx.font = '500 10px "JetBrains Mono", monospace';
-          const tw = mapCtx.measureText(distText).width + 10;
-          mapCtx.fillStyle = 'rgba(7, 9, 14, 0.88)';
-          mapCtx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
-          mapCtx.lineWidth = 1;
-          mapCtx.beginPath();
-          mapCtx.roundRect(mx - tw / 2, my - 9, tw, 18, 9);
-          mapCtx.fill();
-          mapCtx.stroke();
-          mapCtx.fillStyle = '#94a3b8';
-          mapCtx.textAlign = 'center';
-          mapCtx.textBaseline = 'middle';
-          mapCtx.fillText(distText, mx, my);
-        }
         mapCtx.restore();
       });
 
-      // 6. Draw Active A* Route Highlight + Directional Flow Arrows
+      // 6. Draw Active A* Route Highlight
       if (activeRoute.length > 1) {
         const primaryRouteColor = isSosMode ? '#ef4444' : '#6366f1';
         const glowRouteColor = isSosMode ? 'rgba(239, 68, 68, 0.85)' : 'rgba(99, 102, 241, 0.85)';
@@ -1663,7 +1626,6 @@
           }
           mapCtx.stroke();
 
-          // If this route segment is a vertical portal at the current node, draw a pulsing vertical portal ring
           if (isPortalEdge && (n1.floorLevel === currentFloor || n2.floorLevel === currentFloor)) {
             mapCtx.beginPath();
             mapCtx.arc(p1.x, p1.y, 19, 0, Math.PI * 2);
@@ -1676,7 +1638,7 @@
         }
       }
 
-      // 7. Draw Nodes (With Hover Halo & Smart Label Placement)
+      // 7. Draw Nodes & Smart Non-Overlapping Labels
       const startId = document.getElementById('startNodeSelect').value;
       const endId = document.getElementById('endNodeSelect').value;
 
@@ -1700,7 +1662,6 @@
         mapCtx.save();
         mapCtx.globalAlpha = isCurrent ? 1.0 : (isStart || isEnd ? 0.75 : 0.3);
 
-        // Hover interactive target ring
         if (isHovered) {
           mapCtx.beginPath();
           mapCtx.arc(pt.x, pt.y, 19, 0, Math.PI * 2);
@@ -1711,7 +1672,6 @@
           mapCtx.stroke();
         }
 
-        // Start (Green) / Destination (Red) Indicator Ring
         if (isStart || isEnd) {
           mapCtx.beginPath();
           mapCtx.arc(pt.x, pt.y, 15, 0, Math.PI * 2);
@@ -1728,21 +1688,20 @@
         mapCtx.strokeStyle = '#07090e';
         mapCtx.stroke();
 
-        // Check if this stairs node has a portal partner on another floor so we show a portal badge
         const partner = isCurrent ? getPortalPartnerNode(n.nodeId) : null;
 
         if (!hasStackedActiveSibling) {
           let labelText = `${n.label}`;
           if (partner) {
-            labelText += ` ⇅ Portal to L${partner.floorLevel}`;
+            labelText += ` ⇅ L${partner.floorLevel}`;
           }
           mapCtx.font = isCurrent ? '600 11px "JetBrains Mono", monospace' : '500 10px "JetBrains Mono", monospace';
           const textW = mapCtx.measureText(labelText).width;
-          const lx = pt.x + 14;
+          const lx = pt.x + 15;
           const ly = pt.y - 9;
 
           if (isCurrent) {
-            mapCtx.fillStyle = 'rgba(7, 9, 14, 0.86)';
+            mapCtx.fillStyle = 'rgba(7, 9, 14, 0.88)';
             mapCtx.strokeStyle = partner ? 'rgba(245, 158, 11, 0.4)' : 'rgba(255, 255, 255, 0.1)';
             mapCtx.lineWidth = 1;
             mapCtx.beginPath();
@@ -1808,6 +1767,11 @@
       document.getElementById('transitModalOverlay').classList.remove('show');
       const btn = document.getElementById('simulateWalkBtn');
       if (btn) btn.innerText = '▶ Simulate Walk';
+      const pdrEl = document.getElementById('metricPdrState');
+      if (pdrEl) {
+        pdrEl.innerText = 'Standby (Ready)';
+        pdrEl.style.color = '#38bdf8';
+      }
       highlightActiveWaypointStep(-1);
     }
 
@@ -1816,8 +1780,6 @@
       simState.transitElapsedMs = simState.transitDurationMs + 20;
     }
 
-    /* FIXED SIMULATION LOOP:
-       Properly handles vertical_portal transitions EVEN when the upper/lower stairwell is the final destination node! */
     function startRouteSimulation(keepSosFlag = false) {
       if (simState.active && !keepSosFlag) {
         stopRouteSimulation();
@@ -1861,6 +1823,7 @@
         highlightActiveWaypointStep(simState.segIndex);
         const isPortal = n1.floorLevel !== n2.floorLevel;
         const overlay = document.getElementById('transitModalOverlay');
+        const pdrEl = document.getElementById('metricPdrState');
 
         if (isPortal) {
           if (!simState.inTransit) {
@@ -1869,8 +1832,13 @@
             document.getElementById('transitModalTitle').innerText =
               `Stairwell Portal: Floor L${n1.floorLevel} → Floor L${n2.floorLevel}`;
             document.getElementById('transitModalDesc').innerText =
-              `Traversing ${n1.label} to ${n2.label}. PDR step integration paused for 2.8s to prevent vertical stairwell heading drift.`;
+              `Traversing ${n1.label} to ${n2.label}. PDR step integration paused to prevent vertical stairwell heading drift.`;
             overlay.classList.add('show');
+          }
+
+          if (pdrEl) {
+            pdrEl.innerText = 'PAUSED (Stair Portal)';
+            pdrEl.style.color = '#fbbf24';
           }
 
           simState.transitElapsedMs += dtMs;
@@ -1891,7 +1859,6 @@
             simState.segIndex++;
             simState.segProgress = 0;
 
-            // If the upper/lower stairwell portal itself was the final destination, finish cleanly after the floor switch
             if (simState.segIndex >= activeRoute.length - 1) {
               simState.x = n2.x;
               simState.y = n2.y;
@@ -1903,6 +1870,11 @@
           }
         } else {
           overlay.classList.remove('show');
+          if (pdrEl) {
+            pdrEl.innerText = 'TRACKING (400 Particles)';
+            pdrEl.style.color = '#10b981';
+          }
+
           const dx = n2.x - n1.x;
           const dy = n2.y - n1.y;
           const distMeters = Math.max(0.5, Math.hypot(dx, dy));
@@ -1935,10 +1907,6 @@
       simState.animId = requestAnimationFrame(stepFrame);
     }
 
-    /* FIXED CANVAS NODE HIT-DETECTION & CLICK SELECTION:
-       - Uses scaled canvas coordinates
-       - Prioritizes active floor nodes, then falls back to ghost floor nodes so you can click L1 nodes even from L0!
-       - Supports Left-Click, Shift+Click, Right-Click, and the HUD Mode Toggle */
     let clickDownPos = { x: 0, y: 0 };
 
     mapCanvas.addEventListener('contextmenu', (e) => {
@@ -1947,7 +1915,7 @@
     });
 
     mapCanvas.addEventListener('mousedown', (e) => {
-      if (e.button === 2) return; // handled by contextmenu
+      if (e.button === 2) return;
       viewTransform.isDragging = true;
       viewTransform.lastX = e.clientX;
       viewTransform.lastY = e.clientY;
@@ -1984,10 +1952,10 @@
       const readout = document.getElementById('hoverNodeReadout');
       if (hit) {
         const partner = getPortalPartnerNode(hit.nodeId);
-        readout.innerText = `Selected: ${hit.label} [Floor L${hit.floorLevel} • ${hit.type}]` +
+        readout.innerText = `Node: ${hit.label} [Floor L${hit.floorLevel} • ${hit.type}]` +
           (partner ? ` ⇅ Connects to ${partner.label} (Floor L${partner.floorLevel})` : '');
       } else {
-        readout.innerText = 'Click any node = Set Start • Shift+Click or Right-Click = Set Target';
+        readout.innerText = 'Click any node on blueprint to set Origin • Shift+Click or Right-Click sets Destination';
       }
       renderMapCanvas();
     });
@@ -1999,13 +1967,11 @@
 
     function findNodeAtScreenPos(mx, my) {
       const hitRadius = 24;
-      // 1. Check active floor nodes first
       const activeFloorNodes = activeMap.nodes.filter(n => n.floorLevel === currentFloor);
       for (const n of activeFloorNodes) {
         const pt = worldToScreen(n.x, n.y);
         if (Math.hypot(mx - pt.x, my - pt.y) <= hitRadius) return n;
       }
-      // 2. Fallback: allow clicking ghost nodes from other floors directly
       const otherFloorNodes = activeMap.nodes.filter(n => n.floorLevel !== currentFloor);
       for (const n of otherFloorNodes) {
         const pt = worldToScreen(n.x, n.y);
@@ -2020,15 +1986,13 @@
       if (!hit) return;
 
       isSosMode = false;
-      document.getElementById('sosBannerToast').style.display = 'none';
+      updateSosStatusBanner();
 
       const settingTarget = forceTargetMode || e.shiftKey || canvasClickMode === 'end';
 
       if (settingTarget) {
         const currentStartId = document.getElementById('startNodeSelect').value;
         const startNode = getNodeById(currentStartId);
-        // Smart Portal Escalation: if user clicks Stairs on the same floor as Start to set a Destination,
-        // automatically select the connected upper/lower Stairs portal so the floor transition triggers!
         const partner = getPortalPartnerNode(hit.nodeId);
         if (partner && startNode && startNode.floorLevel === hit.floorLevel) {
           hit = partner;
@@ -2037,14 +2001,12 @@
         setCanvasClickMode('start');
       } else {
         document.getElementById('startNodeSelect').value = hit.nodeId;
-        // Automatically advance click mode to 'end' so the very next click sets the Target!
         setCanvasClickMode('end');
       }
 
       computeAndRenderRoute();
     }
 
-    // Preset Map Switcher & Local JSON Import/Export
     function switchPresetMap(presetKey) {
       if (presetKey === 'campus') {
         activeMap = JSON.parse(JSON.stringify(CAMPUS_DEMO_MAP));
@@ -2112,7 +2074,7 @@
     }
 
     /* =========================================================================
-       2. BACKGROUND CANVAS ANIMATION & PORTAL LOGIC (INTACT)
+       2. BACKGROUND CANVAS ANIMATION & PORTAL LOGIC (INTACT, NO AUTO-SCROLL)
        ========================================================================= */
     (function initBackground() {
       const canvas = document.getElementById('bg-canvas');
@@ -2173,7 +2135,6 @@
       animate();
     })();
 
-    /* Fullscreen Mode Toggle */
     function toggleBrowserFullscreen() {
       const viewer = document.getElementById('presentationViewer');
       const btnSpan = document.querySelector('#fullscreenToggleBtn span');
@@ -2192,7 +2153,6 @@
       if (!document.fullscreenElement && btnSpan) btnSpan.innerText = 'Maximize Viewer';
     });
 
-    /* Polished Admin Modal Visibility */
     function toggleAdminModal(show) {
       const modal = document.getElementById('adminModal');
       if (show) {
@@ -2204,7 +2164,6 @@
       }
     }
 
-    /* Live GitHub Commit Fetcher */
     const GITHUB_USERNAME = "rizwanhanda";
 
     async function fetchLiveCommits() {
@@ -2243,11 +2202,11 @@
       }
     }
 
-    /* Backend Synchronization (AWS EC2 + Backblaze Integration) */
     const API_BASE_URL = "https://indoorpulse.duckdns.org";
     let globalRecords = [];
 
-    function loadIntoViewer(recordIndex) {
+    /* shouldScroll = false on initial boot so async EC2 fetch NEVER jumps the page */
+    function loadIntoViewer(recordIndex, shouldScroll = true) {
       const item = globalRecords[recordIndex];
       if(!item) return;
 
@@ -2266,7 +2225,9 @@
       document.getElementById('pdfOpenLink').href = item.file_url;
       document.getElementById('pdfDownloadLink').href = item.file_url;
       
-      document.getElementById('presentation').scrollIntoView({ behavior: 'smooth' });
+      if (shouldScroll) {
+        document.getElementById('presentation').scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     async function fetchServerRecords() {
@@ -2291,7 +2252,7 @@
               <td>${item.presentation_date}</td>
               <td>${item.change_summary}</td>
               <td>
-                <button onclick="loadIntoViewer(${index})" class="btn-action btn-action-primary">
+                <button onclick="loadIntoViewer(${index}, true)" class="btn-action btn-action-primary">
                   ${isJson ? 'Load Map in Console ↗' : 'View on Page ↗'}
                 </button>
               </td>
@@ -2299,7 +2260,7 @@
             tbody.appendChild(tr);
           });
 
-          if (firstPdfIdx !== -1) loadIntoViewer(firstPdfIdx);
+          if (firstPdfIdx !== -1) loadIntoViewer(firstPdfIdx, false);
         } else {
           document.getElementById('version-archive-body').innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px;">No presentations uploaded yet.</td></tr>`;
         }
@@ -2316,7 +2277,6 @@
       }
     }
 
-    /* Live Upload Handler (AWS EC2 + Backblaze B2) */
     document.getElementById('adminUploadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('uploadSubmitBtn');
