@@ -10,23 +10,23 @@
 ---
 
 ## Week 1: Introduction and Pleasantries
-**Focus:** Course onboarding and initial brainstorming.
-**Notes:** Attended the initial lab sessions and finalized the group formation with Harjot, Ravinder, and Pooja. We discussed general domains of interest, ranging from enterprise web applications to mobile sensor utility apps. Agreed to research high-impact problems that involve hardware-software integration.
+**Focus:** Course onboarding and preliminary domain analysis.
+**Notes:** Attended the initial laboratory sessions and finalized the group formation with Harjot, Ravinder, and Pooja. We conducted a preliminary review of potential project domains, analyzing the technical feasibility of enterprise web platforms versus mobile sensor applications. We agreed to pursue a high-impact engineering challenge that requires deep hardware-software integration rather than a standard CRUD application.
 
 ## Week 2: Group Formation & Practise Project Pitch
-**Focus:** Evaluating project ideas and hardware constraints.
-**Notes:** Brainstormed building a campus navigation application. Initially considered utilizing Wi-Fi RSSI fingerprinting or Bluetooth Low Energy (BLE) beacons. However, we realized these approaches require expensive physical hardware deployment, degrade when router configurations change, and completely fail during power outages. Decided to pivot and research if smartphone IMU sensors could handle 100% offline dead-reckoning.
+**Focus:** Evaluating indoor localization architectures and hardware constraints.
+**Notes:** Investigated the feasibility of building a campus navigation application. Initial research focused on Wi-Fi RSSI (Received Signal Strength Indicator) fingerprinting and Bluetooth Low Energy (BLE) beacon trilateration. However, our feasibility study concluded that these methodologies require prohibitive capital expenditure for hardware deployment, suffer from environmental fragility when router configurations change, and experience catastrophic failure during power outages. Consequently, we pivoted to researching a 100% infrastructure-free approach using smartphone Inertial Measurement Unit (IMU) sensors.
 
 ## Week 3: Elevator Pitch
-**Focus:** Finalizing the "Infrastructure-Free" concept.
-**Notes:** Pitched the core "IndoorPulse" concept to the instructor: a completely offline indoor navigation system using only the smartphone's built-in accelerometer and gyroscope. The feedback highlighted a valid concern regarding cumulative sensor drift. We committed to engineering a probabilistic filter (rather than relying on external beacons) to correct this drift mathematically.
+**Focus:** Finalizing the infrastructure-free dead-reckoning concept.
+**Notes:** Pitched the core "IndoorPulse" architecture to the instructor: a completely offline indoor navigation system utilizing the built-in accelerometer and gyroscope. The primary feedback highlighted the inherent risk of cumulative sensor drift in dead-reckoning systems. We committed to engineering a probabilistic filtering algorithm to mathematically constrain and correct this drift, ensuring long-term localization stability without external hardware beacons.
 
 ## Week 4: Project Proposal & Feasibility Report
-**Focus:** Formalizing the tech stack and SMART objectives.
-**Notes:** Drafted and submitted the official Project Proposal. 
-*   **Tech Stack Chosen:** Kotlin, Jetpack Compose, Android `SensorManager`.
-*   **SMART Goal:** Achieve $\ge 95\%$ step-detection accuracy and sub-$2.0\text{m}$ localization drift.
-*   **MWE (Project Setup):** Configured the foundational Compose and Room database Gradle dependencies.
+**Focus:** Formalizing the technology stack and defining SMART objectives.
+**Notes:** Drafted and submitted the official Project Proposal, detailing our architectural pipeline and expected deliverables.
+*   **Tech Stack Chosen:** Kotlin, Jetpack Compose, Android `SensorManager`, and Room SQLite.
+*   **SMART Goal:** Achieve ≥ 95% step-detection accuracy and sub-2.0m localization drift over a 50-meter trajectory.
+*   **MWE (Project Setup):** Configured the foundational Compose UI and Room database Gradle dependencies to establish the project baseline.
 ```kotlin
 // build.gradle.kts (Module: app)
 dependencies {
@@ -38,28 +38,29 @@ dependencies {
 ```
 
 ## Week 5: Progress Monitoring (Sensor Polling)
-**Focus:** Accessing and filtering IMU hardware streams.
-**Notes:** Tested raw `TYPE_ACCELEROMETER` on the Nothing Phone (2). Discovered a critical issue: gravity ($9.81\text{ m/s}^2$) bleeds heavily into the horizontal X/Y axes whenever the user naturally tilts the phone in their hand, corrupting movement data. Switched the hardware polling pipeline to the hardware-fused `TYPE_LINEAR_ACCELERATION` and `TYPE_ROTATION_VECTOR`.
+**Focus:** Accessing and normalizing IMU hardware streams.
+**Notes:** Conducted initial data logging using raw `TYPE_ACCELEROMETER` on the test device. We discovered a critical noise factor: the 9.81 m/s² gravitational acceleration vector introduces significant interference into the horizontal X and Y axes whenever the user naturally alters the pitch or roll of the handset. To resolve this, we migrated the polling pipeline to utilize Android's hardware-fused `TYPE_LINEAR_ACCELERATION` and `TYPE_ROTATION_VECTOR`.
 ```kotlin
 // MWE: IMU Sensor Registration (KinematicPDR.kt)
 val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
 val linearAccel = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
 val rotationVec = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
 
-// Polling at 50Hz for balance between resolution and battery life
+// Polling initialized at 50Hz to optimize the balance between signal resolution and battery consumption
 sensorManager.registerListener(this, linearAccel, SensorManager.SENSOR_DELAY_GAME) 
 sensorManager.registerListener(this, rotationVec, SensorManager.SENSOR_DELAY_GAME)
 ```
 
 ## Week 6: Progress Monitoring (Schmitt Trigger Implementation)
-**Focus:** Building a robust Pedestrian Dead Reckoning (PDR) step detector.
-**Notes:** Basic zero-crossing algorithms caused "stationary desk drift"—registering false steps when the phone merely vibrated on a table. Engineered a Dual-Threshold Schmitt Trigger with a $260\text{ms}$ refractory period to aggressively reject hand-jitter, fused with a Weinberg biomechanical stride estimator.
+**Focus:** Engineering a robust Pedestrian Dead Reckoning (PDR) step detector.
+**Notes:** Standard zero-crossing algorithms proved inadequate, registering false steps due to stationary oscillation artifacts (e.g., the phone vibrating on a desk). We engineered a Dual-Threshold Schmitt Trigger utilizing hysteresis banding. This approach arms the step cycle only upon crossing a high threshold and registers the step upon crossing a lower threshold, enforced by a 260ms refractory debounce period to aggressively reject hand-jitter.
 ```kotlin
-// MWE: Dual-Threshold Schmitt Trigger
+// MWE: Dual-Threshold Schmitt Trigger Logic
 if (!isArmed && accelMag >= 1.85f) {
     isArmed = true
     peak = accelMag
 } else if (isArmed && accelMag <= 0.45f && (nowMs - lastStepMs) >= 260L) {
+    // Fused with Weinberg biomechanical stride estimation
     val strideMeters = (0.43 * Math.pow((peak - valley).toDouble(), 0.25)).toFloat()
     onStepDetected(strideMeters)
     isArmed = false
@@ -68,43 +69,43 @@ if (!isArmed && accelMag >= 1.85f) {
 ```
 
 ## Week 7: Prototype (MST Prep)
-**Focus:** Basic UI rendering and initial walk-tests.
-**Notes:** Submitted the First Prototype. The PDR engine successfully tracks steps, but rendering them on a Compose `Canvas` revealed a major coordinate chirality bug: walking forward and turning right physically resulted in a left turn on the screen because Android Azimuth (North-East-Down) and Canvas ($+Y$ down) have opposite handedness.
+**Focus:** UI rendering and preliminary field testing.
+**Notes:** Submitted the First Prototype. While the PDR engine accurately logged step counts, rendering the trajectory on a Jetpack Compose `Canvas` revealed a coordinate system chirality mismatch. Walking forward and executing a 90-degree physical right turn resulted in a left turn on the screen. This discrepancy occurs because the Android Azimuth frame (North-East-Down) is right-handed, whereas the screen-space Canvas (+Y projecting downward) is left-handed.
 
 ## Week 8: Improvement Plan (Addressing Chirality & Drift)
-**Focus:** Mathematical corrections for coordinate mapping.
-**Notes:** Devised an improvement plan to implement a Monte Carlo Particle Filter. This architecture will solve the coordinate frame translation (via explicit trigonometric mapping) and strictly bound the accumulated IMU drift by clamping simulated particles to walkable corridor boundaries.
+**Focus:** Mathematical corrections for coordinate mapping and drift containment.
+**Notes:** Formulated a comprehensive improvement plan to implement a Monte Carlo Particle Filter. This stochastic architecture will serve a dual purpose: providing a structured environment to apply explicit trigonometric frame translations (resolving the chirality bug) and strictly bounding accumulated IMU drift by clamping simulated position estimates to the physical boundaries of walkable corridors.
 
 ## Week 9: MST Week
-**Focus:** Mid-Semester Tests.
-**Notes:** Paused active code commits to prepare for theoretical midterm examinations. 
+**Focus:** Mid-Semester Examinations.
+**Notes:** Suspended active software development to prioritize preparation for theoretical midterm examinations across concurrent courses.
 
 ## Week 10: MST Week
-**Focus:** Theoretical architecture for the Particle Filter.
-**Notes:** Reviewed MST evaluation sheets post-exams. Researched Low-Variance Systematic Resampling algorithms. Sketched out the data structures needed to project $400$ particles onto our upcoming Room SQLite building maps without causing UI thread blockage.
+**Focus:** Theoretical modeling for the Particle Filter architecture.
+**Notes:** Reviewed MST evaluation outcomes. Conducted research on Low-Variance Systematic Resampling algorithms to ensure our particle filter maintains computational efficiency. Drafted the spatial data structures required to project a cloud of 400 discrete particles onto the Room SQLite topological maps without blocking the main UI thread.
 
 ## Week 11: Progress Monitoring (Over Improvement Plan)
 **Focus:** Deploying the 400-Particle Monte Carlo Localization (MCL) filter.
-**Notes:** Implemented the particle filter and applied explicit trigonometric translation to fix the Week 7 chirality bug. Particles that drift outside the topological corridor bounds are now heavily penalized.
+**Notes:** Successfully integrated the MCL filter. We applied explicit trigonometric translation matrices to correct the Week 7 chirality anomaly. Furthermore, particles that mathematically drift outside the boundaries of the topological corridor map are now heavily penalized, effectively eliminating lateral drift accumulation during straight corridor walks.
 ```kotlin
-// MWE: Particle Propagation & Chirality Fix (ParticleFilter.kt)
+// MWE: Particle Propagation & Chirality Translation (ParticleFilter.kt)
 for (p in particles) {
     val noisyStride = stride + randomGaussian() * 0.06f
     val noisyHeading = azimuth + randomGaussian() * 0.08f
     
-    // Explicit mapping: Clockwise NED Azimuth to +Y Down Screen-Space Canvas
+    // Explicit transformation: Clockwise NED Azimuth to +Y Down Screen-Space Canvas
     p.x += noisyStride * kotlin.math.sin(noisyHeading)
     p.y -= noisyStride * kotlin.math.cos(noisyHeading)
 }
 ```
 
 ## Week 12: Progress Monitoring (Room SQLite & Surveyor Mode)
-**Focus:** On-device topological graph building.
-**Notes:** Built the `Room` relational database persistence layer (`BuildingEntity`, `NodeEntity`, `EdgeEntity`). Implemented Surveyor Mode in `MapCanvas.kt` featuring dynamic touch hit-detection, allowing administrators to map nodes and draw corridors directly on the device.
+**Focus:** Developing the on-device topological graph builder.
+**Notes:** Finalized the `Room` relational database persistence layer (`BuildingEntity`, `NodeEntity`, `EdgeEntity`). Developed "Surveyor Mode" within `MapCanvas.kt`, featuring dynamic touch hit-detection. This allows system administrators to physically map nodes and draw interconnecting corridors directly on the handset, bypassing the need for complex external CAD software.
 ```kotlin
 // MWE: Dynamic Touch Snapping for Surveyor Mode (MapCanvas.kt)
 fun findTappedNode(touchPx: Offset, scale: Float, pan: Offset): NodeEntity? {
-    // Dynamically scale the touch radius so zooming out doesn't break selection
+    // Dynamically scale the touch radius to preserve selection accuracy at various zoom levels
     val hitRadiusMeters = (24f / scale).coerceIn(0.4f, 1.8f)
     val worldX = (touchPx.x - pan.x) / scale
     val worldY = (touchPx.y - pan.y) / scale
@@ -113,8 +114,8 @@ fun findTappedNode(touchPx: Offset, scale: Float, pan: Offset): NodeEntity? {
 ```
 
 ## Week 13: Buffer (Cloud Infrastructure Setup)
-**Focus:** Bypassing PaaS limitations with a custom AWS EC2 backend.
-**Notes:** Course requirements prohibited managed services like Vercel or Firebase. Provisioned an AWS EC2 Linux instance running a Python Flask API to handle authenticated web uploads, piping deliverables and JSON map artifacts directly to Backblaze B2 S3 storage.
+**Focus:** Architecting a compliant, self-hosted cloud infrastructure.
+**Notes:** As course guidelines prohibited the use of managed Platform-as-a-Service (PaaS) providers like Vercel or Firebase, we provisioned an AWS EC2 Linux virtual machine. We deployed a Python Flask REST API to handle authenticated web uploads, configuring it to pipe deliverables and JSON map artifacts directly to a Backblaze B2 S3-compatible storage bucket.
 ```python
 # MWE: Authenticated Flask to Backblaze B2 S3 Upload Route
 @app.route('/api/upload', methods=['POST'])
@@ -127,31 +128,32 @@ def upload():
 ```
 
 ## Week 14: Progress Monitoring (3D A* Routing)
-**Focus:** Multi-floor pathfinding logic.
-**Notes:** Extending the graph to multiple floors broke our flat Dijkstra router, leading to cross-floor routing bleed. Upgraded to a 3D Euclidean A* heuristic, applying a heavy vertical penalty to restrict cross-floor movement strictly to `vertical_portal` stairwell edges.
+**Focus:** Implementing multi-floor pathfinding algorithms.
+**Notes:** Expanding our topological graphs to encompass multiple floors exceeded the capabilities of our initial 2D Dijkstra pathfinder, resulting in invalid cross-floor routing artifacts. We upgraded the routing engine to a 3D Euclidean A* heuristic, applying a substantial vertical weight penalty to force cross-floor transitions strictly through designated `vertical_portal` stairwell edges.
 ```kotlin
 // MWE: 3D Euclidean A* Heuristic (MapViewModel.kt)
 private fun heuristic3D(a: NodeEntity, b: NodeEntity): Float {
     val dx = a.x - b.x
     val dy = a.y - b.y
-    val dz = (a.floorLevel - b.floorLevel) * 4.0f // 4.0m average floor height penalty
+    // Impose a 4.0m average floor height penalty to optimize vertical traversal logic
+    val dz = (a.floorLevel - b.floorLevel) * 4.0f 
     return kotlin.math.sqrt(dx * dx + dy * dy + dz * dz)
 }
 ```
 
 ## Week 15: Second Prototype (JSON Engine & Transit State)
-**Focus:** Map portability and stairwell drift mitigation.
-**Notes:** Built the JSON Export/Import engine with UUID translation to prevent SQLite primary key collisions across devices. Discovered that walking on stairs completely corrupts horizontal PDR (because stacked stairwell nodes share identical $(x, y)$ coordinates). Engineered a proximity-based Transit State modal that automatically pauses step integration within $1.5\text{m}$ of a stairwell portal.
+**Focus:** Ensuring data portability and mitigating stairwell drift.
+**Notes:** Developed a comprehensive JSON Export/Import engine utilizing UUID translation to prevent SQLite primary key collisions when synchronizing maps across multiple devices. During field testing, we observed that traversing stairs induces severe cumulative errors in horizontal displacement calculations. To counter this, we engineered a proximity-based "Transit State" state machine that automatically suspends step integration when the user's estimated position falls within 1.5m of a stairwell portal.
 
 ## Week 16: Progress Monitoring (Web Console Integration)
-**Focus:** Porting the 3D A* simulator to the browser.
-**Notes:** Built the `navix` HTML5 Canvas interface. Fixed a bug where CSS flexbox stretching broke mouse click hitboxes. Refactored the walk simulator to use `performance.now()` time-deltas because frame-counting (`pauseFrames = 50`) ran out of sync on high-refresh-rate $100\text{Hz}$ displays.
+**Focus:** Translating the 3D A* simulation engine to a browser environment.
+**Notes:** Developed the `navix` HTML5 Canvas interface. We resolved a defect where CSS flexbox scaling misaligned mouse click hitboxes by applying internal resolution multipliers. Furthermore, we refactored the simulation loop to utilize `performance.now()` time-deltas, ensuring the simulation runs deterministically regardless of whether the client monitor operates at 60Hz or 100Hz.
 ```javascript
-// MWE: DPI-Scaled Canvas Coordinates (index.html)
+// MWE: Device-Agnostic DPI-Scaled Canvas Coordinates (index.html)
 function getCanvasMouseCoords(e) {
     const rect = mapCanvas.getBoundingClientRect();
     return {
-        // Multiplier ensures exact internal pixel targeting regardless of CSS stretch
+        // Multiplier ensures exact internal pixel targeting regardless of CSS viewport stretching
         x: (e.clientX - rect.left) * (mapCanvas.width / rect.width),
         y: (e.clientY - rect.top) * (mapCanvas.height / rect.height)
     };
@@ -159,5 +161,5 @@ function getCanvasMouseCoords(e) {
 ```
 
 ## Week 17: Final Prototype and Presentation
-**Focus:** UI polish, SOS Evacuation Mode, and deployment.
-**Notes:** Finalized the Web Map Console styling. Validated the ` SOS Nearest Exit` logic, ensuring the pathfinder strictly filters for `Building Entry` ground-level nodes rather than arbitrary rooms. Compiled the final LaTeX project report, tested the AWS EC2 cloud gateway, and deployed the entire stack to GitHub Pages. System is fully operational and verified.
+**Focus:** Interface refinement, Emergency Egress execution, and final deployment.
+**Notes:** Finalized the aesthetic and structural elements of the Web Map Console. Rigorously validated the Emergency Egress (SOS) routing logic, confirming that the 3D pathfinder strictly filters and routes toward `Building Entry` ground-level nodes rather than arbitrarily terminating at indoor waypoints. Compiled the final academic project report in LaTeX, verified the AWS EC2 cloud gateway connectivity, and deployed the complete technology stack. The system is verified, stable, and fully operational.
