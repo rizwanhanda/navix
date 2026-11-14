@@ -46,7 +46,7 @@
     }
 
     #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
-    .container { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 
     header {
       background: rgba(7, 9, 14, 0.85);
@@ -75,13 +75,13 @@
     .nav-links a { font-size: 0.84rem; color: var(--text-muted); text-decoration: none; font-weight: 500; transition: all 0.2s ease; }
     .nav-links a:hover { color: var(--text); }
 
-    .summary-block { padding: 56px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+    .summary-block { padding: 52px 0 28px; border-bottom: 1px solid var(--border); margin-bottom: 36px; }
     .summary-title {
       font-size: 2.2rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 10px;
       background: linear-gradient(135deg, #ffffff 20%, #a5b4fc 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .summary-subtitle { font-size: 0.98rem; color: var(--text-muted); max-width: 780px; }
+    .summary-subtitle { font-size: 0.98rem; color: var(--text-muted); max-width: 820px; }
 
     section { margin-bottom: 52px; scroll-margin-top: 84px; }
     .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
@@ -118,7 +118,6 @@
     }
     .author-tag { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border-color: rgba(56, 189, 248, 0.25); margin-left: 12px;}
 
-    /* Typography inside content cards */
     .content-card h3 { color: #fff; font-size: 1.05rem; margin-bottom: 12px; margin-top: 16px; font-weight: 600; }
     .content-card h3:first-child { margin-top: 0; }
     .content-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.7; }
@@ -130,17 +129,17 @@
     .console-shell {
       background: var(--bg-card);
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      border: 1px solid rgba(99, 102, 241, 0.35);
       border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65);
     }
     .console-topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 14px 20px;
-      background: rgba(13, 18, 30, 0.9);
+      background: rgba(13, 18, 30, 0.92);
       border-bottom: 1px solid var(--border);
       flex-wrap: wrap;
       gap: 12px;
@@ -155,45 +154,42 @@
     }
     .console-body {
       display: grid;
-      grid-template-columns: 320px 1fr;
-      min-height: 520px;
+      grid-template-columns: 335px 1fr;
+      min-height: 560px;
     }
-    @media (max-width: 860px) {
+    @media (max-width: 880px) {
       .console-body { grid-template-columns: 1fr; }
     }
     .console-sidebar {
       padding: 18px;
-      background: rgba(10, 14, 24, 0.85);
+      background: rgba(10, 14, 24, 0.9);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
     .console-label {
       display: block;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-family: var(--font-mono);
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       margin-bottom: 6px;
     }
     .console-select {
       width: 100%;
-      padding: 9px 12px;
+      padding: 8px 11px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: var(--radius-sm);
       color: #fff;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-family: 'Inter', sans-serif;
     }
+    .console-select:focus { outline: none; border-color: var(--accent); }
     .console-select option { background: #0b0f19; color: #fff; }
-    .floor-switcher {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .floor-switcher { display: flex; gap: 8px; flex-wrap: wrap; }
     .floor-btn {
       flex: 1;
       min-width: 56px;
@@ -208,18 +204,19 @@
       transition: all 0.2s ease;
     }
     .floor-btn.active {
-      background: rgba(99, 102, 241, 0.22);
+      background: rgba(99, 102, 241, 0.24);
       border-color: var(--accent);
       color: #fff;
+      font-weight: 600;
       box-shadow: 0 0 12px var(--accent-glow);
     }
     .telemetry-box {
       background: rgba(255, 255, 255, 0.025);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 12px;
+      padding: 11px 12px;
       font-family: var(--font-mono);
-      font-size: 0.76rem;
+      font-size: 0.75rem;
     }
     .telemetry-row {
       display: flex;
@@ -229,7 +226,7 @@
     }
     .telemetry-row:last-child { border-bottom: none; }
     .route-steps-list {
-      max-height: 150px;
+      max-height: 155px;
       overflow-y: auto;
       font-size: 0.78rem;
       color: #cbd5e1;
@@ -238,23 +235,31 @@
       gap: 6px;
     }
     .route-step-item {
-      padding: 6px 8px;
+      padding: 7px 9px;
       background: rgba(255, 255, 255, 0.03);
-      border-left: 2px solid var(--accent);
+      border-left: 3px solid var(--accent);
       border-radius: 4px;
       font-family: var(--font-mono);
-      font-size: 0.73rem;
+      font-size: 0.72rem;
+      transition: all 0.2s ease;
     }
     .route-step-item.portal {
       border-left-color: var(--warning);
+      background: rgba(245, 158, 11, 0.08);
       color: #fde68a;
+    }
+    .route-step-item.active-step {
+      background: rgba(56, 189, 248, 0.14);
+      border-left-color: var(--cyan-accent);
+      color: #fff;
     }
     .canvas-stage {
       position: relative;
-      background: radial-gradient(circle at center, #0f172a 0%, #07090e 100%);
+      background: radial-gradient(circle at 50% 45%, #111a2e 0%, #07090e 100%);
       display: flex;
       flex-direction: column;
-      min-height: 520px;
+      min-height: 560px;
+      overflow: hidden;
     }
     #mapExplorerCanvas {
       width: 100%;
@@ -274,12 +279,13 @@
       pointer-events: none;
       flex-wrap: wrap;
       gap: 8px;
+      z-index: 5;
     }
     .hud-pill {
       pointer-events: auto;
-      background: rgba(7, 9, 14, 0.85);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
+      background: rgba(7, 9, 14, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: var(--radius-sm);
       padding: 6px 12px;
       font-family: var(--font-mono);
@@ -288,6 +294,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     }
     .canvas-legend {
       position: absolute;
@@ -300,28 +307,94 @@
       pointer-events: none;
       flex-wrap: wrap;
       gap: 8px;
+      z-index: 5;
     }
     .legend-dot {
       display: inline-block;
       width: 9px;
       height: 9px;
       border-radius: 50%;
-      margin-right: 4px;
+      margin-right: 5px;
     }
-    .transit-banner {
+
+    /* Upgraded Modal Transit State Overlay (Matches Android Transit State UX) */
+    .transit-modal-overlay {
       position: absolute;
-      top: 58px;
+      inset: 0;
+      background: rgba(7, 9, 14, 0.76);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      padding: 20px;
+    }
+    .transit-modal-overlay.show { display: flex; }
+    .transit-card {
+      background: #0d1322;
+      border: 1px solid rgba(245, 158, 11, 0.55);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(245, 158, 11, 0.18);
+      text-align: center;
+      font-family: var(--font-mono);
+    }
+    .transit-badge {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      margin-bottom: 10px;
+    }
+    .transit-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .transit-desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .transit-progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .transit-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #f59e0b, #38bdf8);
+      transition: width 0.08s linear;
+    }
+
+    /* SOS Banner Toast */
+    .sos-toast {
+      position: absolute;
+      top: 56px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(245, 158, 11, 0.18);
-      border: 1px solid rgba(245, 158, 11, 0.5);
-      color: #fde68a;
+      background: rgba(239, 68, 68, 0.22);
+      border: 1px solid #ef4444;
+      color: #fecaca;
       font-family: var(--font-mono);
       font-size: 0.75rem;
-      padding: 6px 14px;
-      border-radius: 20px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      z-index: 15;
       display: none;
-      pointer-events: none;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
     }
 
     /* Presentation Viewer */
@@ -343,7 +416,7 @@
     .action-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
     .btn-action {
-      display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-mono); font-size: 0.76rem;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-mono); font-size: 0.75rem;
       padding: 6px 12px; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border); color: var(--text); cursor: pointer; text-decoration: none; transition: all 0.2s ease;
     }
@@ -410,10 +483,14 @@
       <div class="section-header">
         <h2 class="section-title">Interactive Topological Map & 3D A* Route Simulator (Web Interface)</h2>
         <div class="action-group">
+          <select id="presetMapSelect" class="console-select" style="width: auto; padding: 6px 10px; font-family: var(--font-mono); font-size: 0.75rem;" onchange="switchPresetMap(this.value)">
+            <option value="home">Preset: Home Survey (Exported Android JSON)</option>
+            <option value="campus">Preset: TIET Academic Block (Multi-Wing Demo)</option>
+          </select>
           <input type="file" id="jsonMapUpload" accept=".json,application/json" style="display: none;">
           <button onclick="document.getElementById('jsonMapUpload').click()" class="btn-action btn-action-primary">Import Android Map (.json) ↑</button>
-          <button onclick="exportActiveMapJson()" class="btn-action">Export Active JSON ↓</button>
-          <button onclick="resetDefaultMap()" class="btn-action">Reset Default Map</button>
+          <button onclick="exportActiveMapJson()" class="btn-action">Export JSON ↓</button>
+          <button onclick="openAdminForJsonMap()" class="btn-action" title="Upload JSON map to Backblaze B2 Cloud">Sync Map to B2 ☁</button>
         </div>
       </div>
 
@@ -426,7 +503,7 @@
             <span class="tag" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);" id="mapStatsBadge">5 Nodes | 4 Edges</span>
           </div>
           <span style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted);">
-            Engine: 3D Euclidean A* + Vertical Portal State Machine
+            Engine: 3D Euclidean A* + Vertical Portal Transit State Machine
           </span>
         </div>
 
@@ -440,27 +517,31 @@
 
             <div>
               <span class="console-label">Origin Node (Start)</span>
-              <select id="startNodeSelect" class="console-select" onchange="computeAndRenderRoute()"></select>
+              <select id="startNodeSelect" class="console-select" onchange="onRouteSelectionChange()"></select>
             </div>
 
             <div>
               <span class="console-label">Destination Node (Target)</span>
-              <select id="endNodeSelect" class="console-select" onchange="computeAndRenderRoute()"></select>
+              <select id="endNodeSelect" class="console-select" onchange="onRouteSelectionChange()"></select>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-              <button onclick="startRouteSimulation()" class="btn-action btn-action-primary" id="simulateWalkBtn">▶ Simulate Walk</button>
-              <button onclick="triggerEmergencySos()" class="btn-action btn-action-danger">🚨 SOS Nearest Exit</button>
+              <button onclick="startRouteSimulation(false)" class="btn-action btn-action-primary" id="simulateWalkBtn">▶ Simulate Walk</button>
+              <button onclick="triggerEmergencySos()" class="btn-action btn-action-danger" title="Evacuate from indoor room/current position to nearest Building Entry/Exit">🚨 SOS Nearest Exit</button>
             </div>
 
             <div class="telemetry-box">
               <div class="telemetry-row">
-                <span style="color: var(--text-muted);">Routing Engine:</span>
-                <span style="color: #a5b4fc;">3D A* Heuristic</span>
+                <span style="color: var(--text-muted);">Routing Mode:</span>
+                <span id="metricMode" style="color: #a5b4fc; font-weight: 600;">3D A* Standard</span>
               </div>
               <div class="telemetry-row">
                 <span style="color: var(--text-muted);">Total Path Cost:</span>
                 <span id="metricDistance" style="color: #10b981; font-weight: 600;">-- m</span>
+              </div>
+              <div class="telemetry-row">
+                <span style="color: var(--text-muted);">Physical Walk Dist:</span>
+                <span id="metricWalkDist" style="color: #e2e8f0;">-- m</span>
               </div>
               <div class="telemetry-row">
                 <span style="color: var(--text-muted);">Est. PDR Steps (0.72m):</span>
@@ -484,31 +565,49 @@
               <div class="hud-pill">
                 <span id="activeFloorIndicator" style="color: #38bdf8; font-weight: 600;">Floor L0</span>
                 <span>|</span>
-                <span id="hoverNodeReadout">Click any node to set Start / Destination</span>
+                <span id="hoverNodeReadout">Click node = Start • Shift+Click = Target</span>
               </div>
               <div class="hud-pill">
                 <button onclick="adjustCanvasZoom(1.2)" class="btn-action" style="padding: 2px 8px;">+</button>
                 <button onclick="adjustCanvasZoom(0.8)" class="btn-action" style="padding: 2px 8px;">−</button>
-                <button onclick="fitMapToCanvas()" class="btn-action" style="padding: 2px 8px;">Center View</button>
+                <button onclick="fitMapToCanvas()" class="btn-action" style="padding: 2px 8px;">Fit Blueprint</button>
               </div>
             </div>
 
-            <div class="transit-banner" id="transitStateBanner">
-              ⚠ TRANSIT STATE: Vertical Portal (Stairs) — PDR Paused During Floor Switch
+            <!-- SOS Active Banner -->
+            <div class="sos-toast" id="sosBannerToast">
+              🚨 EMERGENCY SOS EVACUATION ACTIVE — ROUTING TO NEAREST BUILDING EXIT
+            </div>
+
+            <!-- Upgraded Modal Transit State Overlay (Time-Based 3.0s, Immune to 100Hz Refresh Rate) -->
+            <div class="transit-modal-overlay" id="transitModalOverlay">
+              <div class="transit-card">
+                <span class="transit-badge">⚠ PROXIMITY TRANSIT STATE TRIGGERED</span>
+                <div class="transit-title" id="transitModalTitle">Vertical Portal: Floor L0 → Floor L1</div>
+                <div class="transit-desc" id="transitModalDesc">
+                  PDR step integration & particle dispersion paused while traversing stairwell portal to prevent vertical heading drift.
+                </div>
+                <div class="transit-progress-track">
+                  <div class="transit-progress-bar" id="transitProgressBar"></div>
+                </div>
+                <button onclick="confirmTransitSwitchNow()" class="btn-action btn-action-primary" style="width: 100%;">
+                  Confirm Floor Arrival Now ↗
+                </button>
+              </div>
             </div>
 
             <canvas id="mapExplorerCanvas"></canvas>
 
             <div class="canvas-legend">
               <div class="hud-pill">
-                <span><span class="legend-dot" style="background: #10b981;"></span>Building Entry / Exit</span>
+                <span><span class="legend-dot" style="background: #10b981;"></span>Entry / Exit</span>
                 <span><span class="legend-dot" style="background: #38bdf8;"></span>Waypoint</span>
                 <span><span class="legend-dot" style="background: #f59e0b;"></span>Stairs / Portal</span>
                 <span><span class="legend-dot" style="background: #a855f7;"></span>Room Door</span>
               </div>
               <div class="hud-pill">
                 <span style="color: #6366f1;">━━ Active Floor A* Path</span>
-                <span style="color: #94a3b8;">┄┄ Other Floor Segment</span>
+                <span style="color: #94a3b8;">┄┄ Ghost Floor Overlay</span>
               </div>
             </div>
           </div>
@@ -540,7 +639,7 @@
       </div>
       <div class="card content-card">
         <h3>Proposed Solution: IndoorPulse</h3>
-        <p>IndoorPulse is an offline-first, infrastructure-free Indoor Positioning System (IPS) for Android paired with a cloud-backed Web Map Console. The Android client uses Pedestrian Dead Reckoning (PDR) driven by hardware IMU sensors and stabilized by a 400-particle Monte Carlo filter, while the web interface enables portable JSON map inspection, cloud archiving, and browser-based 3D A* route simulation.</p>
+        <p>IndoorPulse is an offline-first, infrastructure-free Indoor Positioning System (IPS) for Android paired with a cloud-backed Web Map Console. The Android client uses Pedestrian Dead Reckoning (PDR) driven by hardware IMU sensors and stabilized by a 400-particle Monte Carlo filter, while the web interface enables portable JSON map inspection, Backblaze B2 cloud archiving, and browser-based 3D A* route simulation.</p>
         
         <h3>The Main User Journey</h3>
         <ul>
@@ -562,7 +661,7 @@
           <li><strong>Step 1:</strong> Launch IndoorPulse on Android and load a multi-floor building topology from local Room persistence or exported JSON.</li>
           <li><strong>Step 2:</strong> Request a cross-floor route (or trigger SOS Emergency Exit) and observe 3D Euclidean A* calculate the optimal path across floor portals.</li>
           <li><strong>Step 3:</strong> Walk physically with the Android device—the Schmitt Trigger step detector and 400-particle filter advance the gyro-locked navigation chevron along the corridor while ignoring hand jitter.</li>
-          <li><strong>Step 4:</strong> Import the same exported `.json` map package into the <strong>Web Map Console</strong> above to verify cross-floor topology and simulate the A* route directly in the browser.</li>
+          <li><strong>Step 4:</strong> Import or sync the exported `.json` map package into the <strong>Web Map Console</strong> above to verify cross-floor topology and simulate the A* route and stairwell Transit State in the browser.</li>
         </ul>
       </div>
     </section>
@@ -587,7 +686,7 @@
           <ul>
             <li><strong>Android UI Layer:</strong> Jetpack Compose (<code>MapCanvas.kt</code>, <code>MainScreen.kt</code>) with interactive multi-floor zooming, touch hit-detection snapping, and undo/redo Surveyor controls.</li>
             <li><strong>Portable JSON Map Engine:</strong> Full export/import pipeline with UUID translation, geofence radius metadata, and Room SQLite persistence.</li>
-            <li><strong>3-Tier Web & Cloud Stack:</strong> GitHub Pages static web console + AWS EC2 Flask API (`indoorpulse.duckdns.org`) + Backblaze B2 S3-compatible object storage.</li>
+            <li><strong>3-Tier Web & Cloud Stack:</strong> GitHub Pages static web console + AWS EC2 Flask API (<code>indoorpulse.duckdns.org</code>) + Backblaze B2 S3-compatible object storage.</li>
           </ul>
         </div>
       </div>
@@ -605,7 +704,7 @@
             <li><strong>IMU PDR & 400-Particle Filter:</strong> Zero stationary drift with fused biomechanical stride estimation and chirality translation.</li>
             <li><strong>Multi-Floor 3D A* Routing & SOS Mode:</strong> Upgraded from Dijkstra to 3D Euclidean A* across vertical portals, with proximity-based stairwell Transit State UX and 1-tap SOS exit routing.</li>
             <li><strong>Surveyor Mode & JSON Export/Import Engine:</strong> Undo/redo graph editing, snapping hit-detection, sanitized versioned filenames, and UUID translation.</li>
-            <li><strong>Web Map Console & Cloud Gateway:</strong> Interactive HTML5 Canvas multi-floor map explorer + AWS EC2 & Backblaze B2 artifact storage.</li>
+            <li><strong>Web Map Console & Cloud Gateway:</strong> Interactive HTML5 Canvas multi-floor blueprint explorer + AWS EC2 & Backblaze B2 artifact storage.</li>
           </ul>
         </div>
         <div class="card content-card">
@@ -698,14 +797,14 @@
     <!-- Immutable Version Archive Table -->
     <section id="version-archive">
       <div class="section-header">
-        <h2 class="section-title">Immutable Deliverable & Version Archive</h2>
+        <h2 class="section-title">Immutable Deliverable & Cloud Map Archive (AWS EC2 + Backblaze B2)</h2>
       </div>
       <div class="table-wrapper">
         <table>
           <thead>
             <tr>
               <th>Version</th>
-              <th>Deliverable Title</th>
+              <th>Deliverable / Map Artifact Title</th>
               <th>Date</th>
               <th>Change Summary</th>
               <th>Action</th>
@@ -748,11 +847,11 @@
 
   </main>
 
-  <!-- Polished Admin Upload Modal -->
+  <!-- Polished Admin Upload Modal (Supports Both PDF Deliverables & JSON Maps to Backblaze B2) -->
   <div class="modal-backdrop" id="adminModal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Secure Storage Gateway</h3>
+        <h3>Secure B2 Storage Gateway</h3>
         <button onclick="toggleAdminModal(false)" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.4rem; padding: 0;">&times;</button>
       </div>
       <form id="adminUploadForm">
@@ -761,8 +860,8 @@
           <input type="password" id="adminPassword" class="form-control" required placeholder="Enter administrative password">
         </div>
         <div class="form-group">
-          <label>Deliverable Title</label>
-          <input type="text" id="docTitle" class="form-control" required placeholder="e.g., Final Project Report">
+          <label>Artifact Title</label>
+          <input type="text" id="docTitle" class="form-control" required placeholder="e.g., Final Project Report or Campus Map JSON">
         </div>
         <div class="form-group">
           <label>Version Tag</label>
@@ -770,15 +869,15 @@
         </div>
         <div class="form-group">
           <label>Change Summary</label>
-          <textarea id="docSummary" class="form-control" rows="2" required placeholder="Describe revisions or additions"></textarea>
+          <textarea id="docSummary" class="form-control" rows="2" required placeholder="Describe revisions, walk-test metrics, or map floor count"></textarea>
         </div>
         <div class="form-group">
-          <label>Attach Artifact (PDF)</label>
-          <input type="file" id="docFile" class="form-control" accept="application/pdf" required style="padding: 7px 10px;">
+          <label>Attach Artifact (PDF Deliverable or Android .JSON Map)</label>
+          <input type="file" id="docFile" class="form-control" accept="application/pdf,application/json,.pdf,.json" required style="padding: 7px 10px;">
         </div>
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
           <button type="button" onclick="toggleAdminModal(false)" class="btn-action">Cancel</button>
-          <button type="submit" class="btn-action btn-action-primary" id="uploadSubmitBtn">Transmit Payload</button>
+          <button type="submit" class="btn-action btn-action-primary" id="uploadSubmitBtn">Transmit to Backblaze B2</button>
         </div>
       </form>
     </div>
@@ -786,9 +885,11 @@
 
   <script>
     /* =========================================================================
-       1. DEFAULT EXPORTED ANDROID MAP PACKAGE (Home_v1.0_20261114_1248.json)
+       1. BUILT-IN MAP PRESETS:
+          - Preset A: Your Exact Exported Home_v1.0_20261114_1248.json
+          - Preset B: Rich Multi-Wing Campus Academic Block for Demo Flexibility
        ========================================================================= */
-    const DEFAULT_MAP_DATA = {
+    const HOME_SURVEY_MAP = {
       "version": "1.0",
       "building_id": "c740bcb6-39ae-4509-9e76-c36dcab56b35",
       "building_name": "Home (Multi-Floor Survey)",
@@ -885,12 +986,58 @@
       ]
     };
 
-    let activeMap = JSON.parse(JSON.stringify(DEFAULT_MAP_DATA));
+    const CAMPUS_DEMO_MAP = {
+      "version": "1.2",
+      "building_id": "tiet-csed-block-2026",
+      "building_name": "TIET Academic Wing (Multi-Floor)",
+      "centerLat": 30.35412,
+      "centerLng": 76.36492,
+      "geofenceRadius": 120,
+      "timestamp": 1794650000000,
+      "nodes": [
+        { "nodeId": "n-main-entry", "x": 0, "y": 8, "floorLevel": 0, "type": "Building Entry", "label": "Main Atrium Entry", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "n-junc-lobby", "x": 0, "y": 0, "floorLevel": 0, "type": "Waypoint", "label": "Central Lobby Hub", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "n-west-hall", "x": -10, "y": 0, "floorLevel": 0, "type": "Waypoint", "label": "West Corridor L0", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "n-lab-101", "x": -16, "y": -5, "floorLevel": 0, "type": "Room Door", "label": "Systems Lab 101", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "n-east-exit", "x": 12, "y": 0, "floorLevel": 0, "type": "Building Entry", "label": "East Fire Exit", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "n-stairs-l0", "x": 0, "y": -9, "floorLevel": 0, "type": "Stairs", "label": "Central Stairwell L0", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "n-stairs-l1", "x": 0, "y": -9, "floorLevel": 1, "type": "Stairs", "label": "Central Stairwell L1", "floorId": "f1", "lat": 0, "lng": 0 },
+        { "nodeId": "n-l1-corridor", "x": -7, "y": -9, "floorLevel": 1, "type": "Waypoint", "label": "L1 North Junction", "floorId": "f1", "lat": 0, "lng": 0 },
+        { "nodeId": "n-faculty-204", "x": -14, "y": -14, "floorLevel": 1, "type": "Room Door", "label": "Project Eval Room 204", "floorId": "f1", "lat": 0, "lng": 0 },
+        { "nodeId": "n-seminar-202", "x": 8, "y": -13, "floorLevel": 1, "type": "Room Door", "label": "Seminar Hall 202", "floorId": "f1", "lat": 0, "lng": 0 }
+      ],
+      "edges": [
+        { "edgeId": "e1", "fromNodeId": "n-main-entry", "toNodeId": "n-junc-lobby", "lengthMeters": 8.0, "edgeType": "corridor" },
+        { "edgeId": "e2", "fromNodeId": "n-junc-lobby", "toNodeId": "n-west-hall", "lengthMeters": 10.0, "edgeType": "corridor" },
+        { "edgeId": "e3", "fromNodeId": "n-west-hall", "toNodeId": "n-lab-101", "lengthMeters": 7.8, "edgeType": "corridor" },
+        { "edgeId": "e4", "fromNodeId": "n-junc-lobby", "toNodeId": "n-east-exit", "lengthMeters": 12.0, "edgeType": "corridor" },
+        { "edgeId": "e5", "fromNodeId": "n-junc-lobby", "toNodeId": "n-stairs-l0", "lengthMeters": 9.0, "edgeType": "corridor" },
+        { "edgeId": "e6", "fromNodeId": "n-stairs-l0", "toNodeId": "n-stairs-l1", "lengthMeters": 30.0, "edgeType": "vertical_portal" },
+        { "edgeId": "e7", "fromNodeId": "n-stairs-l1", "toNodeId": "n-l1-corridor", "lengthMeters": 7.0, "edgeType": "corridor" },
+        { "edgeId": "e8", "fromNodeId": "n-l1-corridor", "toNodeId": "n-faculty-204", "lengthMeters": 8.6, "edgeType": "corridor" },
+        { "edgeId": "e9", "fromNodeId": "n-stairs-l1", "toNodeId": "n-seminar-202", "lengthMeters": 8.9, "edgeType": "corridor" }
+      ]
+    };
+
+    let activeMap = JSON.parse(JSON.stringify(HOME_SURVEY_MAP));
     let currentFloor = 0;
     let activeRoute = [];
-    let simState = { active: false, x: 0, y: 0, angle: 0, floor: 0, animId: null };
+    let isSosMode = false;
+    let simState = {
+      active: false,
+      x: 0,
+      y: 0,
+      angle: 0,
+      floor: 0,
+      segIndex: 0,
+      segProgress: 0,
+      inTransit: false,
+      transitElapsedMs: 0,
+      transitDurationMs: 2800,
+      lastFrameTime: 0,
+      animId: null
+    };
 
-    // Canvas transform state
     const mapCanvas = document.getElementById('mapExplorerCanvas');
     const mapCtx = mapCanvas.getContext('2d');
     let viewTransform = { scale: 28, offsetX: 0, offsetY: 0, isDragging: false, lastX: 0, lastY: 0 };
@@ -898,7 +1045,7 @@
     function resizeMapCanvas() {
       const rect = mapCanvas.parentElement.getBoundingClientRect();
       mapCanvas.width = rect.width;
-      mapCanvas.height = Math.max(520, rect.height);
+      mapCanvas.height = Math.max(560, rect.height);
       fitMapToCanvas();
     }
     window.addEventListener('resize', resizeMapCanvas);
@@ -1017,7 +1164,7 @@
       startSel.innerHTML = '';
       endSel.innerHTML = '';
 
-      activeMap.nodes.forEach((n, idx) => {
+      activeMap.nodes.forEach((n) => {
         const opt1 = document.createElement('option');
         opt1.value = n.nodeId;
         opt1.innerText = `[L${n.floorLevel}] ${n.label} (${n.type})`;
@@ -1035,8 +1182,16 @@
       }
 
       document.getElementById('activeFloorIndicator').innerText = `Floor L${currentFloor}`;
+      isSosMode = false;
+      document.getElementById('sosBannerToast').style.display = 'none';
       computeAndRenderRoute();
       fitMapToCanvas();
+    }
+
+    function onRouteSelectionChange() {
+      isSosMode = false;
+      document.getElementById('sosBannerToast').style.display = 'none';
+      computeAndRenderRoute();
     }
 
     function selectFloor(fl) {
@@ -1054,10 +1209,14 @@
       const endId = document.getElementById('endNodeSelect').value;
       activeRoute = runAStar3D(startId, endId);
 
-      let totalMeters = 0;
+      let totalCostMeters = 0;
+      let physicalWalkMeters = 0;
       let portalCount = 0;
       const stepsContainer = document.getElementById('routeStepsList');
       stepsContainer.innerHTML = '';
+
+      document.getElementById('metricMode').innerText = isSosMode ? '🚨 SOS EVACUATION' : '3D A* Standard';
+      document.getElementById('metricMode').style.color = isSosMode ? '#ef4444' : '#a5b4fc';
 
       if (activeRoute.length > 0) {
         for (let i = 0; i < activeRoute.length; i++) {
@@ -1070,24 +1229,37 @@
               (e.toNodeId === node.nodeId && e.fromNodeId === nextId)
             );
             if (edgeInfo) {
-              totalMeters += Number(edgeInfo.lengthMeters) || 0;
-              if (edgeInfo.edgeType === 'vertical_portal') portalCount++;
+              const w = Number(edgeInfo.lengthMeters) || 0;
+              totalCostMeters += w;
+              if (edgeInfo.edgeType === 'vertical_portal') {
+                portalCount++;
+                physicalWalkMeters += 4.5; // physical stair traversal equivalent
+              } else {
+                physicalWalkMeters += w;
+              }
             }
           }
 
           const div = document.createElement('div');
+          div.id = `route-step-dom-${i}`;
           const isPortalStep = edgeInfo && edgeInfo.edgeType === 'vertical_portal';
           div.className = 'route-step-item' + (isPortalStep ? ' portal' : '');
           div.innerHTML = `${i + 1}. <strong>${node.label}</strong> (L${node.floorLevel})` +
-            (edgeInfo ? ` → <span>${Number(edgeInfo.lengthMeters).toFixed(1)}m [${edgeInfo.edgeType}]</span>` : ' [Target Reached]');
+            (edgeInfo
+              ? (isPortalStep
+                  ? ` → <span>Stairwell Portal (Cost: ${Number(edgeInfo.lengthMeters).toFixed(0)}m)</span>`
+                  : ` → <span>${Number(edgeInfo.lengthMeters).toFixed(1)}m [corridor]</span>`)
+              : (isSosMode ? ' [SAFE EXIT REACHED]' : ' [Target Reached]'));
           stepsContainer.appendChild(div);
         }
 
-        document.getElementById('metricDistance').innerText = `${totalMeters.toFixed(2)} m`;
-        document.getElementById('metricSteps').innerText = `${Math.max(1, Math.round(totalMeters / 0.72))} steps`;
+        document.getElementById('metricDistance').innerText = `${totalCostMeters.toFixed(2)} m`;
+        document.getElementById('metricWalkDist').innerText = `${physicalWalkMeters.toFixed(2)} m`;
+        document.getElementById('metricSteps').innerText = `${Math.max(1, Math.round(physicalWalkMeters / 0.72))} steps`;
         document.getElementById('metricTransitions').innerText = `${portalCount} portal(s)`;
       } else {
         document.getElementById('metricDistance').innerText = 'Unreachable';
+        document.getElementById('metricWalkDist').innerText = '0 m';
         document.getElementById('metricSteps').innerText = '0 steps';
         document.getElementById('metricTransitions').innerText = '0 portals';
         stepsContainer.innerHTML = `<div class="route-step-item">No connected path between selected nodes.</div>`;
@@ -1096,8 +1268,12 @@
       renderMapCanvas();
     }
 
+    /* FIXED EMERGENCY SOS LOGIC:
+       1. Finds all Building Entry / Exit nodes.
+       2. If the user's current Start node is ALREADY an Exit node (or if simulation is running),
+          it automatically picks the current simulated node or the deepest indoor node (e.g. Room Door 1 on L1)
+          as the Evacuation Origin so SOS always demonstrates a full indoor-to-exit evacuation route! */
     function triggerEmergencySos() {
-      const startId = document.getElementById('startNodeSelect').value;
       const exitNodes = activeMap.nodes.filter(n => {
         const t = (n.type || '').toLowerCase();
         return t.includes('entry') || t.includes('exit');
@@ -1108,12 +1284,36 @@
         return;
       }
 
+      let originId = document.getElementById('startNodeSelect').value;
+      const currentTargetId = document.getElementById('endNodeSelect').value;
+
+      // If simulation is currently mid-walk, evacuate from the nearest node to the blue chevron
+      if (simState.active && activeRoute[simState.segIndex]) {
+        originId = activeRoute[simState.segIndex];
+      }
+
+      const isOriginAlreadyExit = exitNodes.some(ex => ex.nodeId === originId);
+      if (isOriginAlreadyExit) {
+        // If Destination isn't an exit, swap them so we evacuate from Destination -> Exit
+        if (currentTargetId && !exitNodes.some(ex => ex.nodeId === currentTargetId)) {
+          originId = currentTargetId;
+        } else {
+          // Otherwise pick the highest-floor / deepest indoor room node
+          const indoorNodes = activeMap.nodes.filter(n => !exitNodes.some(ex => ex.nodeId === n.nodeId));
+          if (indoorNodes.length > 0) {
+            indoorNodes.sort((a, b) => b.floorLevel - a.floorLevel);
+            originId = indoorNodes[0].nodeId;
+          }
+        }
+      }
+
       let bestExitId = exitNodes[0].nodeId;
       let shortestCost = Infinity;
 
       exitNodes.forEach(exitNode => {
-        const candidatePath = runAStar3D(startId, exitNode.nodeId);
-        if (candidatePath.length > 0) {
+        if (exitNode.nodeId === originId) return;
+        const candidatePath = runAStar3D(originId, exitNode.nodeId);
+        if (candidatePath.length > 1) {
           let cost = 0;
           for (let i = 0; i < candidatePath.length - 1; i++) {
             const e = activeMap.edges.find(ed =>
@@ -1129,9 +1329,16 @@
         }
       });
 
+      document.getElementById('startNodeSelect').value = originId;
       document.getElementById('endNodeSelect').value = bestExitId;
+      isSosMode = true;
+      document.getElementById('sosBannerToast').style.display = 'block';
+
+      const originNode = getNodeById(originId);
+      if (originNode) selectFloor(originNode.floorLevel);
+
       computeAndRenderRoute();
-      startRouteSimulation();
+      startRouteSimulation(true);
     }
 
     function worldToScreen(wx, wy) {
@@ -1151,12 +1358,12 @@
         if (n.y > maxY) maxY = n.y;
       });
 
-      const spanX = Math.max(4, maxX - minX);
-      const spanY = Math.max(4, maxY - minY);
-      const pad = 110;
+      const spanX = Math.max(5, maxX - minX);
+      const spanY = Math.max(5, maxY - minY);
+      const pad = 135;
       const scaleX = (mapCanvas.width - pad * 2) / spanX;
       const scaleY = (mapCanvas.height - pad * 2) / spanY;
-      viewTransform.scale = Math.max(12, Math.min(60, Math.min(scaleX, scaleY)));
+      viewTransform.scale = Math.max(14, Math.min(48, Math.min(scaleX, scaleY)));
 
       const centerX = (minX + maxX) / 2;
       const centerY = (minY + maxY) / 2;
@@ -1170,35 +1377,108 @@
       const cy = mapCanvas.height / 2;
       viewTransform.offsetX = cx - (cx - viewTransform.offsetX) * factor;
       viewTransform.offsetY = cy - (cy - viewTransform.offsetY) * factor;
-      viewTransform.scale = Math.max(6, Math.min(140, viewTransform.scale * factor));
+      viewTransform.scale = Math.max(8, Math.min(120, viewTransform.scale * factor));
       renderMapCanvas();
     }
 
+    /* ARCHITECTURAL BLUEPRINT RENDERER */
     function renderMapCanvas() {
       const w = mapCanvas.width;
       const h = mapCanvas.height;
       mapCtx.clearRect(0, 0, w, h);
 
-      // Draw subtle meter grid
+      // 1. Subtle CAD Blueprint Grid (1m minor + 5m major)
       const gridStep = viewTransform.scale;
-      if (gridStep >= 14) {
-        mapCtx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
-        mapCtx.lineWidth = 1;
+      if (gridStep >= 10) {
         const startX = ((viewTransform.offsetX % gridStep) + gridStep) % gridStep;
         const startY = ((viewTransform.offsetY % gridStep) + gridStep) % gridStep;
+        mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.045)';
+        mapCtx.lineWidth = 1;
         mapCtx.beginPath();
         for (let x = startX; x < w; x += gridStep) {
-          mapCtx.moveTo(x, 0);
-          mapCtx.lineTo(x, h);
+          mapCtx.moveTo(x, 0); mapCtx.lineTo(x, h);
         }
         for (let y = startY; y < h; y += gridStep) {
-          mapCtx.moveTo(0, y);
-          mapCtx.lineTo(w, y);
+          mapCtx.moveTo(0, y); mapCtx.lineTo(w, y);
         }
         mapCtx.stroke();
       }
 
-      // Draw edges
+      // 2. Architectural Corridor Walls & Floor Footprint Casing
+      const corridorWidthPx = Math.max(22, Math.min(44, viewTransform.scale * 1.15));
+      activeMap.edges.forEach(e => {
+        if (e.edgeType === 'vertical_portal') return;
+        const n1 = getNodeById(e.fromNodeId);
+        const n2 = getNodeById(e.toNodeId);
+        if (!n1 || !n2) return;
+        const p1 = worldToScreen(n1.x, n1.y);
+        const p2 = worldToScreen(n2.x, n2.y);
+        const onCurrentFloor = (n1.floorLevel === currentFloor && n2.floorLevel === currentFloor);
+
+        mapCtx.save();
+        mapCtx.lineCap = 'round';
+        mapCtx.lineJoin = 'round';
+        mapCtx.beginPath();
+        mapCtx.moveTo(p1.x, p1.y);
+        mapCtx.lineTo(p2.x, p2.y);
+
+        if (onCurrentFloor) {
+          // Outer architectural wall border
+          mapCtx.strokeStyle = 'rgba(99, 102, 241, 0.22)';
+          mapCtx.lineWidth = corridorWidthPx + 4;
+          mapCtx.stroke();
+
+          // Inner walkable corridor floor surface
+          mapCtx.strokeStyle = 'rgba(15, 23, 42, 0.92)';
+          mapCtx.lineWidth = corridorWidthPx;
+          mapCtx.stroke();
+        } else {
+          // Ghost floor corridor footprint
+          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.05)';
+          mapCtx.lineWidth = corridorWidthPx * 0.75;
+          mapCtx.stroke();
+        }
+        mapCtx.restore();
+      });
+
+      // 3. Draw Room / Stair / Entry Architectural Zone Footprints on Active Floor
+      activeMap.nodes.forEach(n => {
+        if (n.floorLevel !== currentFloor) return;
+        const pt = worldToScreen(n.x, n.y);
+        const t = (n.type || '').toLowerCase();
+        mapCtx.save();
+        if (t.includes('room') || t.includes('door')) {
+          const rw = Math.max(44, viewTransform.scale * 1.5);
+          const rh = Math.max(36, viewTransform.scale * 1.2);
+          mapCtx.fillStyle = 'rgba(168, 85, 247, 0.08)';
+          mapCtx.strokeStyle = 'rgba(168, 85, 247, 0.35)';
+          mapCtx.lineWidth = 1.5;
+          mapCtx.beginPath();
+          mapCtx.roundRect(pt.x - rw / 2, pt.y - rh / 2, rw, rh, 6);
+          mapCtx.fill();
+          mapCtx.stroke();
+        } else if (t.includes('stair')) {
+          const sw = Math.max(38, viewTransform.scale * 1.3);
+          mapCtx.fillStyle = 'rgba(245, 158, 11, 0.1)';
+          mapCtx.strokeStyle = 'rgba(245, 158, 11, 0.45)';
+          mapCtx.lineWidth = 1.5;
+          mapCtx.beginPath();
+          mapCtx.roundRect(pt.x - sw / 2, pt.y - sw / 2, sw, sw, 6);
+          mapCtx.fill();
+          mapCtx.stroke();
+          // Stairwell step hatch lines
+          mapCtx.strokeStyle = 'rgba(245, 158, 11, 0.28)';
+          for (let k = -sw / 2 + 6; k < sw / 2 - 4; k += 6) {
+            mapCtx.beginPath();
+            mapCtx.moveTo(pt.x - sw / 2 + 4, pt.y + k);
+            mapCtx.lineTo(pt.x + sw / 2 - 4, pt.y + k);
+            mapCtx.stroke();
+          }
+        }
+        mapCtx.restore();
+      });
+
+      // 4. Draw Topological Graph Centerlines & Distance Callout Pills
       activeMap.edges.forEach(e => {
         const n1 = getNodeById(e.fromNodeId);
         const n2 = getNodeById(e.toNodeId);
@@ -1213,22 +1493,45 @@
         mapCtx.lineTo(p2.x, p2.y);
         if (e.edgeType === 'vertical_portal') {
           mapCtx.setLineDash([4, 4]);
-          mapCtx.strokeStyle = 'rgba(245, 158, 11, 0.55)';
+          mapCtx.strokeStyle = 'rgba(245, 158, 11, 0.7)';
           mapCtx.lineWidth = 2;
         } else if (onCurrentFloor) {
-          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.38)';
-          mapCtx.lineWidth = 3;
+          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.45)';
+          mapCtx.lineWidth = 2;
         } else {
           mapCtx.setLineDash([5, 5]);
-          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.14)';
+          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.16)';
           mapCtx.lineWidth = 1.5;
         }
         mapCtx.stroke();
+
+        // Edge distance pill on active floor corridors
+        if (onCurrentFloor && e.edgeType !== 'vertical_portal') {
+          const mx = (p1.x + p2.x) / 2;
+          const my = (p1.y + p2.y) / 2;
+          const distText = `${Number(e.lengthMeters).toFixed(1)}m`;
+          mapCtx.font = '500 10px "JetBrains Mono", monospace';
+          const tw = mapCtx.measureText(distText).width + 10;
+          mapCtx.fillStyle = 'rgba(7, 9, 14, 0.85)';
+          mapCtx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+          mapCtx.lineWidth = 1;
+          mapCtx.beginPath();
+          mapCtx.roundRect(mx - tw / 2, my - 9, tw, 18, 9);
+          mapCtx.fill();
+          mapCtx.stroke();
+          mapCtx.fillStyle = '#94a3b8';
+          mapCtx.textAlign = 'center';
+          mapCtx.textBaseline = 'middle';
+          mapCtx.fillText(distText, mx, my);
+        }
         mapCtx.restore();
       });
 
-      // Draw active A* route highlight
+      // 5. Draw Active A* Route Highlight (Indigo Standard / Red Pulse in SOS Mode)
       if (activeRoute.length > 1) {
+        const primaryRouteColor = isSosMode ? '#ef4444' : '#6366f1';
+        const glowRouteColor = isSosMode ? 'rgba(239, 68, 68, 0.85)' : 'rgba(99, 102, 241, 0.85)';
+
         for (let i = 0; i < activeRoute.length - 1; i++) {
           const n1 = getNodeById(activeRoute[i]);
           const n2 = getNodeById(activeRoute[i + 1]);
@@ -1238,17 +1541,18 @@
           const bothCurrent = (n1.floorLevel === currentFloor && n2.floorLevel === currentFloor);
 
           mapCtx.save();
+          mapCtx.lineCap = 'round';
           mapCtx.beginPath();
           mapCtx.moveTo(p1.x, p1.y);
           mapCtx.lineTo(p2.x, p2.y);
           if (bothCurrent) {
-            mapCtx.strokeStyle = '#6366f1';
-            mapCtx.shadowColor = 'rgba(99, 102, 241, 0.8)';
-            mapCtx.shadowBlur = 12;
-            mapCtx.lineWidth = 5;
+            mapCtx.strokeStyle = primaryRouteColor;
+            mapCtx.shadowColor = glowRouteColor;
+            mapCtx.shadowBlur = 14;
+            mapCtx.lineWidth = 5.5;
           } else {
             mapCtx.setLineDash([6, 5]);
-            mapCtx.strokeStyle = 'rgba(99, 102, 241, 0.4)';
+            mapCtx.strokeStyle = isSosMode ? 'rgba(239, 68, 68, 0.38)' : 'rgba(99, 102, 241, 0.38)';
             mapCtx.lineWidth = 2.5;
           }
           mapCtx.stroke();
@@ -1256,10 +1560,10 @@
         }
       }
 
+      // 6. Draw Nodes (Smart Label Offsetting so stacked L0/L1 Stairs never collide!)
       const startId = document.getElementById('startNodeSelect').value;
       const endId = document.getElementById('endNodeSelect').value;
 
-      // Draw nodes (ghost nodes on other floors first, then active floor nodes)
       const sortedNodes = [...activeMap.nodes].sort((a, b) =>
         (a.floorLevel === currentFloor ? 1 : 0) - (b.floorLevel === currentFloor ? 1 : 0)
       );
@@ -1271,138 +1575,239 @@
         const isStart = n.nodeId === startId;
         const isEnd = n.nodeId === endId;
 
+        // Check if another node on the current floor sits at the exact same (x, y) (e.g. Stairs L0 vs L1)
+        const hasStackedActiveSibling = !isCurrent && activeMap.nodes.some(other =>
+          other.floorLevel === currentFloor &&
+          Math.hypot(other.x - n.x, other.y - n.y) < 0.25
+        );
+
         mapCtx.save();
-        mapCtx.globalAlpha = isCurrent ? 1.0 : 0.25;
+        mapCtx.globalAlpha = isCurrent ? 1.0 : 0.28;
 
         if (isStart || isEnd) {
           mapCtx.beginPath();
-          mapCtx.arc(pt.x, pt.y, 14, 0, Math.PI * 2);
+          mapCtx.arc(pt.x, pt.y, 15, 0, Math.PI * 2);
           mapCtx.strokeStyle = isStart ? '#10b981' : '#ef4444';
           mapCtx.lineWidth = 2.5;
           mapCtx.stroke();
         }
 
         mapCtx.beginPath();
-        mapCtx.arc(pt.x, pt.y, isCurrent ? 8 : 6, 0, Math.PI * 2);
+        mapCtx.arc(pt.x, pt.y, isCurrent ? 8.5 : 6, 0, Math.PI * 2);
         mapCtx.fillStyle = color;
         mapCtx.fill();
         mapCtx.lineWidth = 2;
         mapCtx.strokeStyle = '#07090e';
         mapCtx.stroke();
 
-        // Node label
-        mapCtx.font = '500 11px "JetBrains Mono", monospace';
-        mapCtx.fillStyle = isCurrent ? '#f8fafc' : '#94a3b8';
-        mapCtx.fillText(`${n.label} (L${n.floorLevel})`, pt.x + 12, pt.y + 4);
+        // Only draw label if it's on the current floor OR doesn't collide with an active floor node
+        if (!hasStackedActiveSibling) {
+          const labelText = `${n.label} (L${n.floorLevel})`;
+          mapCtx.font = isCurrent ? '600 11px "JetBrains Mono", monospace' : '500 10px "JetBrains Mono", monospace';
+          const textW = mapCtx.measureText(labelText).width;
+          const lx = pt.x + 13;
+          const ly = pt.y - 9;
+
+          if (isCurrent) {
+            mapCtx.fillStyle = 'rgba(7, 9, 14, 0.82)';
+            mapCtx.beginPath();
+            mapCtx.roundRect(lx - 4, ly - 2, textW + 8, 18, 4);
+            mapCtx.fill();
+          }
+
+          mapCtx.fillStyle = isCurrent ? '#f8fafc' : '#94a3b8';
+          mapCtx.fillText(labelText, lx, pt.y + 4);
+        }
         mapCtx.restore();
       });
 
-      // Draw Simulated Blue Navigation Chevron Puck
+      // 7. Draw Simulated Particle Cloud + Blue Navigation Chevron Puck
       if (simState.active) {
         const puckPt = worldToScreen(simState.x, simState.y);
         mapCtx.save();
         mapCtx.translate(puckPt.x, puckPt.y);
-        mapCtx.rotate(simState.angle);
+
+        // Simulated 2D Monte Carlo Particle Filter dots around the chevron
+        const particleFill = isSosMode ? 'rgba(239, 68, 68, 0.45)' : 'rgba(56, 189, 248, 0.45)';
+        for (let p = 0; p < 14; p++) {
+          const ang = (p / 14) * Math.PI * 2 + (performance.now() * 0.002);
+          const rad = 8 + (p % 3) * 4;
+          mapCtx.beginPath();
+          mapCtx.arc(Math.cos(ang) * rad, Math.sin(ang) * rad, 1.6, 0, Math.PI * 2);
+          mapCtx.fillStyle = particleFill;
+          mapCtx.fill();
+        }
 
         // Outer accuracy halo
         mapCtx.beginPath();
-        mapCtx.arc(0, 0, 18, 0, Math.PI * 2);
-        mapCtx.fillStyle = 'rgba(56, 189, 248, 0.22)';
+        mapCtx.arc(0, 0, 20, 0, Math.PI * 2);
+        mapCtx.fillStyle = isSosMode ? 'rgba(239, 68, 68, 0.2)' : 'rgba(56, 189, 248, 0.2)';
         mapCtx.fill();
 
-        // Directional navigation chevron
+        // Rotate and draw directional navigation chevron
+        mapCtx.rotate(simState.angle);
         mapCtx.beginPath();
-        mapCtx.moveTo(12, 0);
-        mapCtx.lineTo(-8, 8);
-        mapCtx.lineTo(-4, 0);
-        mapCtx.lineTo(-8, -8);
+        mapCtx.moveTo(13, 0);
+        mapCtx.lineTo(-9, 8.5);
+        mapCtx.lineTo(-4.5, 0);
+        mapCtx.lineTo(-9, -8.5);
         mapCtx.closePath();
-        mapCtx.fillStyle = '#38bdf8';
+        mapCtx.fillStyle = isSosMode ? '#ef4444' : '#38bdf8';
         mapCtx.fill();
-        mapCtx.lineWidth = 1.5;
+        mapCtx.lineWidth = 1.8;
         mapCtx.strokeStyle = '#ffffff';
         mapCtx.stroke();
         mapCtx.restore();
       }
+
+      // 8. Draw Blueprint Scale Bar & Compass Rose (Bottom Right HUD inside Canvas)
+      drawBlueprintScaleAndCompass(w, h);
+    }
+
+    function drawBlueprintScaleAndCompass(w, h) {
+      mapCtx.save();
+      const barMeters = 5;
+      const barPx = barMeters * viewTransform.scale;
+      const bx = w - 24 - barPx;
+      const by = h - 58;
+
+      mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.6)';
+      mapCtx.lineWidth = 2;
+      mapCtx.beginPath();
+      mapCtx.moveTo(bx, by - 4);
+      mapCtx.lineTo(bx, by);
+      mapCtx.lineTo(bx + barPx, by);
+      mapCtx.lineTo(bx + barPx, by - 4);
+      mapCtx.stroke();
+
+      mapCtx.font = '500 10px "JetBrains Mono", monospace';
+      mapCtx.fillStyle = '#94a3b8';
+      mapCtx.textAlign = 'center';
+      mapCtx.fillText(`${barMeters}m Scale`, bx + barPx / 2, by - 7);
+      mapCtx.restore();
+    }
+
+    function highlightActiveWaypointStep(idx) {
+      document.querySelectorAll('.route-step-item').forEach((el, i) => {
+        el.classList.toggle('active-step', i === idx);
+      });
     }
 
     function stopRouteSimulation() {
       if (simState.animId) cancelAnimationFrame(simState.animId);
       simState.active = false;
+      simState.inTransit = false;
       simState.animId = null;
-      const banner = document.getElementById('transitStateBanner');
-      if (banner) banner.style.display = 'none';
+      document.getElementById('transitModalOverlay').classList.remove('show');
       const btn = document.getElementById('simulateWalkBtn');
       if (btn) btn.innerText = '▶ Simulate Walk';
+      highlightActiveWaypointStep(-1);
     }
 
-    function startRouteSimulation() {
-      if (simState.active) {
+    function confirmTransitSwitchNow() {
+      if (!simState.active || !simState.inTransit) return;
+      simState.transitElapsedMs = simState.transitDurationMs + 10;
+    }
+
+    /* TIME-DELTA SIMULATION ENGINE (Immune to 60Hz/100Hz/144Hz Monitor Differences) */
+    function startRouteSimulation(keepSosFlag = false) {
+      if (simState.active && !keepSosFlag) {
         stopRouteSimulation();
         renderMapCanvas();
         return;
       }
       if (activeRoute.length < 2) return;
 
+      if (simState.animId) cancelAnimationFrame(simState.animId);
       simState.active = true;
+      simState.segIndex = 0;
+      simState.segProgress = 0;
+      simState.inTransit = false;
+      simState.transitElapsedMs = 0;
+      simState.lastFrameTime = performance.now();
+
       document.getElementById('simulateWalkBtn').innerText = '⏹ Stop Simulation';
-      let segIndex = 0;
-      let segProgress = 0;
-      let pauseFrames = 0;
 
       const firstNode = getNodeById(activeRoute[0]);
-      if (firstNode && firstNode.floorLevel !== currentFloor) {
-        selectFloor(firstNode.floorLevel);
+      if (firstNode) {
+        simState.x = firstNode.x;
+        simState.y = firstNode.y;
+        if (firstNode.floorLevel !== currentFloor) {
+          selectFloor(firstNode.floorLevel);
+        }
       }
 
-      function stepFrame() {
+      function stepFrame(now) {
         if (!simState.active) return;
-        const n1 = getNodeById(activeRoute[segIndex]);
-        const n2 = getNodeById(activeRoute[segIndex + 1]);
+        const dtMs = Math.min(80, Math.max(1, now - simState.lastFrameTime));
+        simState.lastFrameTime = now;
+
+        const n1 = getNodeById(activeRoute[simState.segIndex]);
+        const n2 = getNodeById(activeRoute[simState.segIndex + 1]);
         if (!n1 || !n2) {
           stopRouteSimulation();
           renderMapCanvas();
           return;
         }
 
+        highlightActiveWaypointStep(simState.segIndex);
         const isPortal = n1.floorLevel !== n2.floorLevel;
-        const banner = document.getElementById('transitStateBanner');
+        const overlay = document.getElementById('transitModalOverlay');
 
         if (isPortal) {
-          banner.style.display = 'block';
-          pauseFrames++;
+          if (!simState.inTransit) {
+            simState.inTransit = true;
+            simState.transitElapsedMs = 0;
+            document.getElementById('transitModalTitle').innerText =
+              `Stairwell Portal: Floor L${n1.floorLevel} → Floor L${n2.floorLevel}`;
+            document.getElementById('transitModalDesc').innerText =
+              `Traversing ${n1.label} to ${n2.label}. PDR step integration paused for 2.8s to prevent stairwell heading drift.`;
+            overlay.classList.add('show');
+          }
+
+          simState.transitElapsedMs += dtMs;
           simState.x = n1.x;
           simState.y = n1.y;
-          if (pauseFrames === 25) {
+
+          const pct = Math.min(100, (simState.transitElapsedMs / simState.transitDurationMs) * 100);
+          document.getElementById('transitProgressBar').style.width = `${pct}%`;
+
+          if (simState.transitElapsedMs >= simState.transitDurationMs * 0.55 && currentFloor !== n2.floorLevel) {
             selectFloor(n2.floorLevel);
           }
-          if (pauseFrames > 50) {
-            pauseFrames = 0;
-            banner.style.display = 'none';
-            segIndex++;
-            segProgress = 0;
+
+          if (simState.transitElapsedMs >= simState.transitDurationMs) {
+            simState.inTransit = false;
+            overlay.classList.remove('show');
+            selectFloor(n2.floorLevel);
+            simState.segIndex++;
+            simState.segProgress = 0;
           }
         } else {
-          banner.style.display = 'none';
+          overlay.classList.remove('show');
           const dx = n2.x - n1.x;
           const dy = n2.y - n1.y;
-          const dist = Math.max(0.5, Math.sqrt(dx * dx + dy * dy));
+          const distMeters = Math.max(0.5, Math.hypot(dx, dy));
           simState.angle = Math.atan2(dy, dx);
-          segProgress += 0.06 / dist;
 
-          if (segProgress >= 1) {
-            segProgress = 0;
-            segIndex++;
-            if (segIndex >= activeRoute.length - 1) {
+          // Walk speed: 3.4 meters per second for crisp demo pacing
+          const metersPerMs = 3.4 / 1000;
+          simState.segProgress += (dtMs * metersPerMs) / distMeters;
+
+          if (simState.segProgress >= 1) {
+            simState.segProgress = 0;
+            simState.segIndex++;
+            if (simState.segIndex >= activeRoute.length - 1) {
               simState.x = n2.x;
               simState.y = n2.y;
+              highlightActiveWaypointStep(activeRoute.length - 1);
               renderMapCanvas();
               stopRouteSimulation();
               return;
             }
           } else {
-            simState.x = n1.x + dx * segProgress;
-            simState.y = n1.y + dy * segProgress;
+            simState.x = n1.x + dx * simState.segProgress;
+            simState.y = n1.y + dy * simState.segProgress;
           }
         }
 
@@ -1448,7 +1853,7 @@
       if (hit) {
         readout.innerText = `${hit.label} [${hit.type}] — (${hit.x.toFixed(2)}m, ${hit.y.toFixed(2)}m, L${hit.floorLevel})`;
       } else {
-        readout.innerText = 'Click any node to set Start / Shift+Click for Destination';
+        readout.innerText = 'Click node = Start • Shift+Click = Target';
       }
     });
 
@@ -1461,7 +1866,7 @@
       const floorNodes = activeMap.nodes.filter(n => n.floorLevel === currentFloor);
       for (const n of floorNodes) {
         const pt = worldToScreen(n.x, n.y);
-        if (Math.hypot(mx - pt.x, my - pt.y) <= 14) return n;
+        if (Math.hypot(mx - pt.x, my - pt.y) <= 15) return n;
       }
       return null;
     }
@@ -1471,6 +1876,9 @@
       const rect = mapCanvas.getBoundingClientRect();
       const hit = findNodeAtScreenPos(e.clientX - rect.left, e.clientY - rect.top);
       if (!hit) return;
+
+      isSosMode = false;
+      document.getElementById('sosBannerToast').style.display = 'none';
 
       if (e.shiftKey || nextClickSetsEnd) {
         document.getElementById('endNodeSelect').value = hit.nodeId;
@@ -1482,7 +1890,17 @@
       computeAndRenderRoute();
     }
 
-    // Import & Export JSON Map Package Handlers
+    // Preset Map Switcher & Local JSON Import/Export
+    function switchPresetMap(presetKey) {
+      if (presetKey === 'campus') {
+        activeMap = JSON.parse(JSON.stringify(CAMPUS_DEMO_MAP));
+      } else {
+        activeMap = JSON.parse(JSON.stringify(HOME_SURVEY_MAP));
+      }
+      currentFloor = 0;
+      initMapConsoleUI();
+    }
+
     document.getElementById('jsonMapUpload').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -1515,14 +1933,32 @@
       URL.revokeObjectURL(url);
     }
 
-    function resetDefaultMap() {
-      activeMap = JSON.parse(JSON.stringify(DEFAULT_MAP_DATA));
-      currentFloor = 0;
-      initMapConsoleUI();
+    function openAdminForJsonMap() {
+      document.getElementById('docTitle').value = `Map Package: ${activeMap.building_name || 'Building'}`;
+      document.getElementById('docVersion').value = `v${activeMap.version || '1.0'}`;
+      document.getElementById('docSummary').value = `Exported Android JSON topology (${activeMap.nodes.length} nodes, ${activeMap.edges.length} edges)`;
+      toggleAdminModal(true);
+    }
+
+    async function loadCloudJsonMapFromUrl(fileUrl) {
+      try {
+        const res = await fetch(fileUrl);
+        const parsed = await res.json();
+        if (Array.isArray(parsed.nodes) && Array.isArray(parsed.edges)) {
+          activeMap = parsed;
+          currentFloor = getFloorsList()[0];
+          initMapConsoleUI();
+          document.getElementById('web-console').scrollIntoView({ behavior: 'smooth' });
+        } else {
+          alert('Cloud JSON does not match IndoorPulse map schema.');
+        }
+      } catch (e) {
+        alert('Could not fetch cloud JSON map directly (check CORS or download and click Import).');
+      }
     }
 
     /* =========================================================================
-       2. BACKGROUND CANVAS ANIMATION & PORTAL LOGIC
+       2. BACKGROUND CANVAS ANIMATION & PORTAL LOGIC (INTACT)
        ========================================================================= */
     (function initBackground() {
       const canvas = document.getElementById('bg-canvas');
@@ -1614,7 +2050,7 @@
       }
     }
 
-    /* Live GitHub Commit Fetcher (merges navix & IndoorPulse-Android commits) */
+    /* Live GitHub Commit Fetcher */
     const GITHUB_USERNAME = "rizwanhanda";
 
     async function fetchLiveCommits() {
@@ -1660,6 +2096,13 @@
     function loadIntoViewer(recordIndex) {
       const item = globalRecords[recordIndex];
       if(!item) return;
+
+      const isJsonMap = (item.filename && item.filename.toLowerCase().endsWith('.json')) ||
+                        (item.file_url && item.file_url.toLowerCase().endsWith('.json'));
+      if (isJsonMap) {
+        loadCloudJsonMapFromUrl(item.file_url);
+        return;
+      }
       
       document.getElementById('docViewerTitle').innerText = item.title;
       document.getElementById('docViewerVersion').innerText = item.version;
@@ -1681,7 +2124,12 @@
           const tbody = document.getElementById('version-archive-body');
           tbody.innerHTML = '';
           
+          let firstPdfIdx = -1;
           globalRecords.forEach((item, index) => {
+            const isJson = (item.filename && item.filename.toLowerCase().endsWith('.json')) ||
+                           (item.file_url && item.file_url.toLowerCase().endsWith('.json'));
+            if (!isJson && firstPdfIdx === -1) firstPdfIdx = index;
+
             const tr = document.createElement('tr');
             tr.innerHTML = `
               <td><span class="version-badge">${item.version}</span></td>
@@ -1689,13 +2137,15 @@
               <td>${item.presentation_date}</td>
               <td>${item.change_summary}</td>
               <td>
-                <button onclick="loadIntoViewer(${index})" class="btn-action btn-action-primary">View on Page ↗</button>
+                <button onclick="loadIntoViewer(${index})" class="btn-action btn-action-primary">
+                  ${isJson ? 'Load Map in Console ↗' : 'View on Page ↗'}
+                </button>
               </td>
             `;
             tbody.appendChild(tr);
           });
 
-          loadIntoViewer(0);
+          if (firstPdfIdx !== -1) loadIntoViewer(firstPdfIdx);
         } else {
           document.getElementById('version-archive-body').innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px;">No presentations uploaded yet.</td></tr>`;
         }
@@ -1712,7 +2162,7 @@
       }
     }
 
-    /* Live Upload Handler */
+    /* Live Upload Handler (AWS EC2 + Backblaze B2) */
     document.getElementById('adminUploadForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('uploadSubmitBtn');
@@ -1745,7 +2195,7 @@
       } catch (err) {
         alert('Server unreachable: Ensure AWS EC2 backend is active.');
       } finally {
-        btn.innerText = "Transmit Payload";
+        btn.innerText = "Transmit to Backblaze B2";
         btn.disabled = false;
       }
     });
