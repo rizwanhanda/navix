@@ -1,0 +1,412 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Standard Academic Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{caption}
+
+% --- Custom Column Types for Zero-Overflow Tables ---
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% --- Hyperref & Color Setup ---
+\definecolor{slate}{RGB}{30, 41, 59}
+\definecolor{indigo}{RGB}{79, 70, 229}
+\definecolor{codebg}{RGB}{248, 250, 252}
+\definecolor{codeframe}{RGB}{226, 232, 240}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=indigo,
+    urlcolor=indigo,
+    citecolor=indigo,
+    pdftitle={IndoorPulse: Infrastructure-Free Indoor Positioning System - Final Report},
+    pdfauthor={Rizwan Handa, Harjot Siddhu, Ravinder Singh, Pooja}
+}
+
+% --- Header & Footer ---
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{14pt}
+\fancyhead[L]{\small\texttt{UCS503P: Software Engineering Project (2026-27 Odd)}}
+\fancyhead[R]{\small\texttt{IndoorPulse Final Report}}
+\fancyfoot[C]{\thepage}
+
+% --- Code Listing Style ---
+\lstdefinestyle{kotlinstyle}{
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeframe},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=6pt,
+    numberstyle=\tiny\color{gray},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    keywordstyle=\color{indigo}\bfseries,
+    commentstyle=\color{gray}\itshape
+}
+\lstset{style=kotlinstyle}
+
+\begin{document}
+
+% =============================================================================
+% TITLE PAGE (Zero Margin Overflow, No Submission Date)
+% =============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.8cm}
+    {\Large \textbf{THAPAR INSTITUTE OF ENGINEERING AND TECHNOLOGY}}\\[0.2cm]
+    {\normalsize Computer Science and Engineering Department (CSED) $\bullet$ Patiala, Punjab}\\[1.2cm]
+    
+    {\scshape\large UCS503P: Software Engineering Semester Project (2026--27 Odd)}\\[0.4cm]
+    \rule{\linewidth}{0.6mm}\\[0.5cm]
+    {\huge \bfseries \baselineskip=28pt IndoorPulse: Infrastructure-Free Multi-Floor Indoor Positioning and 3D Topological Routing System\par}
+    \vspace{0.3cm}
+    \rule{\linewidth}{0.6mm}\\[0.9cm]
+
+    {\large \textbf{Final Project Report (Transition from Proposal to Deployed System)}}\\[1.0cm]
+
+    \footnotesize
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabularx}{\textwidth}{L{2.8cm} L{2.2cm} L{2.8cm} Y}
+        \toprule
+        \textbf{Student Name} & \textbf{Roll Number} & \textbf{GitHub Handle} & \textbf{Primary Engineering Role} \\
+        \midrule
+        Rizwan Handa & 1024031189 & \texttt{@rizwanhanda} & Team Lead, Core IMU/PDR, 400-Particle Filter, 3D A* Router, JSON Engine \& Cloud Stack \\
+        Harjot Siddhu & 1024031188 & \texttt{@HarjotMMVI} & Spatial Data Schemas, Room SQLite Entities \& Coordinate Scaling QA \\
+        Ravinder Singh & 1024031133 & \texttt{@Ravi6280} & Pathfinding Edge-Weight Validation \& Multi-Corridor Field Walk-Testing \\
+        Pooja & 1024031126 & \texttt{@pooja-M-1126} & User Journey Workflows, State Diagrams \& Technical Documentation \\
+        \bottomrule
+    \end{tabularx}
+    \normalsize
+
+    \vfill
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabularx}{\textwidth}{@{}L{5.6cm} Y@{}}
+        \textbf{Course Evaluator:} &  Sukhpal Singh \\
+        \textbf{Android Repository:} & \href{https://github.com/rizwanhanda/IndoorPulse-Android}{\texttt{github.com/rizwanhanda/IndoorPulse-Android}} \\
+        \textbf{Web Console \& Cloud Repo:} & \href{https://github.com/rizwanhanda/navix}{\texttt{github.com/rizwanhanda/navix}} \\
+        \textbf{Live Deployment Portal:} & \href{https://rizwanhanda.github.io/navix/}{\texttt{rizwanhanda.github.io/navix/}}
+    \end{tabularx}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+% =============================================================================
+% 1. INTRODUCTION & EVOLUTION OF OBJECTIVES
+% =============================================================================
+\section{Introduction and Evolution of Objectives}
+
+\subsection{Problem Statement}
+Global Positioning System (GPS) signals suffer severe multipath reflection and structural attenuation inside multi-story reinforced concrete buildings, rendering standard outdoor navigation applications unusable indoors. In large-scale facilities such as university academic blocks (e.g., TIET CSED and TAN blocks), multi-specialty hospitals, and commercial complexes, visitors routinely struggle with spatial disorientation. During time-critical emergencies such as fire evacuations, the inability to determine one's indoor floor level and compute an immediate path to the nearest structural exit poses severe safety hazards.
+
+Existing commercial Indoor Positioning Systems (IPS) predominantly rely on pre-installed radio-frequency (RF) infrastructure—specifically Wi-Fi Received Signal Strength Indicator (RSSI) fingerprinting or Bluetooth Low Energy (BLE) beacon grids. However, RF-dependent architectures exhibit three critical failure modes:
+\begin{enumerate}
+    \item \textbf{Prohibitive Deployment Cost:} Installing and maintaining hundreds of battery-powered BLE beacons across multi-floor campuses requires continuous capital expenditure.
+    \item \textbf{Environmental Fragility:} Wi-Fi fingerprinting databases degrade rapidly whenever access points are reconfigured, furniture layouts change, or pedestrian crowd density fluctuates.
+    \item \textbf{Emergency Power Vulnerability:} During structural fires or electrical blackouts, building Wi-Fi routers go offline precisely when emergency wayfinding is needed most.
+\end{enumerate}
+
+\textbf{IndoorPulse} resolves this challenge by providing a 100\% offline-first, infrastructure-free Indoor Positioning and Navigation System built natively in Kotlin and Jetpack Compose for Android, paired with a self-hosted 3-tier Cloud and Web Map Console (\texttt{navix}).
+
+\subsection{Evolution from Proposal to Final Implementation}
+In accordance with the course transition rubric, Table~\ref{tab:smart_evolution} documents the progression from our initial Proposal SMART objectives to the validated deployed system, including architectural refinements made during execution.
+
+\begin{table}[h!]
+\centering
+\caption{Evolution of SMART Objectives from Proposal to Deployed Build}
+\label{tab:smart_evolution}
+\renewcommand{\arraystretch}{1.28}
+\footnotesize
+\begin{tabularx}{\textwidth}{L{2.5cm} L{3.6cm} Y L{2.4cm}}
+\toprule
+\textbf{Milestone Phase} & \textbf{Initial Proposal Intent} & \textbf{Final Engineered Reality} & \textbf{Validation Status} \\
+\midrule
+\textbf{1. Inertial Step Detection} & Basic accelerometer peak-detection with $\ge 95\%$ step accuracy. & Engineered Dual-Threshold Schmitt Trigger state machine ($T_{\text{high}}=1.85\,\text{m/s}^2$, $T_{\text{low}}=0.45\,\text{m/s}^2$) with $260\,\text{ms}$ refractory debounce and Weinberg biomechanical stride model. & \textbf{Exceeded} ($97.4\%$ accuracy; $0$ stationary desk drift). \\
+\textbf{2. Drift Containment} & 2D Particle Filter to bound cumulative IMU heading drift under $2.0\,\text{m}$. & Implemented a 400-Particle Monte Carlo Localization (MCL) filter with chirality frame translation, corridor wall projection clamping, and low-variance resampling. & \textbf{Met} ($1.18\,\text{m}$ mean error across $52\,\text{m}$ multi-turn walks). \\
+\textbf{3. Multi-Floor Graph Routing} & Flat 2D Dijkstra shortest-path routing over SQLite nodes. & Upgraded to \textbf{3D Euclidean A*} with explicit \texttt{vertical\_portal} stairwell edges ($30\,\text{m}$ penalty), proximity \textbf{Transit State} modal pausing, and 1-tap \textbf{SOS Exit} routing. & \textbf{Upgraded \& Validated} (Zero cross-floor bleed). \\
+\textbf{4. Spatial Mapping \& JSON Engine} & Local Room SQLite storage for single-floor graphs. & Full Surveyor Mode with undo/redo stacks, dynamic touch snapping, outdoor GPS geofence handoff, and a portable \texttt{.json} export/import engine with UUID translation. & \textbf{Exceeded} (Cross-device JSON portability). \\
+\textbf{5. Cloud \& Web Integration} & Basic static documentation page on GitHub Pages. & Full 3-tier architecture: GitHub Pages interactive HTML5 Canvas 3D A* Route Simulator + AWS EC2 Flask API (\texttt{indoorpulse.duckdns.org}) + Backblaze B2 S3 storage. & \textbf{Exceeded} (Live web console + cloud B2 sync). \\
+\textbf{6. Secondary Sensor Clamping} & Continuous ARCore camera overlays and optional Wi-Fi anchoring. & Designed modular observation-update hooks in \texttt{ParticleFilter.kt}; deferred continuous camera/RF polling to Phase 2 to prevent thermal throttling and preserve $100\%$ power-outage autonomy. & \textbf{Scoped to Modular Hooks} (Architectural decision). \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% =============================================================================
+% 2. TECHNICAL SYSTEM ARCHITECTURE
+% =============================================================================
+\section{Technical System Architecture}
+
+\subsection{Complete Technology Stack}
+IndoorPulse operates as a decoupled, dual-platform ecosystem comprising an edge-computing Android client and a self-managed cloud/web simulation portal (explicitly avoiding managed PaaS wrappers such as Vercel, Netlify, or Firebase):
+\begin{itemize}
+    \item \textbf{Android Native Client (\texttt{IndoorPulse-Android}):} Developed in \textbf{Kotlin 2.0} using \textbf{Jetpack Compose} (Material 3) for reactive UI rendering, \textbf{Android SensorManager} ($50\text{--}100\,\text{Hz}$ hardware IMU polling of \texttt{TYPE\_LINEAR\_ACCELERATION} and \texttt{TYPE\_ROTATION\_VECTOR}), \textbf{Google Play Services Location} (Outdoor-to-Indoor GPS geofence handshake), and \textbf{Room SQLite Database} for relational persistence (\texttt{BuildingEntity}, \texttt{NodeEntity}, \texttt{EdgeEntity}).
+    \item \textbf{Web Map Console (\texttt{navix} Frontend):} Built with vanilla HTML5 Canvas, CSS3 Backdrop-Blur UI, and ES6 JavaScript implementing a browser-based mirror of the 3D Euclidean A* pathfinder, architectural blueprint renderer, and time-delta (\texttt{performance.now()}) stairwell Transit State state machine.
+    \item \textbf{Compute \& Storage Backend:} Self-configured \textbf{AWS EC2 Linux VPS} running a Python \textbf{Flask REST API} behind Nginx/TLS (\texttt{[https://indoorpulse.duckdns.org](https://indoorpulse.duckdns.org)}), integrated via \texttt{boto3} with \textbf{Backblaze B2 S3-Compatible Object Storage} for immutable deliverable and JSON map archiving.
+\end{itemize}
+
+\subsection{End-to-End Data Flow Architecture}
+Figure~\ref{fig:sys_arch} illustrates the runtime data flow across the Android sensor pipeline, Room persistence engine, portable JSON serializer, and the 3-tier cloud web console.
+
+\begin{figure}[h!]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+    node distance=0.85cm and 1.3cm,
+    box/.style={rectangle, draw=slate, thick, fill=codebg, rounded corners=4pt, minimum width=3.8cm, minimum height=1.05cm, align=center, font=\footnotesize\sffamily},
+    cloudbox/.style={rectangle, draw=indigo, thick, fill=indigo!8, rounded corners=4pt, minimum width=3.8cm, minimum height=1.05cm, align=center, font=\footnotesize\sffamily},
+    arrow/.style={-{Stealth[length=2.5mm]}, thick, color=slate}
+]
+    % Left Column: Android Sensor Stack
+    \node[box] (imu) {\textbf{Hardware IMU Sensors}\\Linear Accel + Rotation Vec};
+    \node[box, below=of imu] (pdr) {\textbf{KinematicPDR.kt}\\Schmitt Trigger + Weinberg Stride};
+    \node[box, below=of pdr] (mcl) {\textbf{ParticleFilter.kt}\\400-Particle MCL + Wall Clamp};
+    
+    % Middle Column: Core State & UI
+    \node[box, right=of pdr] (vm) {\textbf{MapViewModel.kt}\\3D Euclidean A* \& Transit State};
+    \node[box, above=of vm] (db) {\textbf{Room SQLite DB}\\Buildings, Nodes, Edges};
+    \node[box, below=of vm] (ui) {\textbf{MapCanvas.kt (Compose)}\\1:1 Metric Blueprint \& Chevron};
+
+    % Right Column: JSON & Cloud Web Stack
+    \node[cloudbox, right=of db] (json) {\textbf{JSON Map Engine}\\UUID Translation \& Export};
+    \node[cloudbox, below=of json] (ec2) {\textbf{AWS EC2 + Backblaze B2}\\Flask API \& S3 Object Store};
+    \node[cloudbox, below=of ec2] (web) {\textbf{Navix Web Console}\\HTML5 Canvas 3D A* Simulator};
+
+    % Arrows
+    \draw[arrow] (imu) -- (pdr);
+    \draw[arrow] (pdr) -- (mcl);
+    \draw[arrow] (mcl) -- (vm);
+    \draw[arrow] (db) <--> (vm);
+    \draw[arrow] (vm) -- (ui);
+    \draw[arrow] (db) <--> (json);
+    \draw[arrow] (json) -- (ec2);
+    \draw[arrow] (json) -- (web);
+    \draw[arrow] (ec2) <--> (web);
+\end{tikzpicture}%
+}
+\caption{IndoorPulse End-to-End System Architecture and Data Pipeline}
+\label{fig:sys_arch}
+\end{figure}
+
+% =============================================================================
+% 3. MODULE-BY-MODULE IMPLEMENTATION
+% =============================================================================
+\section{Module-by-Module Implementation}
+
+\subsection{Module A: Inertial Pedestrian Dead Reckoning}
+Standard peak-detection algorithms generate false step triggers when a user tilts or shakes their phone while standing still (stationary desk-drifting). To eliminate false positives, we implemented a \textbf{Dual-Threshold Schmitt Trigger State Machine} inside \texttt{KinematicPDR.kt} operating on the filtered linear acceleration magnitude $a_{\text{mag}}(t) = \sqrt{a_x^2 + a_y^2 + a_z^2}$:
+\begin{enumerate}
+    \item \textbf{Hysteresis Band:} A step cycle only arms when $a_{\text{mag}}(t)$ crosses the upper threshold $T_{\text{high}} = 1.85\,\text{m/s}^2$ (rising phase) and registers a valid heel-strike only when $a_{\text{mag}}(t)$ subsequently drops below $T_{\text{low}} = 0.45\,\text{m/s}^2$ after a minimum refractory period $\Delta t_{\text{min}} = 260\,\text{ms}$.
+    \item \textbf{Fused Biomechanical Stride Estimation:} Instead of assuming a fixed step length, each step dynamically computes stride length $L_{\text{step}}$ using the Weinberg empirical biomechanical model fused with step frequency $f_{\text{step}}$:
+    \begin{equation}
+        L_{\text{step}} = K \cdot \left( a_{\max} - a_{\min} \right)^{1/4} + \beta (f_{\text{step}} - f_0)
+    \end{equation}
+    where $K = 0.43$ is the calibrated morphological gain and $a_{\max}, a_{\min}$ denote the peak-to-valley acceleration extrema within the Schmitt window.
+\end{enumerate}
+
+\subsection{Module B: 400-Particle Monte Carlo Localization}
+A critical engineering hurdle discovered during mid-semester testing was \textbf{coordinate chirality mismatch}: Android's \texttt{SensorManager.getOrientation()} outputs azimuth $\psi \in [-\pi, \pi]$ in a clockwise North-East-Down (NED) World Frame, whereas Jetpack Compose's \texttt{Canvas} uses a screen-space Cartesian grid where $+Y$ points downward. Without frame translation, physical left turns caused the virtual trajectory to invert.
+
+We resolved this inside \texttt{ParticleFilter.kt} by applying an explicit trigonometric frame transformation and maintaining a state cloud of $N = 400$ particles $P_i = (x_i, y_i, w_i)$:
+\begin{equation}
+    x_i^{(t)} = x_i^{(t-1)} + \left(L_{\text{step}} + \mathcal{N}(0, \sigma_L^2)\right) \sin(\psi_{\text{aligned}} + \mathcal{N}(0, \sigma_\psi^2))
+\end{equation}
+\begin{equation}
+    y_i^{(t)} = y_i^{(t-1)} - \left(L_{\text{step}} + \mathcal{N}(0, \sigma_L^2)\right) \cos(\psi_{\text{aligned}} + \mathcal{N}(0, \sigma_\psi^2))
+\end{equation}
+After each propagation step, particles are evaluated against the active floor's topological corridor segments. Any particle whose perpendicular distance $d_\perp$ to the nearest walkable corridor edge exceeds the corridor half-width ($1.2\,\text{m}$) has its weight penalized via $w_i \leftarrow w_i \cdot \exp(-d_\perp^2 / 2\sigma_{\text{wall}}^2)$, followed by \textbf{Low-Variance Systematic Resampling} whenever the effective particle count $N_{\text{eff}} = 1 / \sum w_i^2$ drops below $N/2 = 200$.
+
+\subsection{Module C: Multi-Floor 3D Euclidean A* Routing}
+In the prototype stage, pathfinding used a flat 2D Dijkstra implementation. However, when mapping multi-story structures, 2D routing suffered from \textit{cross-floor bleed} (attempting to route across disconnected floor levels) and inaccurate stairwell costs. We replaced Dijkstra with a \textbf{3D Euclidean A* Pathfinder} paired with a \textbf{Proximity Transit State Machine}:
+\begin{itemize}
+    \item \textbf{3D Heuristic Cost Function:} For any node $n = (x_n, y_n, z_n)$ and goal node $g = (x_g, y_g, z_g)$ where $z$ denotes the integer \texttt{floorLevel}, the admissible heuristic $h(n, g)$ scales vertical floor separation by $H_{\text{floor}} = 4.0\,\text{m}$:
+    \begin{equation}
+        f(n) = g(n) + \sqrt{(x_n - x_g)^2 + (y_n - y_g)^2 + \left(4.0 \cdot (z_n - z_g)\right)^2}
+    \end{equation}
+    \item \textbf{Vertical Portal Edges \& Transit State UX:} Cross-floor stairwells are encoded as explicit \texttt{vertical\_portal} edges ($w = 30.0\,\text{m}$). When the user's estimated position enters within $1.5\,\text{m}$ of an active route's \texttt{Stairs} node, the app automatically triggers a modal \textbf{Transit State Overlay} that pauses IMU step integration while the user climbs the stairs, preventing erratic stairwell body motion from corrupting the 2D floor trajectory.
+    \item \textbf{Strict Emergency SOS Evacuation:} Tapping the SOS button filters the building's node graph strictly for nodes of type \texttt{Building Entry} (true ground-level exterior exits), computes 3D A* paths from the user's current floor/position to all candidate exits, and locks navigation onto the minimum-cost evacuation path.
+\end{itemize}
+
+\subsection{Module D: Surveyor Mode, Compose UI \& JSON UUID Engine}
+To enable rapid building onboarding without external CAD software, \texttt{MapCanvas.kt} and \texttt{MapViewModel.kt} implement an interactive \textbf{Surveyor Mode} featuring a $1:1$ metric grid, zoom-runaway clamping, dynamic touch-radius snapping ($R_{\text{snap}} = 24\,\text{px} / \text{scale}$), and a full Undo/Redo command stack.
+
+When exporting or importing building maps across devices, primary key collisions in SQLite (\texttt{building\_id}, \texttt{nodeId}, \texttt{edgeId}) previously caused foreign-key crashes if a user imported an updated version of an existing building. We engineered a \textbf{JSON Serialization \& UUID Translation Engine} (Listing~\ref{lst:uuid_engine}) that generates fresh UUIDv4 identifiers for the building, nodes, and edges upon import while preserving all internal \texttt{fromNodeId} $\rightarrow$ \texttt{toNodeId} relational pointers and appending a collision-safe timestamp suffix.
+
+\begin{lstlisting}[language=Java, caption={UUID Translation Engine \& Timestamped JSON Import Logic in \texttt{MapViewModel.kt}}, label={lst:uuid_engine}]
+fun importBuildingFromJson(jsonString: String) {
+    val root = JSONObject(jsonString)
+    val newBuildingId = UUID.randomUUID().toString()
+    val timestampSuffix = SimpleDateFormat("MMM dd, HH:mm", Locale.US).format(Date())
+    val baseName = root.optString("building_name", "Imported Building")
+    val safeBuildingName = "$baseName (Imported $timestampSuffix)"
+
+    val nodeUuidMap = mutableMapOf<String, String>()
+    val nodesArray = root.getJSONArray("nodes")
+    val importedNodes = mutableListOf<NodeEntity>()
+
+    for (i in 0 until nodesArray.length()) {
+        val n = nodesArray.getJSONObject(i)
+        val oldNodeId = n.getString("nodeId")
+        val newNodeId = UUID.randomUUID().toString()
+        nodeUuidMap[oldNodeId] = newNodeId
+
+        importedNodes.add(NodeEntity(
+            nodeId = newNodeId, buildingId = newBuildingId,
+            x = n.getDouble("x").toFloat(), y = n.getDouble("y").toFloat(),
+            floorLevel = n.optInt("floorLevel", 0),
+            type = n.optString("type", "Waypoint"),
+            label = n.optString("label", "Node $i")
+        ))
+    }
+    // Remap edge foreign keys using nodeUuidMap to guarantee referential integrity
+    val edgesArray = root.getJSONArray("edges")
+    for (j in 0 until edgesArray.length()) {
+        val e = edgesArray.getJSONObject(j)
+        val mappedFrom = nodeUuidMap[e.getString("fromNodeId")] ?: continue
+        val mappedTo = nodeUuidMap[e.getString("toNodeId")] ?: continue
+        repository.insertEdge(EdgeEntity(
+            edgeId = UUID.randomUUID().toString(), buildingId = newBuildingId,
+            fromNodeId = mappedFrom, toNodeId = mappedTo,
+            lengthMeters = e.getDouble("lengthMeters").toFloat(),
+            edgeType = e.optString("edgeType", "corridor")
+        ))
+    }
+}
+\end{lstlisting}
+
+% =============================================================================
+% 4. TESTING, BENCHMARKING & VALIDATION RESULTS
+% =============================================================================
+\section{Testing, Performance Benchmarking, and Validation}
+
+\subsection{Experimental Hardware Setup}
+All real-world walk-tests, IMU sensor benchmarks, and frame-rate profiling were conducted on a production Android handset:
+\begin{itemize}
+    \item \textbf{Test Device:} Nothing Phone (2) — Qualcomm Snapdragon 8+ Gen 1 ($4\,\text{nm}$ Octa-Core), $12\,\text{GB}$ LPDDR5 RAM, $512\,\text{GB}$ UFS 3.1 storage, running Android 15 / Nothing OS.
+    \item \textbf{Test Environments:}
+    \begin{enumerate}
+        \item \textbf{Dataset A (\texttt{Home\_v1.0\_20261114\_1248.json}):} Multi-floor residential duplex survey ($5$ nodes, $4$ edges including $1$ cross-floor \texttt{vertical\_portal} stairwell connecting Floor L0 to Floor L1, GPS center $30.52184^\circ\text{N}, 75.88488^\circ\text{E}$, geofence radius $100\,\text{m}$).
+        \item \textbf{Dataset B (\texttt{TIET\_Academic\_Wing\_v1.2.json}):} Multi-corridor academic wing topology ($10$ nodes, $9$ edges across Floors L0 and L1, spanning $64.3\,\text{m}$ of corridor segments and $2$ emergency exits).
+    \end{enumerate}
+\end{itemize}
+
+\subsection{Performance Benchmarking \& Frame-Time Profiling}
+Table~\ref{tab:perf_benchmarks} summarizes the runtime computational performance measured via Android Studio Profiler and Chrome DevTools (on a $100\,\text{Hz}$ desktop display).
+
+\begin{table}[h!]
+\centering
+\caption{System Performance Benchmarks (Nothing Phone 2 \& Web Console)}
+\label{tab:perf_benchmarks}
+\renewcommand{\arraystretch}{1.25}
+\footnotesize
+\begin{tabularx}{\textwidth}{L{4.0cm} Y C{2.3cm} L{3.6cm}}
+\toprule
+\textbf{Subsystem / Metric} & \textbf{Measurement Condition} & \textbf{Target} & \textbf{Measured Result} \\
+\midrule
+\textbf{Compose UI Render Rate} & Active 400-particle redraw + pan/zoom & $\ge 55\,\text{FPS}$ & \textbf{59.4--60.0 FPS} ($16.1\,\text{ms}$) \\
+\textbf{400-Particle MCL Update} & Propagation + wall clamp + resample & $\le 15\,\text{ms}$ & \textbf{2.4 ms} (Kotlin Coroutine) \\
+\textbf{3D Euclidean A* Query} & 50-node multi-floor graph search & $\le 20\,\text{ms}$ & \textbf{0.8 ms} (App) / \textbf{1.1 ms} (Web) \\
+\textbf{Room SQLite Graph Load} & Cold start fetch of building topology & $\le 100\,\text{ms}$ & \textbf{14.2 ms} \\
+\textbf{JSON Import + UUID Remap} & Full multi-floor JSON deserialization & $\le 250\,\text{ms}$ & \textbf{19.6 ms} \\
+\textbf{Web Simulation Loop} & Time-delta \texttt{requestAnimationFrame} & $60\text{--}100\,\text{FPS}$ & \textbf{100.0 FPS} (Refresh locked) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Localization Drift Analysis \& Step-Detection Validation}
+To evaluate cumulative IMU dead-reckoning drift and quantify the benefit of the 400-particle corridor filter, we performed $15$ controlled walk-test trials across four distinct trajectory profiles. Table~\ref{tab:drift_results} compares raw unconstrained IMU dead reckoning against our 400-particle topological corridor-clamped filter.
+
+\begin{table}[h!]
+\centering
+\caption{Empirical Step Detection and Localization Drift Analysis (15 Walk-Test Trials)}
+\label{tab:drift_results}
+\renewcommand{\arraystretch}{1.25}
+\footnotesize
+\begin{tabularx}{\textwidth}{Y C{1.5cm} C{1.5cm} C{2.6cm} C{2.2cm} C{2.5cm}}
+\toprule
+\textbf{Test Scenario} & \textbf{True Dist.} & \textbf{True Steps} & \textbf{Detected Steps} & \textbf{Raw IMU Drift} & \textbf{400-Particle MCL Error} \\
+\midrule
+1. Stationary Desk Jitter ($5\,\text{min}$) & $0.0\,\text{m}$ & $0$ & $0$ ($100\%$ reject) & $0.00\,\text{m}$ & \textbf{0.00 m} \\
+2. Straight Corridor Walk (L0) & $25.0\,\text{m}$ & $35$ & $34.6 \pm 0.5$ ($98.8\%$) & $1.92\,\text{m}$ & \textbf{0.64 m} \\
+3. Multi-Turn L-Corridor (L0) & $52.0\,\text{m}$ & $72$ & $70.1 \pm 1.1$ ($97.4\%$) & $4.85\,\text{m}$ & \textbf{1.18 m} \\
+4. Multi-Floor L0 $\rightarrow$ Stairs $\rightarrow$ L1 & $21.1\,\text{m}$ & $29$ & $28.2 \pm 0.8$ ($97.2\%$) & $5.40\,\text{m}$ (Stair skew) & \textbf{0.89 m} (Transit paused) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Key Analytical Finding:} Without the stairwell \textbf{Transit State} pause (Scenario 4), vertical stepping motions on spiral/switchback stairs introduced $5.40\,\text{m}$ of false horizontal displacement. Automatically pausing PDR integration upon entering the $1.5\,\text{m}$ stairwell portal radius reduced post-stairwell localization error by \textbf{83.5\%} (down to $0.89\,\text{m}$).
+
+\subsection{Unit \& Integration Testing Log}
+Table~\ref{tab:unit_tests} records the verification results across 8 core functional test suites.
+
+\begin{table}[h!]
+\centering
+\caption{Unit Testing and User Acceptance Testing (UAT) Verification Log}
+\label{tab:unit_tests}
+\renewcommand{\arraystretch}{1.25}
+\footnotesize
+\begin{tabularx}{\textwidth}{L{1.4cm} L{3.2cm} Y C{1.6cm}}
+\toprule
+\textbf{Test ID} & \textbf{Module Tested} & \textbf{Verification Condition} & \textbf{Result} \\
+\midrule
+\texttt{UT-01} & \texttt{KinematicPDR.kt} & Reject hand-shake noise $< 1.85\,\text{m/s}^2$ and impulses $< 260\,\text{ms}$. & \textbf{PASS} \\
+\texttt{UT-02} & \texttt{ParticleFilter.kt} & Verify World-to-Map chirality: $90^\circ$ physical right turn maps to $+X$ screen vector. & \textbf{PASS} \\
+\texttt{UT-03} & \texttt{MapViewModel.kt} & 3D A* routes across \texttt{vertical\_portal} edges without cross-floor bleed. & \textbf{PASS} \\
+\texttt{UT-04} & \texttt{MapViewModel.kt} & SOS Emergency button ignores regular rooms/waypoints and targets nearest \texttt{Building Entry}. & \textbf{PASS} \\
+\texttt{UT-05} & \texttt{MapCanvas.kt} & Surveyor Mode touch hit-detection snaps accurately across zoom scales ($0.5\times\text{--}4.0\times$). & \textbf{PASS} \\
+\texttt{UT-06} & \texttt{JSON Engine} & Re-importing an exported \texttt{.json} map translates all UUIDs with zero SQLite PK collisions. & \textbf{PASS} \\
+\texttt{UT-07} & \texttt{Navix Web Console} & DPI-scaled canvas click selection and time-delta ($2.8\,\text{s}$) Transit State modal on $100\,\text{Hz}$ displays. & \textbf{PASS} \\
+\texttt{UT-08} & \texttt{EC2 + B2 Gateway} & Authenticated (\texttt{POST /api/upload}) upload of PDF/JSON artifacts to Backblaze B2 S3 bucket. & \textbf{PASS} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% =============================================================================
+% 5. REAL-WORLD CONSTRAINTS, CHALLENGES & MITIGATIONS
+% =============================================================================
+\section{Real-World Constraints, Technical Challenges, and Mitigations}
+
+\begin{enumerate}
+    \item \textbf{Magnetic Compass Interference Indoors:} Structural steel beams and electrical conduits inside academic buildings distort raw magnetometer readings (\texttt{TYPE\_MAGNETIC\_FIELD}). \textit{Mitigation:} We anchored initial heading calibration to the user's known starting corridor vector and relied on gyro-stabilized rotation vectors constrained by the 400-particle corridor wall model rather than raw magnetic north.
+    \item \textbf{Stairwell Step-Count Distortion:} Walking up or down stairs alters vertical acceleration profiles and has zero horizontal displacement per step on stacked stairwell nodes (for example, \texttt{Stairs 1 L0} and \texttt{Stairs 1 L1} both reside at $x=-4.63\,\text{m}, y=-8.69\,\text{m}$). \textit{Mitigation:} Engineered the proximity-triggered \textbf{Transit State Modal} on both Android and Web, which suspends horizontal PDR integration during floor transitions and resumes tracking cleanly on the destination floor.
+    \item \textbf{High-Refresh-Rate Web Simulation Desynchronization:} Initial browser route simulations used frame counters (\texttt{pauseFrames = 50}), which executed twice as fast on $100\,\text{Hz}$ monitors compared to $60\,\text{Hz}$ laptops. \textit{Mitigation:} Refactored the web simulation loop to use hardware-independent time deltas ($\Delta t = \text{performance.now()} - t_{\text{prev}}$) and removed unreliable step/distance estimates in favor of deterministic topological hop telemetry.
+    \item \textbf{Battery \& Thermal Constraints of Continuous ARCore:} Continuous camera-based Visual-Inertial Odometry (VIO) causes rapid thermal throttling and drains battery within $25\,\text{minutes}$. \textit{Mitigation:} Prioritized the ultra-low-power IMU + 400-Particle Filter core ($<3\%$ battery/hour) for Phase 1 deployment, isolating ARCore and opportunistic RF clamping as on-demand Phase 2 observation hooks.
+\end{enumerate}
+
+% =============================================================================
+% 6. CONCLUSION & FUTURE WORK
+% =============================================================================
+\section{Conclusion and Future Work}
+
+IndoorPulse successfully demonstrates that sub-$1.5\,\text{m}$ multi-floor indoor positioning and emergency evacuation routing can be achieved on commodity Android smartphones \textbf{without a single external Wi-Fi router or Bluetooth beacon}. By combining a Dual-Threshold Schmitt Trigger PDR engine, a 400-particle corridor-clamped Monte Carlo filter, a 3D Euclidean A* router, and a self-hosted AWS EC2 + Backblaze B2 Web Map Console, the system delivers an end-to-end, production-ready indoor navigation workflow.
+
+\subsection{Future Scope (Phase 2 Extensions)}
+\begin{itemize}
+    \item \textbf{Barometric Auto-Floor Confirmation:} Integrating \texttt{Sensor.TYPE\_PRESSURE} atmospheric hPa deltas ($\Delta P \approx -0.45\,\text{hPa}$ per floor ascent) to automatically dismiss the stairwell Transit State modal upon reaching the target floor.
+    \item \textbf{On-Demand ARCore Optical Heading Clamping:} Invoking short $2$-second ARCore feature-point snapshots only when particle variance exceeds a threshold in wide, featureless atriums.
+    \item \textbf{Opportunistic Passive Wi-Fi/BLE Landmark Clamping:} Utilizing the modular observation-update hook in \texttt{ParticleFilter.kt} to optionally clamp particle weights when passing known stationary MAC addresses without requiring dedicated beacon installation.
+\end{itemize}
+
+\end{document}
